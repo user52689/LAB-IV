@@ -2,14 +2,15 @@ package Modelos;
 
 public class Empleado {
 
-	private int id;
+	private static int contadorID = 1000;
+	private final int id;
 	private String nombre;
 	private int edad;	
 }
 
     // Constructor
     public Empleado(int id, String nombre, int edad) {
-        this.id = id;
+        this.id = contadorId++;
         this.nombre = nombre;
         this.edad = edad;
     }
