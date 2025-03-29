@@ -56,5 +56,4 @@ public class Empleado {
 	public String toString() {
 		return "ID=" + id + ", Nombre=" + nombre + ", Edad=" + edad;
 	}
-    
 }
