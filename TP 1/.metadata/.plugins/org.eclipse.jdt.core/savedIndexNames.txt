@@ -1,4 +1,0 @@
-INDEX VERSION 1.134+D:\Osky\UTN\2025\Laboratorio IV\Proyectos Eclipse\Aplicaciones de consola\TP 1\.metadata\.plugins\org.eclipse.jdt.core
-542094340.index
-2826386577.index
-1865797976.index
