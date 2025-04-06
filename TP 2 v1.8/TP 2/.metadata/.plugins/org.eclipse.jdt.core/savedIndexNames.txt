@@ -1,4 +1,0 @@
-INDEX VERSION 1.134+D:\Osky\UTN\2025\Laboratorio IV\4- TP\TP 2\.metadata\.plugins\org.eclipse.jdt.core
-2826386577.index
-1865797976.index
-1575116366.index
