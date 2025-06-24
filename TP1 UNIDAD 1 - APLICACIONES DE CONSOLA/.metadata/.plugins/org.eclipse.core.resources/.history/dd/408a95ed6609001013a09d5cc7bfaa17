@@ -1,8 +1,0 @@
-package Modelos;
-
-public class Empleado {
-
-	private int _id;
-	private String _nombre;
-	private int _edad;
-}
