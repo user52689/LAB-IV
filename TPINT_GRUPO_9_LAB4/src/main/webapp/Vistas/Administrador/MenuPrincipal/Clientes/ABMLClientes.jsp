@@ -20,7 +20,7 @@
 
         <div class="row justify-content-center g-3">
             <div class="col-md-3">
-                <a href="AltaCliente.jsp" class="btn btn-success w-100">
+                <a href="${pageContext.request.contextPath}/cliente/alta" class="btn btn-success w-100">
                     <i class="bi bi-person-plus-fill me-1"></i> Alta Cliente
                 </a>
             </div>

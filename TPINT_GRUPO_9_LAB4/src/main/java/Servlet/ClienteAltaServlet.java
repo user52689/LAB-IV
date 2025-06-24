@@ -31,55 +31,77 @@ public class ClienteAltaServlet extends HttpServlet {
             throw new ServletException("Error al inicializar ClienteNegocio", e);
         }
     }
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            ProvinciaNegocio provNeg = new ProvinciaNegocio();
-            LocalidadNegocio locNeg = new LocalidadNegocio();
-            GeneroNegocio genNeg = new GeneroNegocio();
-            NacionalidadNegocio nacNeg = new NacionalidadNegocio();
-
-            request.setAttribute("provincias", provNeg.listarProvincias());
-            request.setAttribute("localidades", locNeg.listarLocalidades()); 
-            request.setAttribute("generos", genNeg.listarGeneros());
-            request.setAttribute("nacionalidades", nacNeg.listarNacionalidades());
-
-            RequestDispatcher rd = request.getRequestDispatcher("/Vistas/Cliente/AltaCliente.jsp");
+            cargarCombos(request);
+            RequestDispatcher rd = request.getRequestDispatcher("/Vistas/Administrador/MenuPrincipal/Clientes/AltaCliente.jsp");
             rd.forward(request, response);
-
-        } catch (SQLException e) {
-            throw new ServletException("Error al cargar datos para alta cliente", e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("error", "Error al cargar datos para alta cliente: " + e.getMessage());
+            request.getRequestDispatcher("/Vistas/Util/Error.jsp").forward(request, response);
         }
     }
-
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            Cliente c = construirClienteDesdeRequest(req);
-            clienteNegocio.agregarCliente(c);
-            resp.sendRedirect(req.getContextPath() + "/cliente/listar");
+            cargarCombos(req);
+
+            Cliente c = mapearClienteDesdeRequest(req);
+            boolean ok = clienteNegocio.agregarCliente(c);
+
+            if (ok) {
+                req.setAttribute("mensajeExito", "Usuario guardado correctamente.");
+            } else {
+                req.setAttribute("mensajeError", "No se pudo guardar el usuario.");
+            }
+
         } catch (Exception e) {
-            throw new ServletException("Error al agregar cliente", e);
+            e.printStackTrace();
+            req.setAttribute("error", "Error al agregar cliente: " + e.getMessage());
         }
+
+        RequestDispatcher rd = req.getRequestDispatcher("/Vistas/Administrador/MenuPrincipal/Clientes/AltaCliente.jsp");
+        rd.forward(req, resp);
     }
 
-    private Cliente construirClienteDesdeRequest(HttpServletRequest req) {
+    private Cliente mapearClienteDesdeRequest(HttpServletRequest req) {
         Cliente c = new Cliente();
+        
         c.setDni(req.getParameter("dni"));
         c.setCuil(req.getParameter("cuil"));
         c.setNombre(req.getParameter("nombre"));
         c.setApellido(req.getParameter("apellido"));
         c.setGenero(Integer.parseInt(req.getParameter("generos")));
-        c.setPais(Integer.parseInt(req.getParameter("nacionalidades")));
-        c.setFechaNacimiento(LocalDate.parse(req.getParameter("fechaNacimiento")));
-        c.setDireccion(req.getParameter("direccion"));
-        c.setLocalidad(Integer.parseInt(req.getParameter("localidades")));
+        c.setPais(Integer.parseInt(req.getParameter("nacionalidades"))); 
         c.setProvincia(Integer.parseInt(req.getParameter("provincias")));
+        c.setLocalidad(Integer.parseInt(req.getParameter("localidades")));
+        
+        String fechaNacimientoStr = req.getParameter("fechaNacimiento");
+        if (fechaNacimientoStr == null || fechaNacimientoStr.isEmpty()) {
+            throw new IllegalArgumentException("La fecha de nacimiento es obligatoria.");
+        }
+        
+        c.setFechaNacimiento(LocalDate.parse(fechaNacimientoStr));
+        c.setDireccion(req.getParameter("direccion"));
         c.setCorreoElectronico(req.getParameter("correoElectronico"));
         c.setTelefono(req.getParameter("telefono"));
         c.setUsuario(req.getParameter("usuario"));
         return c;
+    }
+
+    private void cargarCombos(HttpServletRequest request) throws Exception {
+        GeneroNegocio generoNegocio = new GeneroNegocio();
+        NacionalidadNegocio nacionalidadNegocio = new NacionalidadNegocio();
+        ProvinciaNegocio provinciaNegocio = new ProvinciaNegocio();
+        LocalidadNegocio localidadNegocio = new LocalidadNegocio();
+
+        request.setAttribute("generos", generoNegocio.listarGeneros());
+        request.setAttribute("nacionalidades", nacionalidadNegocio.listarNacionalidades()); 
+        request.setAttribute("provincias", provinciaNegocio.listarProvincias());
+        request.setAttribute("localidades", localidadNegocio.listarLocalidades());
     }
 }

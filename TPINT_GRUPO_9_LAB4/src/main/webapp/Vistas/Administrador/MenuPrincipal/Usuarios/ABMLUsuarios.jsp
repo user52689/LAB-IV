@@ -20,9 +20,10 @@
 
         <div class="row justify-content-center g-3">
             <div class="col-md-3">
-				<a href="${pageContext.request.contextPath}/usuario/alta" class="btn btn-success w-100">
-				    <i class="bi bi-person-plus-fill me-1"></i> Alta Usuario
-				</a>
+			<a href="${pageContext.request.contextPath}/usuario/alta" class="btn btn-success w-100">
+			    <i class="bi bi-person-plus-fill me-1"></i> Alta Usuario
+			</a>
+
             </div>
             <div class="col-md-3">
                 <a href="BajaUsuario.jsp" class="btn btn-danger w-100">

@@ -16,14 +16,23 @@
 <main class="flex-grow-1 container my-5">
     <h2 class="mb-4 text-primary">
         <i class="bi bi-person-plus-fill me-2"></i>Alta de Usuario
-    </h2>
-    
+    </h2>   
 
-    <c:if test="${not empty error}">
-        <div class="alert alert-danger" role="alert">${error}</div>
+    <c:if test="${not empty mensajeExito}">
+        <div class="alert alert-success mt-4" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            ${mensajeExito}
+        </div>
     </c:if>
 
-    <c:if test="${msg != 'ok'}">
+    <c:if test="${not empty mensajeError}">
+        <div class="alert alert-danger mt-4" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            ${mensajeError}
+        </div>
+    </c:if>
+   
+	<c:if test="${empty mensajeExito}">
         <form action="${pageContext.request.contextPath}/usuario/alta" method="post" class="row g-3 needs-validation" novalidate autocomplete="off">
 
             <div class="col-md-4">
@@ -62,7 +71,7 @@
 			</div>
 			
 			<div class="col-md-4">
-			    <label for="id_pais" class="form-label">País</label>
+			    <label for="id_pais" class="form-label">Nacionalidad</label>
 				<select class="form-select" id="id_pais" name="id_pais" required>
 				    <option value="" selected disabled>Seleccione un país</option>
 				    <c:forEach var="p" items="${paises}">

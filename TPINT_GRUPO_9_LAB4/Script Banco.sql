@@ -66,19 +66,18 @@ CREATE TABLE clientes (
     cuil VARCHAR(20) NOT NULL UNIQUE,
     nombre VARCHAR(100) NOT NULL,
     apellido VARCHAR(100) NOT NULL,
-    id_genero INT NOT NULL, -- Reemplaza sexo ENUM
-    id_pais INT NOT NULL, -- Reemplaza nacionalidad
+    id_genero INT NOT NULL,
+    id_pais INT NOT NULL, 
     fecha_nacimiento DATE NOT NULL,
     direccion VARCHAR(200) NOT NULL,
     id_localidad INT NOT NULL,
     id_provincia INT NOT NULL,
     correo_electronico VARCHAR(150) NOT NULL UNIQUE,
-    telefono VARCHAR(20) NOT NULL, -- Eliminado telefono_secundario
-    id_usuario INT NOT NULL UNIQUE,
+    telefono VARCHAR(20) NOT NULL, 
+    usuario VARCHAR(50) NOT NULL UNIQUE,
     fecha_alta DATETIME DEFAULT CURRENT_TIMESTAMP,
     activo BOOLEAN DEFAULT TRUE,
     
-    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
     FOREIGN KEY (id_localidad) REFERENCES localidades(id_localidad),
     FOREIGN KEY (id_provincia) REFERENCES provincias(id_provincia),
     FOREIGN KEY (id_genero) REFERENCES generos(id_genero),
@@ -180,12 +179,12 @@ CREATE TABLE cuotas (
 CREATE INDEX idx_clientes_dni ON clientes(dni);
 CREATE INDEX idx_clientes_cuil ON clientes(cuil);
 CREATE INDEX idx_clientes_email ON clientes(correo_electronico);
-CREATE INDEX idx_clientes_usuario ON clientes(id_usuario); -- Nuevo índice para consultas por usuario
+CREATE INDEX idx_clientes_usuario ON clientes(usuario);
 CREATE INDEX idx_cuentas_numero ON cuentas(numero_cuenta);
 CREATE INDEX idx_cuentas_cbu ON cuentas(cbu);
 CREATE INDEX idx_cuentas_cliente ON cuentas(id_cliente);
 CREATE INDEX idx_movimientos_cuenta ON movimientos(id_cuenta);
-CREATE INDEX idx_movimientos_cuenta_destino ON movimientos(id_cuenta_destino); -- Nuevo índice para transferencias
+CREATE INDEX idx_movimientos_cuenta_destino ON movimientos(id_cuenta_destino); 
 CREATE INDEX idx_movimientos_fecha ON movimientos(fecha_movimiento);
 CREATE INDEX idx_prestamos_cliente ON prestamos(id_cliente);
 CREATE INDEX idx_prestamos_estado ON prestamos(id_estado_prestamo);
@@ -412,23 +411,23 @@ INSERT INTO estados_prestamo (descripcion) VALUES
 
 INSERT INTO clientes (
     dni, cuil, nombre, apellido, id_genero, id_pais, fecha_nacimiento, direccion,
-    id_localidad, id_provincia, correo_electronico, telefono, id_usuario, fecha_alta, activo
+    id_localidad, id_provincia, correo_electronico, telefono, usuario, fecha_alta, activo
 ) VALUES
-('30123456', '20-30123456-3', 'Juan', 'Pérez', 1, 1, '1985-01-15', 'Calle Falsa 123', 1, 1, 'juan.perez@mail.com', '1112345678', 2, NOW(), TRUE),
-('30987654', '27-30987654-8', 'María', 'Gómez', 2, 2, '1990-05-20', 'Av. Siempre Viva 742', 2, 1, 'maria.gomez@mail.com', '1187654321', 3, NOW(), TRUE),
-('30111222', '20-30111222-4', 'Carlos', 'Ramírez', 3, 3, '1978-09-10', 'Calle Libertad 456', 3, 2, 'carlos.ramirez@mail.com', '1165432198', 4, NOW(), TRUE),
-('30222333', '20-30222333-5', 'Ana', 'Torres', 2, 4, '1982-03-25', 'Av. Belgrano 987', 4, 3, 'ana.torres@mail.com', '1143219876', 5, NOW(), TRUE),
-('30333444', '20-30333444-6', 'Luis', 'Martínez', 1, 5, '1995-07-18', 'Calle Corrientes 789', 5, 4, 'luis.martinez@mail.com', '1198765432', 6, NOW(), TRUE),
-('30444555', '20-30444555-7', 'Laura', 'Fernández', 2, 6, '1988-11-05', 'Av. Rivadavia 234', 6, 5, 'laura.fernandez@mail.com', '1176543219', 7, NOW(), TRUE),
-('30555666', '20-30555666-8', 'Diego', 'Sánchez', 1, 7, '1976-06-30', 'Calle San Martín 321', 7, 6, 'diego.sanchez@mail.com', '1154321987', 8, NOW(), TRUE),
-('30666777', '20-30666777-9', 'Sofía', 'González', 2, 8, '1983-12-12', 'Av. 9 de Julio 654', 8, 7, 'sofia.gonzalez@mail.com', '1132198765', 9, NOW(), TRUE),
-('30777888', '20-30777888-0', 'Martín', 'López', 1, 9, '1992-08-08', 'Calle Moreno 1234', 9, 8, 'martin.lopez@mail.com', '1121987654', 10, NOW(), TRUE),
-('30888999', '20-30888999-1', 'Julieta', 'Ramón', 2, 10, '1987-04-21', 'Av. Santa Fe 432', 10, 9, 'julieta.ramon@mail.com', '1119876543', 11, NOW(), TRUE),
-('30999000', '20-30999000-2', 'Federico', 'Castro', 1, 11, '1991-10-30', 'Calle Defensa 98', 11, 10, 'federico.castro@mail.com', '1198765123', 12, NOW(), TRUE),
-('31000111', '20-31000111-3', 'Camila', 'Vega', 2, 12, '1986-02-15', 'Av. Belgrano 77', 12, 11, 'camila.vega@mail.com', '1187654322', 13, NOW(), TRUE),
-('31111222', '20-31111222-4', 'Pablo', 'Ríos', 1, 13, '1979-07-07', 'Calle Florida 45', 13, 12, 'pablo.rios@mail.com', '1176543200', 14, NOW(), TRUE),
-('31222333', '20-31222333-5', 'Valentina', 'Morales', 2, 14, '1984-09-29', 'Av. Corrientes 890', 14, 13, 'valentina.morales@mail.com', '1165432100', 15, NOW(), TRUE),
-('31333444', '20-31333444-6', 'Matías', 'Salinas', 3, 15, '1993-12-01', 'Calle San Telmo 12', 15, 14, 'matias.salinas@mail.com', '1154321000', 1, NOW(), TRUE);
+('30123456', '20-30123456-3', 'Juan', 'Pérez', 1, 1, '1985-01-15', 'Calle Falsa 123', 1, 1, 'juan.perez@mail.com', '1112345678', 'juanperez', NOW(), TRUE),
+('30987654', '27-30987654-8', 'María', 'Gómez', 2, 2, '1990-05-20', 'Av. Siempre Viva 742', 2, 1, 'maria.gomez@mail.com', '1187654321', 'mariagomez', NOW(), TRUE),
+('30111222', '20-30111222-4', 'Carlos', 'Ramírez', 3, 3, '1978-09-10', 'Calle Libertad 456', 3, 2, 'carlos.ramirez@mail.com', '1165432198', 'carlosramirez', NOW(), TRUE),
+('30222333', '20-30222333-5', 'Ana', 'Torres', 2, 4, '1982-03-25', 'Av. Belgrano 987', 4, 3, 'ana.torres@mail.com', '1143219876', 'anatorres', NOW(), TRUE),
+('30333444', '20-30333444-6', 'Luis', 'Martínez', 1, 5, '1995-07-18', 'Calle Corrientes 789', 5, 4, 'luis.martinez@mail.com', '1198765432', 'luismartinez', NOW(), TRUE),
+('30444555', '20-30444555-7', 'Laura', 'Fernández', 2, 6, '1988-11-05', 'Av. Rivadavia 234', 6, 5, 'laura.fernandez@mail.com', '1176543219', 'laurafernandez', NOW(), TRUE),
+('30555666', '20-30555666-8', 'Diego', 'Sánchez', 1, 7, '1976-06-30', 'Calle San Martín 321', 7, 6, 'diego.sanchez@mail.com', '1154321987', 'diegosanchez', NOW(), TRUE),
+('30666777', '20-30666777-9', 'Sofía', 'González', 2, 8, '1983-12-12', 'Av. 9 de Julio 654', 8, 7, 'sofia.gonzalez@mail.com', '1132198765', 'sofiagonzalez', NOW(), TRUE),
+('30777888', '20-30777888-0', 'Martín', 'López', 1, 9, '1992-08-08', 'Calle Moreno 1234', 9, 8, 'martin.lopez@mail.com', '1121987654', 'martinlopez', NOW(), TRUE),
+('30888999', '20-30888999-1', 'Julieta', 'Ramón', 2, 10, '1987-04-21', 'Av. Santa Fe 432', 10, 9, 'julieta.ramon@mail.com', '1119876543', 'julietaramon', NOW(), TRUE),
+('30999000', '20-30999000-2', 'Federico', 'Castro', 1, 11, '1991-10-30', 'Calle Defensa 98', 11, 10, 'federico.castro@mail.com', '1198765123', 'federicocastro', NOW(), TRUE),
+('31000111', '20-31000111-3', 'Camila', 'Vega', 2, 12, '1986-02-15', 'Av. Belgrano 77', 12, 11, 'camila.vega@mail.com', '1187654322', 'camilavega', NOW(), TRUE),
+('31111222', '20-31111222-4', 'Pablo', 'Ríos', 1, 13, '1979-07-07', 'Calle Florida 45', 13, 12, 'pablo.rios@mail.com', '1176543200', 'pablorios', NOW(), TRUE),
+('31222333', '20-31222333-5', 'Valentina', 'Morales', 2, 14, '1984-09-29', 'Av. Corrientes 890', 14, 13, 'valentina.morales@mail.com', '1165432100', 'valentinamorales', NOW(), TRUE),
+('31333444', '20-31333444-6', 'Matías', 'Salinas', 3, 15, '1993-12-01', 'Calle San Telmo 12', 15, 14, 'matias.salinas@mail.com', '1154321000', 'matiassalinas', NOW(), TRUE);
 
 
 INSERT INTO cuentas (numero_cuenta, cbu, id_cliente, id_tipo_cuenta, saldo, fecha_creacion, activo) VALUES
