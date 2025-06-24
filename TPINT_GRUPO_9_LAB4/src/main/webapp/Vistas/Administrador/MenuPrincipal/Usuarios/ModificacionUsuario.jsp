@@ -48,38 +48,42 @@
             </button>
         </form>
 
-        <c:choose>
-            <c:when test="${not empty usuario}">
-                <div class="alert alert-warning mt-4" role="alert">
-                    <h5>Usuario encontrado</h5>
-                    <p>
-                        <strong>DNI:</strong> ${usuario.dni}<br/>
-                        <strong>Usuario:</strong> ${usuario.nombreUsuario}<br/>
-                        <strong>Rol:</strong> ${usuario.rol}<br/>
-                        <strong>Correo:</strong> 
-                        <c:choose>
-                            <c:when test="${not empty usuario.correoElectronico}">${usuario.correoElectronico}</c:when>
-                            <c:otherwise>No registrado</c:otherwise>
-                        </c:choose>
-                    </p>
+		<c:choose>
+		    <c:when test="${not empty usuario}">
+		        <div class="alert alert-warning mt-4" role="alert">
+		            <h5>Usuario encontrado</h5>
+		            <p>
+		                <strong>DNI:</strong> ${usuario.dni}<br/>
+		                <strong>Usuario:</strong> ${usuario.nombreUsuario}<br/>
+		                <strong>Rol:</strong> ${usuario.rol}<br/>
+		                <strong>Correo:</strong> 
+		                <c:choose>
+		                    <c:when test="${not empty usuario.correoElectronico}">${usuario.correoElectronico}</c:when>
+		                    <c:otherwise>No registrado</c:otherwise>
+		                </c:choose>
+		            </p>
+		            
+		            <p><strong>Contraseña que se asignará:</strong> 123456</p>
+		
+		            <form method="post" action="${pageContext.request.contextPath}/usuario/blanquear" 
+		                  onsubmit="return confirm('¿Estás seguro que querés blanquear la contraseña de este usuario?');">
+		                <input type="hidden" name="accion" value="blanquear" />
+		                <input type="hidden" name="dni" value="${usuario.dni}" />
+		                <input type="hidden" name="contrasena" value="123456" />
+		                <button type="submit" class="btn btn-warning">
+		                    <i class="bi bi-key-fill me-2"></i>Confirmar Blanqueo de Contraseña
+		                </button>
+		            </form>
+		        </div>
+		    </c:when>
+		
+		    <c:when test="${empty usuario and not empty param.dni and empty mensajeExito}">
+		        <div class="alert alert-danger mt-4" role="alert">
+		            No se encontró ningún usuario con DNI ${param.dni}.
+		        </div>
+		    </c:when>
+		</c:choose>
 
-                    <!-- Form para blanquear la contraseña -->
-                    <form method="post" action="${pageContext.request.contextPath}/usuario/blanquear" onsubmit="return confirm('¿Estás seguro que querés blanquear la contraseña de este usuario?');">
-                        <input type="hidden" name="accion" value="blanquear" />
-                        <input type="hidden" name="dni" value="${usuario.dni}" />
-                        <button type="submit" class="btn btn-warning">
-                            <i class="bi bi-key-fill me-2"></i>Confirmar Blanqueo de Contraseña
-                        </button>
-                    </form>
-                </div>
-            </c:when>
-
-            <c:when test="${empty usuario and not empty param.dni and empty mensajeExito}">
-                <div class="alert alert-danger mt-4" role="alert">
-                    No se encontró ningún usuario con DNI ${param.dni}.
-                </div>
-            </c:when>
-        </c:choose>
 
         <div class="mb-3 row mt-3">
             <div class="col-sm-12 text-center">
