@@ -19,11 +19,19 @@
         <h2 class="mb-4 text-center">Listado de Cuentas Bancarias</h2>
 
         <!-- Formulario de búsqueda por DNI -->
-        <form method="get" action="${pageContext.request.contextPath}/CuentaListarServlet" class="row g-3 mb-4">
-            <div class="input-group w-50 mx-auto">
-                <input type="text" name="dni" class="form-control" placeholder="Buscar por DNI" value="<%= request.getParameter("dni") != null ? request.getParameter("dni") : "" %>" />
+        <form method="get" action="${pageContext.request.contextPath}/Cuentas/listar" class="row g-3 mb-4">
+            <div class="col-md-4">
+                <input type="text" id="dniInput" name="dni" class="form-control" placeholder="Buscar por DNI"
+                       value="${dni != null ? dni : ''}" />
+            </div>
+            <div class="col-md-2">
                 <button type="submit" class="btn btn-primary">
                     <i class="bi bi-search"></i> Buscar
+                </button>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-secondary" name="mostrarTodos" value="true">
+                    <i class="bi bi-arrow-clockwise"></i> Mostrar Todos
                 </button>
             </div>
         </form>
@@ -70,18 +78,24 @@
 			        </table>
 				</div>
 			</c:when>
+			<c:otherwise>
+			    <div class="alert alert-warning mt-4" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    No se encontró ningún DNI que coincida con '${dni}'.
+                </div>
+			</c:otherwise>
 		</c:choose>
 		<div class="mb-3 row">
 			<div class="d-flex justify-content-between mb-3">
 				<div>
 					<c:if test="${paginaActual > 1}">
-						<a class="btn btn-secondary" href="CuentaListarServlet?pagina=${paginaActual - 1}"><i class="bi bi-arrow-left"></i> Anterior</a>
+						<a class="btn btn-secondary" href="?pagina=${paginaActual - 1}&dni=${dni}"><i class="bi bi-arrow-left"></i> Anterior</a>
 					</c:if>
 				</div>
 				
 				<div>
 					<c:if test="${paginaActual < totalPaginas}">
-						<a class="btn btn-secondary" href="CuentaListarServlet?pagina=${paginaActual + 1}">Siguiente <i class="bi bi-arrow-right"></i></a>
+						<a class="btn btn-secondary" href="?pagina=${paginaActual + 1}&dni=${dni}">Siguiente <i class="bi bi-arrow-right"></i></a>
 					</c:if>
 				</div>
 				

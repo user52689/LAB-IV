@@ -35,11 +35,6 @@
                     <i class="bi bi-arrow-clockwise"></i> Mostrar Todos
                 </button>
             </div>
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-outline-danger" name="limpiar" value="true">
-                    <i class="bi bi-eraser-fill"></i> Limpiar
-                </button>
-            </div>
         </form>
 
         <!-- Mostrar tabla o mensaje -->
@@ -70,7 +65,7 @@
                                     <td>${cliente.telefono}</td>
                                     <td>${cliente.usuario}</td>
                                     <td>
-                                        <a href="${pageContext.request.contextPath}/Vistas/Administrador/Clientes/ModificacionCliente.jsp?dni=${cliente.dni}" 
+                                        <a href="${pageContext.request.contextPath}/cliente/modificar?dni=${cliente.dni}" 
                                            class="btn btn-sm btn-warning" title="Modificar">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
@@ -88,12 +83,26 @@
             <c:when test="${empty listaClientes and dni != null and dni != ''}">
                 <div class="alert alert-warning mt-4" role="alert">
                     <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                    No se encontró ningún cliente con DNI '${dni}'.
+                    No se encontró ningún DNI que coincida con '${dni}'.
                 </div>
             </c:when>
         </c:choose>
 
         <div class="mb-3 row">
+	        <div class="d-flex justify-content-between mb-3">
+					<div>
+						<c:if test="${paginaActual > 1}">
+							<a class="btn btn-secondary" href="?pagina=${paginaActual - 1}&dni=${dni}"><i class="bi bi-arrow-left"></i> Anterior</a>
+						</c:if>
+					</div>
+					
+					<div>
+						<c:if test="${paginaActual < totalPaginas}">
+							<a class="btn btn-secondary" href="?pagina=${paginaActual + 1}&dni=${dni}">Siguiente <i class="bi bi-arrow-right"></i></a>
+						</c:if>
+					</div>
+				
+			</div>
             <div class="col-sm-12 text-center">
                 <a href="${pageContext.request.contextPath}/Vistas/Administrador/MenuPrincipal/Clientes/ABMLClientes.jsp" class="btn btn-secondary">
                     <i class="bi bi-box-arrow-left"></i> Volver

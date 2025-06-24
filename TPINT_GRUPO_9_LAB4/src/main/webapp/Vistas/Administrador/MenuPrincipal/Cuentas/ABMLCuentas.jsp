@@ -35,7 +35,7 @@
                 </a>
             </div>
             <div class="col-md-3">
-                <a href="${pageContext.request.contextPath}/CuentaListarServlet" class="btn btn-primary w-100">
+                <a href="${pageContext.request.contextPath}/Cuentas/listar" class="btn btn-primary w-100">
                     <i class="bi bi-list-ul me-1"></i> Listado de Cuentas
                 </a>
             </div>

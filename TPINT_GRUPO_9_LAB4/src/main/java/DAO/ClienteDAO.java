@@ -129,5 +129,62 @@ public class ClienteDAO {
     	c.setActivo(rs.getBoolean("activo"));
     	return c;
     }
+    
+    // Paginacion
+    
+    public List<Cliente> listarRegistros(String dni, int offset, int limite) throws SQLException {
+    	List<Cliente> lista = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM clientes WHERE activo = true ");
+        
+        if(dni != null && !dni.isEmpty()) {
+        	sql.append(" AND dni LIKE ? ");
+        }
+        
+        sql.append("LIMIT ? OFFSET ?");
+        
+        try (PreparedStatement ps = conexion.prepareStatement(sql.toString())) {
+        	int index = 1;
+        	
+        	if(dni != null && !dni.isEmpty()) {
+        		ps.setString(index, "%" + dni + "%");
+        		index++;
+        	}
+        	
+            ps.setInt(index, limite);
+            index++;
+            ps.setInt(index, offset);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                	Cliente cliente = this.mapearCliente(rs);
+                    lista.add(cliente);
+                }
+            }
+        }
+        return lista;
+    }
+    
+    public int contarRegistrosActivos(String dni) throws SQLException {
+    	StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM clientes WHERE activo = true");
+
+        if (dni != null && !dni.isEmpty()) {
+            sql.append(" AND dni LIKE ?");
+        }
+
+        try (PreparedStatement ps = conexion.prepareStatement(sql.toString())) {
+            int index = 1;
+
+            if (dni != null && !dni.isEmpty()) {
+                ps.setString(index, "%" + dni + "%");
+            }
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
 
 }
