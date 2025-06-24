@@ -15,8 +15,9 @@ public class ClienteDAO {
     }
 
     public boolean agregarCliente(Cliente c) throws SQLException {
-        String sql = "INSERT INTO clientes (dni, cuil, nombre, apellido, genero, pais, fechaNacimiento, direccion, localidad, provincia, correoElectronico, telefono, usuario, fechaAlta, activo) "
-                   + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO clientes (dni, cuil, nombre, apellido, id_genero, id_pais, fecha_nacimiento, direccion, id_localidad, id_provincia, correo_electronico, telefono, usuario, fecha_alta, activo)"
+        		   + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
         try (PreparedStatement ps = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, c.getDni());
             ps.setString(2, c.getCuil());
