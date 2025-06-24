@@ -43,7 +43,8 @@ CREATE TABLE usuarios (
 );
 
 INSERT INTO usuarios (nombre_usuario, contrasena, rol) 
-VALUES ('Abraham', '0d2404e1b787edbeef129585e848c36769214ed96d0a912dc266db5420cd553a', 'admin'); 
+VALUES ('Abraham', '$2a$12$fGmYdHKYXAoPvVTy5NOhHuKPZbm4MAyRqfnlDhEHwb3UwhWJTtwdK', 'admin'),
+       ('Oscar', '$2a$12$fGmYdHKYXAoPvVTy5NOhHuKPZbm4MAyRqfnlDhEHwb3UwhWJTtwdK', 'admin'); 
 
 -- TABLA PROVINCIAS 
 CREATE TABLE provincias (

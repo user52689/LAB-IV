@@ -15,7 +15,7 @@ public class UsuarioDAO {
     }
 
     public boolean agregarUsuario(Usuario u) throws SQLException {
-        String sql = "INSERT INTO usuarios (dni, nombre_usuario, contrasena, rol, correo_electronico, activo) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO usuarios (dni, nombre_usuario, contrasena, rol, correo_electronico, activo) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, u.getDni());
             ps.setString(2, u.getNombreUsuario());
@@ -27,6 +27,7 @@ public class UsuarioDAO {
             return filas > 0;
         }
     }
+
 
     public List<Usuario> listarUsuarios() throws SQLException {
         List<Usuario> lista = new ArrayList<>();
@@ -118,4 +119,14 @@ public class UsuarioDAO {
         }
         return null;
     }
+    
+    public boolean existeNombreUsuario(String nombreUsuario) throws SQLException {
+        String sql = "SELECT 1 FROM usuarios WHERE nombre_usuario = ?";
+        try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
+            stmt.setString(1, nombreUsuario);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next(); 
+        }
+    }
+
 }

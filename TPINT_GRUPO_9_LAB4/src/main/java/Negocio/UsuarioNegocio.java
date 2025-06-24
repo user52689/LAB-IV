@@ -2,6 +2,7 @@ package Negocio;
 
 import DAO.UsuarioDAO;
 import Modelo.Usuario;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -14,15 +15,33 @@ public class UsuarioNegocio {
         this.usuarioDAO = new UsuarioDAO();
     }
 
-//    public boolean agregarUsuario(Usuario u) throws SQLException {
-//        if (u.getDni() == null || u.getDni().isEmpty()) {
-//            throw new IllegalArgumentException("DNI no puede estar vacío");
-//        }
-//        u.setActivo(true);
-//        u.setFecha_creacion(java.time.LocalDateTime.now());
-//
-//        return usuarioDAO.agregarUsuario(u);
-//    }
+    // Registrar usuario con validaciones de seguridad
+    public boolean registrarUsuario(Usuario nuevo) throws Exception {
+        if (nuevo.getDni() == null || nuevo.getDni().isEmpty()) {
+            throw new Exception("El DNI no puede estar vacío.");
+        }
+
+        if (nuevo.getNombreUsuario() == null || nuevo.getNombreUsuario().isEmpty()) {
+            throw new Exception("El nombre de usuario no puede estar vacío.");
+        }
+
+        if (usuarioDAO.existeNombreUsuario(nuevo.getNombreUsuario())) {
+            throw new Exception("Ya existe un usuario con ese nombre.");
+        }
+
+        Usuario existente = usuarioDAO.obtenerUsuarioPorDni(nuevo.getDni());
+        if (existente != null) {
+            throw new Exception("Ya existe un usuario registrado con ese DNI.");
+        }
+
+        // Hash de contraseña
+        String hash = BCrypt.hashpw(nuevo.getContrasena(), BCrypt.gensalt());
+        nuevo.setContrasena(hash);
+        nuevo.setActivo(true);  // Por si viene null
+        // opcional: nuevo.setFechaCreacion(LocalDateTime.now()); si lo querés desde app
+
+        return usuarioDAO.agregarUsuario(nuevo);
+    }
 
     public List<Usuario> listarUsuarios() throws SQLException {
         return usuarioDAO.listarUsuarios();
@@ -40,7 +59,8 @@ public class UsuarioNegocio {
         return usuarioDAO.borrarUsuarioPorDni(dni);
     }
 
-    public void resetearContrasena(int idUsuario, String nuevaContrasenaHash) throws SQLException {
-        usuarioDAO.resetearContrasena(idUsuario, nuevaContrasenaHash);
+    public void resetearContrasena(int idUsuario, String nuevaContrasenaPlano) throws SQLException {
+        String hash = BCrypt.hashpw(nuevaContrasenaPlano, BCrypt.gensalt());
+        usuarioDAO.resetearContrasena(idUsuario, hash);
     }
 }
