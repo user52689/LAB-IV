@@ -22,7 +22,7 @@
             <i class="bi bi-pencil-square me-2"></i>Blanqueo de Contraseña de Usuario
         </h2>
 
-        <p>Desde acá podés blanquear la contraseña de un usuario administrador o cliente. Una vez hecho esto, el usuario deberá asignar una nueva contraseña al iniciar sesión.</p>
+        <p>Desde acá podés blanquear la contraseña de un usuario administrador. Una vez hecho esto, el usuario deberá actualizar su contraseña.</p>
 
         <!-- Mensajes de éxito o error -->
         <c:if test="${not empty mensajeExito}">
@@ -37,10 +37,10 @@
         </c:if>
 
         <!-- Formulario para buscar usuario por DNI -->
-        <form action="${pageContext.request.contextPath}/usuario/blanquear" method="get" class="mt-4">
+        <form action="${pageContext.request.contextPath}/usuario/modificar" method="get" class="mt-4">
             <div class="mb-3">
                 <label for="dni" class="form-label">DNI del Usuario</label>
-                <input type="text" class="form-control" id="dni" name="dni" value="${param.dni}" required placeholder="Ej: 30123456" pattern="\d{7,8}" />
+                <input type="text" class="form-control" id="dni" name="dni" value="${param.dni}" required placeholder="Ej: 30123456" pattern="[0-9]{7,8}" />
             </div>
 
             <button type="submit" class="btn btn-warning text-white">
@@ -65,7 +65,7 @@
 		            
 		            <p><strong>Contraseña que se asignará:</strong> 123456</p>
 		
-		            <form method="post" action="${pageContext.request.contextPath}/usuario/blanquear" 
+		            <form method="post" action="${pageContext.request.contextPath}/usuario/modificar" 
 		                  onsubmit="return confirm('¿Estás seguro que querés blanquear la contraseña de este usuario?');">
 		                <input type="hidden" name="accion" value="blanquear" />
 		                <input type="hidden" name="dni" value="${usuario.dni}" />
@@ -87,7 +87,7 @@
 
         <div class="mb-3 row mt-3">
             <div class="col-sm-12 text-center">
-                <a href="ABMLUsuarios.jsp" class="btn btn-secondary">
+                <a href="${pageContext.request.contextPath}/Vistas/Administrador/MenuPrincipal/Usuarios/ABMLUsuarios.jsp" class="btn btn-secondary">
                     <i class="bi bi-box-arrow-left"></i> Volver
                 </a>
             </div>

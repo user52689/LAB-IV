@@ -4,11 +4,11 @@ Login:
 Usuario:
     Ok-Alta
     Ok-Baja
-      -Modificacion
+    OK-Modificacion/Blanqueo contraseña
     Ok-Listasdo
 
 Cliente:
     Ok-Alta
     Ok-Baja
-      -Modificacion
+      -Modificacion/Blanqueo contraseña
     Ok-Listasdo

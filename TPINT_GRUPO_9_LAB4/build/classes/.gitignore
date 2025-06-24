@@ -1,3 +1,5 @@
-/Servlet/
-/Negocio/
 /DAO/
+/Modelo/
+/Negocio/
+/Seguridad/
+/Servlet/

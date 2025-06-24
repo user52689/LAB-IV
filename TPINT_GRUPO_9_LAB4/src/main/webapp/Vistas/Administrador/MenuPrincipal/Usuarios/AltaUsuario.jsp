@@ -119,12 +119,10 @@
             <div class="col-md-4">
                 <label for="rol" class="form-label">Rol</label>
                 <select class="form-select" id="rol" name="rol" required>
-                    <option value="" selected disabled>Seleccione un rol</option>
                     <option value="admin">Administrador</option>
-                    <option value="cliente">Cliente</option>
                 </select>
                 <div class="invalid-feedback">Elegí un rol válido.</div>
-            </div>
+            </div>            
 
             <div class="col-12">
                 <button class="btn btn-primary" type="submit">Guardar Usuario</button>

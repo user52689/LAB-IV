@@ -2,8 +2,6 @@ package Servlet;
 
 import Modelo.Usuario;
 import Negocio.UsuarioNegocio;
-import DAO.UsuarioDAO;
-
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -14,7 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/usuario/blanquear")
+@WebServlet("/usuario/modificar")
 public class UsuarioModificarServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private UsuarioNegocio usuarioNegocio;
@@ -53,13 +51,13 @@ public class UsuarioModificarServlet extends HttpServlet {
             try {
                 Usuario usuario = usuarioNegocio.buscarUsuarioPorDniExacto(dni);
                 if (usuario != null) {
-                    boolean actualizado = usuarioNegocio.resetearContrasena(dni, "123456");
+                    boolean actualizado = usuarioNegocio.resetearContrasena(dni, contrasena);
                     if (actualizado) {
                         request.setAttribute("mensajeExito", "Contraseña blanqueada con éxito para el usuario DNI: " + dni);
                     } else {
                         request.setAttribute("mensajeError", "No se pudo actualizar la contraseña.");
                     }
-                    usuario.setContrasena(contrasena); 
+                    //usuario.setContrasena(contrasena); 
                     request.setAttribute("usuario", usuario);
                 } else {
                     request.setAttribute("mensajeError", "No se encontró el usuario con DNI: " + dni);

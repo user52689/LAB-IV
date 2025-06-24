@@ -6,6 +6,8 @@ import Modelo.Cliente;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 public class ClienteNegocio {
 
     private ClienteDAO clienteDAO;
@@ -40,10 +42,10 @@ public class ClienteNegocio {
         return clienteDAO.borrarClientePorDni(dni);
     }
 
-	public void resetearContrasena(int idCliente, String string) {
-		// TODO Auto-generated method stub
-		
-	}
+    public boolean resetearContrasena(String dni, String nuevaContrasenaPlano) throws SQLException {
+        String hash = BCrypt.hashpw(nuevaContrasenaPlano, BCrypt.gensalt());
+        return clienteDAO.resetearContrasena(dni, hash);
+    }
 	
 	// Paginacion
 	
