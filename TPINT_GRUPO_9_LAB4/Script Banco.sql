@@ -2,18 +2,12 @@
 CREATE DATABASE IF NOT EXISTS banco;
 USE banco;
 
-
 -- TABLA GENEROS
 CREATE TABLE generos (
     id_genero INT PRIMARY KEY AUTO_INCREMENT,
     descripcion VARCHAR(50) NOT NULL UNIQUE,
     activo BOOLEAN DEFAULT TRUE
 );
-
-INSERT INTO generos (descripcion) VALUES 
-('Masculino'),
-('Femenino'),
-('Reservado');
 
 -- TABLA PAISES
 CREATE TABLE paises (
@@ -22,42 +16,12 @@ CREATE TABLE paises (
     activo BOOLEAN DEFAULT TRUE
 );
 
-INSERT INTO paises (nombre) VALUES 
-('Argentina'),
-('Brasil'),
-('Uruguay');
-
--- TABLA USUARIOS
-CREATE TABLE usuarios (
-    id_usuario INT PRIMARY KEY AUTO_INCREMENT,
-    dni VARCHAR(20) NULL UNIQUE,
-    nombre_usuario VARCHAR(50) NOT NULL UNIQUE,
-    contrasena VARCHAR(255) NOT NULL, -- Usar hash
-    rol VARCHAR(15) NOT NULL, -- Reemplaza tipos_usuario
-	correo_electronico VARCHAR(100) NULL UNIQUE,
-    fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
-    ultimo_acceso DATETIME,
-    activo BOOLEAN DEFAULT TRUE,
-    
-    CONSTRAINT chk_rol CHECK (rol IN ('admin', 'cliente')) -- Valida roles permitidos
-);
-
-INSERT INTO usuarios (nombre_usuario, contrasena, rol) 
-VALUES ('Abraham', '$2a$12$fGmYdHKYXAoPvVTy5NOhHuKPZbm4MAyRqfnlDhEHwb3UwhWJTtwdK', 'admin'),
-       ('Oscar', '$2a$12$fGmYdHKYXAoPvVTy5NOhHuKPZbm4MAyRqfnlDhEHwb3UwhWJTtwdK', 'admin'); 
-
 -- TABLA PROVINCIAS 
 CREATE TABLE provincias (
     id_provincia INT PRIMARY KEY AUTO_INCREMENT,
     nombre_provincia VARCHAR(100) NOT NULL,
     activo BOOLEAN DEFAULT TRUE
 );
-
-INSERT INTO provincias (nombre_provincia) VALUES 
-('Buenos Aires'),
-('Córdoba'),
-('Santa Fe'),
-('Mendoza');
 
 -- TABLA LOCALIDADES 
 CREATE TABLE localidades (
@@ -69,11 +33,31 @@ CREATE TABLE localidades (
     FOREIGN KEY (id_provincia) REFERENCES provincias(id_provincia)
 );
 
-INSERT INTO localidades (nombre_localidad, id_provincia) VALUES 
-('CABA', 1),
-('La Plata', 1),
-('Córdoba Capital', 2),
-('Rosario', 3);
+-- TABLA USUARIOS EXTENDIDA
+CREATE TABLE usuarios (
+    id_usuario INT PRIMARY KEY AUTO_INCREMENT,
+    dni VARCHAR(20) NULL UNIQUE,
+    nombre_usuario VARCHAR(50) NOT NULL UNIQUE,
+    contrasena VARCHAR(255) NOT NULL, -- Hash (ej. BCrypt)
+    rol VARCHAR(15) NOT NULL, -- 'admin' o 'cliente'
+    correo_electronico VARCHAR(100) NULL UNIQUE,
+    id_genero INT NOT NULL,
+    id_pais INT NOT NULL,
+    fecha_nacimiento DATE,
+    direccion VARCHAR(200),
+    id_localidad INT,
+    id_provincia INT,
+    fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    ultimo_acceso DATETIME,
+    activo BOOLEAN DEFAULT TRUE,
+
+    FOREIGN KEY (id_genero) REFERENCES generos(id_genero),
+    FOREIGN KEY (id_pais) REFERENCES paises(id_pais),
+    FOREIGN KEY (id_localidad) REFERENCES localidades(id_localidad),
+    FOREIGN KEY (id_provincia) REFERENCES provincias(id_provincia),
+
+    CONSTRAINT chk_rol CHECK (rol IN ('admin', 'cliente'))
+);
 
 -- TABLA CLIENTES
 CREATE TABLE clientes (
@@ -108,10 +92,6 @@ CREATE TABLE tipos_cuenta (
     activo BOOLEAN DEFAULT TRUE
 );
 
-INSERT INTO tipos_cuenta (descripcion) VALUES 
-('Caja de Ahorro'),
-('Cuenta Corriente');
-
 -- TABLA CUENTAS
 CREATE TABLE cuentas (
     id_cuenta INT PRIMARY KEY AUTO_INCREMENT,
@@ -133,12 +113,6 @@ CREATE TABLE tipos_movimiento (
     descripcion VARCHAR(50) NOT NULL,
     activo BOOLEAN DEFAULT TRUE
 );
-
-INSERT INTO tipos_movimiento (descripcion) VALUES 
-('Alta de Cuenta'),
-('Alta de Préstamo'),
-('Pago de Préstamo'),
-('Transferencia');
 
 -- TABLA MOVIMIENTOS
 CREATE TABLE movimientos (
@@ -165,11 +139,6 @@ CREATE TABLE estados_prestamo (
     descripcion VARCHAR(50) NOT NULL,
     activo BOOLEAN DEFAULT TRUE
 );
-
-INSERT INTO estados_prestamo (descripcion) VALUES 
-('Pendiente'),
-('Aprobado'),
-('Rechazado');
 
 -- TABLA PRÉSTAMOS
 CREATE TABLE prestamos (
@@ -318,9 +287,11 @@ DELIMITER ;
 USE banco;
 
 
--- Total: 15 registros en generos
+INSERT INTO generos (descripcion) VALUES 
+('Masculino'),
+('Femenino'),
+('Reservado');
 
--- Poblar PAISES (ya tenés 3, agrego 12 más)
 INSERT INTO paises (nombre) VALUES
 ('Chile'),
 ('Paraguay'),
@@ -333,31 +304,11 @@ INSERT INTO paises (nombre) VALUES
 ('Estados Unidos'),
 ('Canadá'),
 ('España'),
-('Italia');
+('Italia'),
+('Argentina'),
+('Brasil'),
+('Uruguay');
 
--- Total: 15 registros en paises
-
--- Poblar USUARIOS 
-INSERT INTO usuarios (dni, nombre_usuario, contrasena, rol, correo_electronico) VALUES
-('30123456', 'user1', 'dummyhash', 'cliente', 'user1@ejemplo.com'),
-('30123457', 'user2', 'dummyhash', 'cliente', 'user2@ejemplo.com'),
-('30123458', 'user3', 'dummyhash', 'cliente', 'user3@ejemplo.com'),
-('30123459', 'user4', 'dummyhash', 'cliente', 'user4@ejemplo.com'),
-('30123460', 'user5', 'dummyhash', 'cliente', 'user5@ejemplo.com'),
-('30123461', 'user6', 'dummyhash', 'cliente', 'user6@ejemplo.com'),
-('30123462', 'user7', 'dummyhash', 'cliente', 'user7@ejemplo.com'),
-('30123463', 'user8', 'dummyhash', 'cliente', 'user8@ejemplo.com'),
-('30123464', 'user9', 'dummyhash', 'cliente', 'user9@ejemplo.com'),
-('30123465', 'user10', 'dummyhash', 'cliente', 'user10@ejemplo.com'),
-('30123466', 'user11', 'dummyhash', 'cliente', 'user11@ejemplo.com'),
-('30123467', 'user12', 'dummyhash', 'cliente', 'user12@ejemplo.com'),
-('30123468', 'user13', 'dummyhash', 'cliente', 'user13@ejemplo.com'),
-('30123469', 'user14', 'dummyhash', 'cliente', 'user14@ejemplo.com');
-
-
--- Total: 15 usuarios (incluyendo Abraham admin)
-
--- Poblar PROVINCIAS (ya tenés 4, agrego 11 más)
 INSERT INTO provincias (nombre_provincia) VALUES
 ('Tucumán'),
 ('Salta'),
@@ -369,11 +320,12 @@ INSERT INTO provincias (nombre_provincia) VALUES
 ('Chubut'),
 ('Río Negro'),
 ('Neuquén'),
-('La Pampa');
+('La Pampa'),
+('Buenos Aires'),
+('Córdoba'),
+('Santa Fe'),
+('Mendoza');
 
--- Total: 15 provincias
-
--- Poblar LOCALIDADES (ya tenés 4, agrego 11 más con provincias válidas)
 INSERT INTO localidades (nombre_localidad, id_provincia) VALUES
 ('San Miguel de Tucumán', 5),
 ('Salta Capital', 6),
@@ -385,11 +337,34 @@ INSERT INTO localidades (nombre_localidad, id_provincia) VALUES
 ('Comodoro Rivadavia', 12),
 ('Viedma', 13),
 ('Neuquén Capital', 14),
+('CABA', 1),
+('La Plata', 1),
+('Córdoba Capital', 2),
+('Rosario', 3),
 ('Santa Rosa', 15);
 
--- Total: 15 localidades
+INSERT INTO usuarios (
+    dni, nombre_usuario, contrasena, rol, correo_electronico,
+    id_genero, id_pais, fecha_nacimiento, direccion,
+    id_localidad, id_provincia
+) VALUES
+('30111111', 'Abraham', '$2a$12$fGmYdHKYXAoPvVTy5NOhHuKPZbm4MAyRqfnlDhEHwb3UwhWJTtwdK', 'admin', 'abraham@banco.com', 1, 1, '1980-01-01', 'Av. Siempre Viva 742', 1, 1),
+('30111112', 'Oscar',   '$2a$12$fGmYdHKYXAoPvVTy5NOhHuKPZbm4MAyRqfnlDhEHwb3UwhWJTtwdK', 'admin', 'oscar@banco.com',   2, 1, '1985-05-05', 'Calle del Software 404', 1, 1),
+('30123456', 'user1', 'dummyhash', 'cliente', 'user1@ejemplo.com', 1, 1, '1990-01-01', 'Calle Falsa 123', 1, 1),
+('30123457', 'user2', 'dummyhash', 'cliente', 'user2@ejemplo.com', 2, 1, '1991-02-02', 'Calle Falsa 124', 1, 1),
+('30123458', 'user3', 'dummyhash', 'cliente', 'user3@ejemplo.com', 3, 1, '1992-03-03', 'Calle Falsa 125', 1, 1),
+('30123459', 'user4', 'dummyhash', 'cliente', 'user4@ejemplo.com', 1, 1, '1993-04-04', 'Calle Falsa 126', 1, 1),
+('30123460', 'user5', 'dummyhash', 'cliente', 'user5@ejemplo.com', 2, 1, '1994-05-05', 'Calle Falsa 127', 1, 1),
+('30123461', 'user6', 'dummyhash', 'cliente', 'user6@ejemplo.com', 3, 1, '1995-06-06', 'Calle Falsa 128', 1, 1),
+('30123462', 'user7', 'dummyhash', 'cliente', 'user7@ejemplo.com', 1, 1, '1996-07-07', 'Calle Falsa 129', 1, 1),
+('30123463', 'user8', 'dummyhash', 'cliente', 'user8@ejemplo.com', 2, 1, '1997-08-08', 'Calle Falsa 130', 1, 1),
+('30123464', 'user9', 'dummyhash', 'cliente', 'user9@ejemplo.com', 3, 1, '1998-09-09', 'Calle Falsa 131', 1, 1),
+('30123465', 'user10', 'dummyhash', 'cliente', 'user10@ejemplo.com', 1, 1, '1999-10-10', 'Calle Falsa 132', 1, 1),
+('30123466', 'user11', 'dummyhash', 'cliente', 'user11@ejemplo.com', 2, 1, '2000-11-11', 'Calle Falsa 133', 1, 1),
+('30123467', 'user12', 'dummyhash', 'cliente', 'user12@ejemplo.com', 3, 1, '2001-12-12', 'Calle Falsa 134', 1, 1),
+('30123468', 'user13', 'dummyhash', 'cliente', 'user13@ejemplo.com', 1, 1, '1990-01-01', 'Calle Falsa 135', 1, 1),
+('30123469', 'user14', 'dummyhash', 'cliente', 'user14@ejemplo.com', 2, 1, '1991-02-02', 'Calle Falsa 136', 1, 1);
 
--- Poblar TIPOS_CUENTA (ya tenés 2, agrego 13 más para llegar a 15)
 INSERT INTO tipos_cuenta (descripcion) VALUES
 ('Cuenta Sueldo'),
 ('Cuenta VIP'),
@@ -405,9 +380,6 @@ INSERT INTO tipos_cuenta (descripcion) VALUES
 ('Cuenta Para Jubilados'),
 ('Cuenta Solidaria');
 
--- Total: 15 tipos de cuenta
-
--- Poblar TIPOS_MOVIMIENTO (ya tenés 4, agrego 11 más)
 INSERT INTO tipos_movimiento (descripcion) VALUES
 ('Depósito'),
 ('Extracción'),
@@ -423,9 +395,6 @@ INSERT INTO tipos_movimiento (descripcion) VALUES
 ('Anulación'),
 ('Reversión');
 
--- Total: 15 tipos movimiento
-
--- Poblar ESTADOS_PRESTAMO (ya tenés 3, agrego 12 más)
 INSERT INTO estados_prestamo (descripcion) VALUES
 ('En Proceso'),
 ('En Evaluación'),
@@ -440,9 +409,6 @@ INSERT INTO estados_prestamo (descripcion) VALUES
 ('Aceptado'),
 ('Denegado');
 
--- Total: 15 estados préstamo
-
--- Poblar CLIENTES (15 clientes, ids de FK: genero(1 a 15), pais(1 a 15), localidad(1 a 15), provincia(1 a 15), usuario(1 a 15))
 
 INSERT INTO clientes (
     dni, cuil, nombre, apellido, id_genero, id_pais, fecha_nacimiento, direccion,
@@ -464,9 +430,6 @@ INSERT INTO clientes (
 ('31222333', '20-31222333-5', 'Valentina', 'Morales', 2, 14, '1984-09-29', 'Av. Corrientes 890', 14, 13, 'valentina.morales@mail.com', '1165432100', 15, NOW(), TRUE),
 ('31333444', '20-31333444-6', 'Matías', 'Salinas', 3, 15, '1993-12-01', 'Calle San Telmo 12', 15, 14, 'matias.salinas@mail.com', '1154321000', 1, NOW(), TRUE);
 
--- Total: 15 clientes
-
--- Poblar CUENTAS (15 cuentas con FK validas, saldo 10000)
 
 INSERT INTO cuentas (numero_cuenta, cbu, id_cliente, id_tipo_cuenta, saldo, fecha_creacion, activo) VALUES
 ('CTA000001000001', '000000001000000000001', 1, 1, 10000.00, NOW(), TRUE),
@@ -485,9 +448,9 @@ INSERT INTO cuentas (numero_cuenta, cbu, id_cliente, id_tipo_cuenta, saldo, fech
 ('CTA000014000014', '000000014000000000014', 14, 2, 13000.00, NOW(), TRUE),
 ('CTA000015000015', '000000015000000000015', 15, 1, 14000.00, NOW(), TRUE);
 
--- Total: 15 cuentas
-
--- Poblar MOVIMIENTOS (por cada cuenta un movimiento de alta con saldo inicial)
+INSERT INTO tipos_cuenta (descripcion) VALUES 
+('Caja de Ahorro'),
+('Cuenta Corriente');
 
 INSERT INTO movimientos (id_cuenta, id_tipo_movimiento, importe, detalle, saldo_anterior, saldo_posterior, activo) VALUES
 (1, 1, 10000.00, 'Alta de Cuenta', 0.00, 10000.00, TRUE),
@@ -506,9 +469,13 @@ INSERT INTO movimientos (id_cuenta, id_tipo_movimiento, importe, detalle, saldo_
 (14, 1, 13000.00, 'Alta de Cuenta', 0.00, 13000.00, TRUE),
 (15, 1, 14000.00, 'Alta de Cuenta', 0.00, 14000.00, TRUE);
 
--- Total: 15 movimientos
+INSERT INTO tipos_movimiento (descripcion) VALUES 
+('Alta de Cuenta'),
+('Alta de Préstamo'),
+('Pago de Préstamo'),
+('Transferencia');
 
--- Poblar PRESTAMOS (15 préstamos, uno por cliente)
+
 INSERT INTO prestamos (
     id_cliente, id_cuenta_deposito, importe_solicitado, importe_total, plazo_meses,
     monto_cuota, fecha_solicitud, id_estado_prestamo, activo
@@ -529,9 +496,12 @@ INSERT INTO prestamos (
 (14, 14, 95000.00, 104500.00, 15, 6966.67, NOW(), 2, TRUE),
 (15, 15, 120000.00, 132000.00, 18, 7333.33, NOW(), 3, TRUE);
 
--- Total: 15 prestamos
 
--- Poblar CUOTAS (1 cuota por préstamo, para simplificar)
+INSERT INTO estados_prestamo (descripcion) VALUES 
+('Pendiente'),
+('Aprobado'),
+('Rechazado');
+
 INSERT INTO cuotas (id_prestamo, numero_cuota, monto_cuota, fecha_vencimiento, activo) VALUES
 (1, 1, 9166.67, DATE_ADD(CURDATE(), INTERVAL 1 MONTH), TRUE),
 (2, 1, 9166.67, DATE_ADD(CURDATE(), INTERVAL 1 MONTH), TRUE),

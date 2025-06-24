@@ -15,7 +15,6 @@ public class UsuarioNegocio {
         this.usuarioDAO = new UsuarioDAO();
     }
 
-    // Registrar usuario con validaciones de seguridad
     public boolean registrarUsuario(Usuario nuevo) throws Exception {
         if (nuevo.getDni() == null || nuevo.getDni().isEmpty()) {
             throw new Exception("El DNI no puede estar vacío.");
