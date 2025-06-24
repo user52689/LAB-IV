@@ -1,4 +1,4 @@
-# LAB-IVAdd commentMore actions
+
 Reglas del Proyecto - LAB IV
 
 Este repositorio sigue un flujo de trabajo basado en ramas para mantener la estabilidad del código y permitir un desarrollo estructurado. A continuación, se describen las reglas a seguir.
