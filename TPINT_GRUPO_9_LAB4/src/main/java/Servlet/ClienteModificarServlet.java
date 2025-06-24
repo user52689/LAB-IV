@@ -2,8 +2,6 @@ package Servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDate;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,8 +13,8 @@ import Negocio.ClienteNegocio;
 
 @WebServlet("/cliente/modificar")
 public class ClienteModificarServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	private ClienteNegocio clienteNegocio;
+    private static final long serialVersionUID = 1L;
+    private ClienteNegocio clienteNegocio;
 
     @Override
     public void init() throws ServletException {
@@ -31,64 +29,45 @@ public class ClienteModificarServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String dni = req.getParameter("dni");
         if (dni != null && !dni.trim().isEmpty()) {
-            Cliente cliente = null;
-			try {
-				cliente = clienteNegocio.buscarClientePorDniExacto(dni);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-            req.setAttribute("cliente", cliente);
+            try {
+                Cliente cliente = clienteNegocio.buscarClientePorDniExacto(dni);
+                req.setAttribute("cliente", cliente);
+            } catch (SQLException e) {
+                req.setAttribute("mensajeError", "Error al buscar cliente: " + e.getMessage());
+            }
         }
         req.getRequestDispatcher("/Vistas/Administrador/MenuPrincipal/Clientes/ModificacionCliente.jsp").forward(req, resp);
     }
 
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            String tipoModificacion = req.getParameter("tipoModificacion");
-
-            if ("reseteoAdmin".equals(tipoModificacion)) {
-                // Modificación solo de la contraseña, la seteás fija "1234"
-                int idCliente = Integer.parseInt(req.getParameter("idCliente"));
-                clienteNegocio.resetearContrasena(idCliente, "1234");
-                resp.sendRedirect(req.getContextPath() + "/cliente/listar");
-            
-            } else if ("cambioUsuario".equals(tipoModificacion)) {
-                // Cambio voluntario por parte del usuario
-                int idCliente = Integer.parseInt(req.getParameter("idCliente"));
-                String nuevaContrasena = req.getParameter("nuevaContrasena");
-                clienteNegocio.resetearContrasena(idCliente, nuevaContrasena);
-                resp.sendRedirect(req.getContextPath() + "/cliente/perfil"); // o donde corresponda
-
-            } else {
-                // Modificación general del cliente (otros datos)
-                Cliente c = construirClienteDesdeRequest(req);
-                c.setIdCliente(Integer.parseInt(req.getParameter("idCliente")));
-                clienteNegocio.modificarCliente(c);
-                resp.sendRedirect(req.getContextPath() + "/cliente/listar");
+        String accion = req.getParameter("accion");
+        String dni = req.getParameter("dni");
+        String contrasena = req.getParameter("contrasena");
+        
+        if ("blanquear".equals(accion) && dni != null && !dni.trim().isEmpty()) {
+            try {
+                Cliente cliente = clienteNegocio.buscarClientePorDniExacto(dni);
+                if (cliente != null) {
+                    boolean actualizado = clienteNegocio.resetearContrasena(dni, contrasena);
+                    if (actualizado) {
+                        req.setAttribute("mensajeExito", "Contraseña blanqueada con éxito para el cliente DNI: " + dni);
+                    } else {
+                        req.setAttribute("mensajeError", "No se pudo actualizar la contraseña.");
+                    }
+                    req.setAttribute("cliente", cliente);
+                } else {
+                    req.setAttribute("mensajeError", "No se encontró cliente con DNI: " + dni);
+                }
+            } catch (Exception e) {
+                req.setAttribute("mensajeError", "Error al blanquear la contraseña: " + e.getMessage());
             }
-        } catch (Exception e) {
-            throw new ServletException("Error al modificar cliente", e);
+            req.getRequestDispatcher("/Vistas/Administrador/MenuPrincipal/Clientes/ModificacionCliente.jsp").forward(req, resp);
+        
+        } else {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Acción no válida o parámetros incompletos");
         }
     }
-
-
-    private Cliente construirClienteDesdeRequest(HttpServletRequest req) {
-        Cliente c = new Cliente();
-        c.setDni(req.getParameter("dni"));
-        c.setCuil(req.getParameter("cuil"));
-        c.setNombre(req.getParameter("nombre"));
-        c.setApellido(req.getParameter("apellido"));
-        c.setGenero(Integer.parseInt(req.getParameter("genero")));
-        c.setPais(Integer.parseInt(req.getParameter("pais")));
-        c.setFechaNacimiento(LocalDate.parse(req.getParameter("fechaNacimiento")));
-        c.setDireccion(req.getParameter("direccion"));
-        c.setLocalidad(Integer.parseInt(req.getParameter("localidad")));
-        c.setProvincia(Integer.parseInt(req.getParameter("provincia")));
-        c.setCorreoElectronico(req.getParameter("correoElectronico"));
-        c.setTelefono(req.getParameter("telefono"));
-        c.setUsuario(req.getParameter("usuario"));
-        return c;
-    }
 }
+

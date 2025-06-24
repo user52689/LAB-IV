@@ -16,6 +16,7 @@ public class Cliente {
     private int localidad;
     private int provincia;
     private String correoElectronico;
+    private String contrasena;
     private String telefono;
     private String usuario;
     private LocalDateTime fechaAlta;
@@ -117,6 +118,12 @@ public class Cliente {
 	public void setCorreoElectronico(String correoElectronico) {
 		this.correoElectronico = correoElectronico;
 	}
+    public String getContrasena() {
+        return contrasena;
+    }
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
 	public String getTelefono() {
 		return telefono;
 	}

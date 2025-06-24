@@ -187,4 +187,14 @@ public class ClienteDAO {
         return 0;
     }
 
+    public boolean resetearContrasena(String dni, String contrasenaHash) throws SQLException {
+        String sql = "UPDATE clientes SET contrasena = ? WHERE dni = ?";
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, contrasenaHash);
+            ps.setString(2, dni);
+            int filas = ps.executeUpdate();
+            return filas > 0;
+        }
+    }
+
 }

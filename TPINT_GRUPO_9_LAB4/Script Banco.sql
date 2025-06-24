@@ -38,7 +38,7 @@ CREATE TABLE usuarios (
     id_usuario INT PRIMARY KEY AUTO_INCREMENT,
     dni VARCHAR(20) NULL UNIQUE,
     nombre_usuario VARCHAR(50) NOT NULL UNIQUE,
-    contrasena VARCHAR(255) NOT NULL, -- Hash (ej. BCrypt)
+    contrasena VARCHAR(255) NOT NULL,
     rol VARCHAR(15) NOT NULL, -- 'admin' o 'cliente'
     correo_electronico VARCHAR(100) NULL UNIQUE,
     id_genero INT NOT NULL,
@@ -73,6 +73,7 @@ CREATE TABLE clientes (
     id_localidad INT NOT NULL,
     id_provincia INT NOT NULL,
     correo_electronico VARCHAR(150) NOT NULL UNIQUE,
+	contrasena VARCHAR(255) NOT NULL,
     telefono VARCHAR(20) NOT NULL, 
     usuario VARCHAR(50) NOT NULL UNIQUE,
     fecha_alta DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -349,20 +350,20 @@ INSERT INTO usuarios (
 ) VALUES
 ('30111111', 'Abraham', '$2a$12$fGmYdHKYXAoPvVTy5NOhHuKPZbm4MAyRqfnlDhEHwb3UwhWJTtwdK', 'admin', 'abraham@banco.com', 1, 1, '1980-01-01', 'Av. Siempre Viva 742', 1, 1),
 ('30111112', 'Oscar',   '$2a$12$fGmYdHKYXAoPvVTy5NOhHuKPZbm4MAyRqfnlDhEHwb3UwhWJTtwdK', 'admin', 'oscar@banco.com',   2, 1, '1985-05-05', 'Calle del Software 404', 1, 1),
-('30123456', 'user1', 'dummyhash', 'cliente', 'user1@ejemplo.com', 1, 1, '1990-01-01', 'Calle Falsa 123', 1, 1),
-('30123457', 'user2', 'dummyhash', 'cliente', 'user2@ejemplo.com', 2, 1, '1991-02-02', 'Calle Falsa 124', 1, 1),
-('30123458', 'user3', 'dummyhash', 'cliente', 'user3@ejemplo.com', 3, 1, '1992-03-03', 'Calle Falsa 125', 1, 1),
-('30123459', 'user4', 'dummyhash', 'cliente', 'user4@ejemplo.com', 1, 1, '1993-04-04', 'Calle Falsa 126', 1, 1),
-('30123460', 'user5', 'dummyhash', 'cliente', 'user5@ejemplo.com', 2, 1, '1994-05-05', 'Calle Falsa 127', 1, 1),
-('30123461', 'user6', 'dummyhash', 'cliente', 'user6@ejemplo.com', 3, 1, '1995-06-06', 'Calle Falsa 128', 1, 1),
-('30123462', 'user7', 'dummyhash', 'cliente', 'user7@ejemplo.com', 1, 1, '1996-07-07', 'Calle Falsa 129', 1, 1),
-('30123463', 'user8', 'dummyhash', 'cliente', 'user8@ejemplo.com', 2, 1, '1997-08-08', 'Calle Falsa 130', 1, 1),
-('30123464', 'user9', 'dummyhash', 'cliente', 'user9@ejemplo.com', 3, 1, '1998-09-09', 'Calle Falsa 131', 1, 1),
-('30123465', 'user10', 'dummyhash', 'cliente', 'user10@ejemplo.com', 1, 1, '1999-10-10', 'Calle Falsa 132', 1, 1),
-('30123466', 'user11', 'dummyhash', 'cliente', 'user11@ejemplo.com', 2, 1, '2000-11-11', 'Calle Falsa 133', 1, 1),
-('30123467', 'user12', 'dummyhash', 'cliente', 'user12@ejemplo.com', 3, 1, '2001-12-12', 'Calle Falsa 134', 1, 1),
-('30123468', 'user13', 'dummyhash', 'cliente', 'user13@ejemplo.com', 1, 1, '1990-01-01', 'Calle Falsa 135', 1, 1),
-('30123469', 'user14', 'dummyhash', 'cliente', 'user14@ejemplo.com', 2, 1, '1991-02-02', 'Calle Falsa 136', 1, 1);
+('30123456', 'user1', 'dummyhash', 'admin', 'user1@ejemplo.com', 1, 1, '1990-01-01', 'Calle Falsa 123', 1, 1),
+('30123457', 'user2', 'dummyhash', 'admin', 'user2@ejemplo.com', 2, 1, '1991-02-02', 'Calle Falsa 124', 1, 1),
+('30123458', 'user3', 'dummyhash', 'admin', 'user3@ejemplo.com', 3, 1, '1992-03-03', 'Calle Falsa 125', 1, 1),
+('30123459', 'user4', 'dummyhash', 'admin', 'user4@ejemplo.com', 1, 1, '1993-04-04', 'Calle Falsa 126', 1, 1),
+('30123460', 'user5', 'dummyhash', 'admin', 'user5@ejemplo.com', 2, 1, '1994-05-05', 'Calle Falsa 127', 1, 1),
+('30123461', 'user6', 'dummyhash', 'admin', 'user6@ejemplo.com', 3, 1, '1995-06-06', 'Calle Falsa 128', 1, 1),
+('30123462', 'user7', 'dummyhash', 'admin', 'user7@ejemplo.com', 1, 1, '1996-07-07', 'Calle Falsa 129', 1, 1),
+('30123463', 'user8', 'dummyhash', 'admin', 'user8@ejemplo.com', 2, 1, '1997-08-08', 'Calle Falsa 130', 1, 1),
+('30123464', 'user9', 'dummyhash', 'admin', 'user9@ejemplo.com', 3, 1, '1998-09-09', 'Calle Falsa 131', 1, 1),
+('30123465', 'user10', 'dummyhash', 'admin', 'user10@ejemplo.com', 1, 1, '1999-10-10', 'Calle Falsa 132', 1, 1),
+('30123466', 'user11', 'dummyhash', 'admin', 'user11@ejemplo.com', 2, 1, '2000-11-11', 'Calle Falsa 133', 1, 1),
+('30123467', 'user12', 'dummyhash', 'admin', 'user12@ejemplo.com', 3, 1, '2001-12-12', 'Calle Falsa 134', 1, 1),
+('30123468', 'user13', 'dummyhash', 'admin', 'user13@ejemplo.com', 1, 1, '1990-01-01', 'Calle Falsa 135', 1, 1),
+('30123469', 'user14', 'dummyhash', 'admin', 'user14@ejemplo.com', 2, 1, '1991-02-02', 'Calle Falsa 136', 1, 1);
 
 INSERT INTO tipos_cuenta (descripcion) VALUES
 ('Cuenta Sueldo'),
@@ -411,23 +412,23 @@ INSERT INTO estados_prestamo (descripcion) VALUES
 
 INSERT INTO clientes (
     dni, cuil, nombre, apellido, id_genero, id_pais, fecha_nacimiento, direccion,
-    id_localidad, id_provincia, correo_electronico, telefono, usuario, fecha_alta, activo
+    id_localidad, id_provincia, correo_electronico, contrasena, telefono, usuario, fecha_alta, activo
 ) VALUES
-('30123456', '20-30123456-3', 'Juan', 'Pérez', 1, 1, '1985-01-15', 'Calle Falsa 123', 1, 1, 'juan.perez@mail.com', '1112345678', 'juanperez', NOW(), TRUE),
-('30987654', '27-30987654-8', 'María', 'Gómez', 2, 2, '1990-05-20', 'Av. Siempre Viva 742', 2, 1, 'maria.gomez@mail.com', '1187654321', 'mariagomez', NOW(), TRUE),
-('30111222', '20-30111222-4', 'Carlos', 'Ramírez', 3, 3, '1978-09-10', 'Calle Libertad 456', 3, 2, 'carlos.ramirez@mail.com', '1165432198', 'carlosramirez', NOW(), TRUE),
-('30222333', '20-30222333-5', 'Ana', 'Torres', 2, 4, '1982-03-25', 'Av. Belgrano 987', 4, 3, 'ana.torres@mail.com', '1143219876', 'anatorres', NOW(), TRUE),
-('30333444', '20-30333444-6', 'Luis', 'Martínez', 1, 5, '1995-07-18', 'Calle Corrientes 789', 5, 4, 'luis.martinez@mail.com', '1198765432', 'luismartinez', NOW(), TRUE),
-('30444555', '20-30444555-7', 'Laura', 'Fernández', 2, 6, '1988-11-05', 'Av. Rivadavia 234', 6, 5, 'laura.fernandez@mail.com', '1176543219', 'laurafernandez', NOW(), TRUE),
-('30555666', '20-30555666-8', 'Diego', 'Sánchez', 1, 7, '1976-06-30', 'Calle San Martín 321', 7, 6, 'diego.sanchez@mail.com', '1154321987', 'diegosanchez', NOW(), TRUE),
-('30666777', '20-30666777-9', 'Sofía', 'González', 2, 8, '1983-12-12', 'Av. 9 de Julio 654', 8, 7, 'sofia.gonzalez@mail.com', '1132198765', 'sofiagonzalez', NOW(), TRUE),
-('30777888', '20-30777888-0', 'Martín', 'López', 1, 9, '1992-08-08', 'Calle Moreno 1234', 9, 8, 'martin.lopez@mail.com', '1121987654', 'martinlopez', NOW(), TRUE),
-('30888999', '20-30888999-1', 'Julieta', 'Ramón', 2, 10, '1987-04-21', 'Av. Santa Fe 432', 10, 9, 'julieta.ramon@mail.com', '1119876543', 'julietaramon', NOW(), TRUE),
-('30999000', '20-30999000-2', 'Federico', 'Castro', 1, 11, '1991-10-30', 'Calle Defensa 98', 11, 10, 'federico.castro@mail.com', '1198765123', 'federicocastro', NOW(), TRUE),
-('31000111', '20-31000111-3', 'Camila', 'Vega', 2, 12, '1986-02-15', 'Av. Belgrano 77', 12, 11, 'camila.vega@mail.com', '1187654322', 'camilavega', NOW(), TRUE),
-('31111222', '20-31111222-4', 'Pablo', 'Ríos', 1, 13, '1979-07-07', 'Calle Florida 45', 13, 12, 'pablo.rios@mail.com', '1176543200', 'pablorios', NOW(), TRUE),
-('31222333', '20-31222333-5', 'Valentina', 'Morales', 2, 14, '1984-09-29', 'Av. Corrientes 890', 14, 13, 'valentina.morales@mail.com', '1165432100', 'valentinamorales', NOW(), TRUE),
-('31333444', '20-31333444-6', 'Matías', 'Salinas', 3, 15, '1993-12-01', 'Calle San Telmo 12', 15, 14, 'matias.salinas@mail.com', '1154321000', 'matiassalinas', NOW(), TRUE);
+('30123456', '20-30123456-3', 'Juan', 'Pérez', 1, 1, '1985-01-15', 'Calle Falsa 123', 1, 1, 'juan.perez@mail.com', 'pass1234', '1112345678', 'juanperez', NOW(), TRUE),
+('30987654', '27-30987654-8', 'María', 'Gómez', 2, 2, '1990-05-20', 'Av. Siempre Viva 742', 2, 1, 'maria.gomez@mail.com', 'pass1235', '1187654321', 'mariagomez', NOW(), TRUE),
+('30111222', '20-30111222-4', 'Carlos', 'Ramírez', 3, 3, '1978-09-10', 'Calle Libertad 456', 3, 2, 'carlos.ramirez@mail.com', 'pass1236', '1165432198', 'carlosramirez', NOW(), TRUE),
+('30222333', '20-30222333-5', 'Ana', 'Torres', 2, 4, '1982-03-25', 'Av. Belgrano 987', 4, 3, 'ana.torres@mail.com', 'pass1237', '1143219876', 'anatorres', NOW(), TRUE),
+('30333444', '20-30333444-6', 'Luis', 'Martínez', 1, 5, '1995-07-18', 'Calle Corrientes 789', 5, 4, 'luis.martinez@mail.com', 'pass1238', '1198765432', 'luismartinez', NOW(), TRUE),
+('30444555', '20-30444555-7', 'Laura', 'Fernández', 2, 6, '1988-11-05', 'Av. Rivadavia 234', 6, 5, 'laura.fernandez@mail.com', 'pass1239', '1176543219', 'laurafernandez', NOW(), TRUE),
+('30555666', '20-30555666-8', 'Diego', 'Sánchez', 1, 7, '1976-06-30', 'Calle San Martín 321', 7, 6, 'diego.sanchez@mail.com', 'pass1240', '1154321987', 'diegosanchez', NOW(), TRUE),
+('30666777', '20-30666777-9', 'Sofía', 'González', 2, 8, '1983-12-12', 'Av. 9 de Julio 654', 8, 7, 'sofia.gonzalez@mail.com', 'pass1241', '1132198765', 'sofiagonzalez', NOW(), TRUE),
+('30777888', '20-30777888-0', 'Martín', 'López', 1, 9, '1992-08-08', 'Calle Moreno 1234', 9, 8, 'martin.lopez@mail.com', 'pass1242', '1121987654', 'martinlopez', NOW(), TRUE),
+('30888999', '20-30888999-1', 'Julieta', 'Ramón', 2, 10, '1987-04-21', 'Av. Santa Fe 432', 10, 9, 'julieta.ramon@mail.com', 'pass1243', '1119876543', 'julietaramon', NOW(), TRUE),
+('30999000', '20-30999000-2', 'Federico', 'Castro', 1, 11, '1991-10-30', 'Calle Defensa 98', 11, 10, 'federico.castro@mail.com', 'pass1244', '1198765123', 'federicocastro', NOW(), TRUE),
+('31000111', '20-31000111-3', 'Camila', 'Vega', 2, 12, '1986-02-15', 'Av. Belgrano 77', 12, 11, 'camila.vega@mail.com', 'pass1245', '1187654322', 'camilavega', NOW(), TRUE),
+('31111222', '20-31111222-4', 'Pablo', 'Ríos', 1, 13, '1979-07-07', 'Calle Florida 45', 13, 12, 'pablo.rios@mail.com', 'pass1246', '1176543200', 'pablorios', NOW(), TRUE),
+('31222333', '20-31222333-5', 'Valentina', 'Morales', 2, 14, '1984-09-29', 'Av. Corrientes 890', 14, 13, 'valentina.morales@mail.com', 'pass1247', '1165432100', 'valentinamorales', NOW(), TRUE),
+('31333444', '20-31333444-6', 'Matías', 'Salinas', 3, 15, '1993-12-01', 'Calle San Telmo 12', 15, 14, 'matias.salinas@mail.com', 'pass1248', '1154321000', 'matiassalinas', NOW(), TRUE);
 
 
 INSERT INTO cuentas (numero_cuenta, cbu, id_cliente, id_tipo_cuenta, saldo, fecha_creacion, activo) VALUES
