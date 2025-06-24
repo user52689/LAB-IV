@@ -13,17 +13,13 @@ public class CuentaNegocio {
         this.cuentaDAO = new CuentaDAO();  
     }
 	
-	public List<Cuenta> listarCuentas() throws SQLException {
-        return cuentaDAO.listarCuentas();
-    }
-	
-	public List<Cuenta> listarCuentasPaginadas(int pagina, int tamañoPagina) throws SQLException {
+	public List<Cuenta> listarRegistros(String dni, int pagina, int tamañoPagina) throws SQLException {
 	    int offset = (pagina - 1) * tamañoPagina;
-	    return cuentaDAO.listarCuentasPaginado(offset, tamañoPagina);
+	    return cuentaDAO.listarRegistros(dni, offset, tamañoPagina);
 	}
 	
-	public int obtenerCantidadTotalCuentas() throws SQLException {
-	    return cuentaDAO.contarCuentasActivas();
+	public int contarRegistrosActivos(String dni) throws SQLException {
+	    return cuentaDAO.contarRegistrosActivos(dni);
 	}
 
 }
