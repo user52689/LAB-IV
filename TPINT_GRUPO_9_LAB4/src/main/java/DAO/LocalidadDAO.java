@@ -9,7 +9,7 @@ public class LocalidadDAO {
 
     public List<Localidad> listarLocalidades() throws SQLException {
         List<Localidad> localidades = new ArrayList<>();
-        String sql = "SELECT idLocalidad, nombreLocalidad FROM localidades WHERE activo = 1";
+        String sql = "SELECT id_localidad, nombre_localidad FROM localidades WHERE activo = 1";
 
         try (Connection conn = Conexion.obtenerConexion();
              PreparedStatement ps = conn.prepareStatement(sql);
@@ -17,8 +17,8 @@ public class LocalidadDAO {
 
             while (rs.next()) {
                 Localidad loc = new Localidad();
-                loc.setIdLocalidad(rs.getInt("idLocalidad"));
-                loc.setNombreLocalidad(rs.getString("nombreLocalidad"));
+                loc.setIdLocalidad(rs.getInt("id_localidad"));
+                loc.setNombreLocalidad(rs.getString("nombre_localidad"));
                 localidades.add(loc);
             }
         }

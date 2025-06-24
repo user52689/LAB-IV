@@ -9,6 +9,6 @@ import Modelo.Provincia;
 public class ProvinciaNegocio {
     public List<Provincia> listarProvincias() throws SQLException {
         ProvinciaDAO dao = new ProvinciaDAO();
-        return dao.listarProvinciasActivas();
+        return dao.listarProvincias();
     }
 }

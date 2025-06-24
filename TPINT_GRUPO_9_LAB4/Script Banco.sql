@@ -12,7 +12,7 @@ CREATE TABLE generos (
 -- TABLA PAISES
 CREATE TABLE paises (
     id_pais INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(50) NOT NULL UNIQUE, -- Ajustado a VARCHAR para nombres completos
+    nombre VARCHAR(50) NOT NULL UNIQUE, 
     activo BOOLEAN DEFAULT TRUE
 );
 

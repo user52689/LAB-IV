@@ -5,6 +5,7 @@ import Modelo.Usuario;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class UsuarioNegocio {
@@ -33,11 +34,10 @@ public class UsuarioNegocio {
             throw new Exception("Ya existe un usuario registrado con ese DNI.");
         }
 
-        // Hash de contraseña
         String hash = BCrypt.hashpw(nuevo.getContrasena(), BCrypt.gensalt());
         nuevo.setContrasena(hash);
-        nuevo.setActivo(true);  // Por si viene null
-        // opcional: nuevo.setFechaCreacion(LocalDateTime.now()); si lo querés desde app
+        nuevo.setActivo(true);
+        nuevo.setFechaCreacion(LocalDateTime.now());
 
         return usuarioDAO.agregarUsuario(nuevo);
     }
