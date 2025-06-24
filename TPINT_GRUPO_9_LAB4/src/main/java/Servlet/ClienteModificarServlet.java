@@ -26,6 +26,22 @@ public class ClienteModificarServlet extends HttpServlet {
             throw new ServletException(e);
         }
     }
+    
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String dni = req.getParameter("dni");
+        if (dni != null && !dni.trim().isEmpty()) {
+            Cliente cliente = null;
+			try {
+				cliente = clienteNegocio.buscarClientePorDniExacto(dni);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            req.setAttribute("cliente", cliente);
+        }
+        req.getRequestDispatcher("/Vistas/Administrador/MenuPrincipal/Clientes/ModificacionCliente.jsp").forward(req, resp);
+    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

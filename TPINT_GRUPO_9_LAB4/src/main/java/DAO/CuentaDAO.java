@@ -15,46 +15,6 @@ public class CuentaDAO {
         this.conexion = Conexion.obtenerConexion();
     }
     
-    public List<Cuenta> listarCuentasPaginado(int offset, int limite) throws SQLException {
-    	List<Cuenta> lista = new ArrayList<>();
-        String sql = "SELECT c.*, cu.*, tc.* "
-        		+ "FROM cuentas cu "
-        		+ "JOIN clientes c ON c.id_cliente = cu.id_cliente "
-        		+ "JOIN tipos_cuenta tc ON cu.id_tipo_cuenta = tc.id_tipo_cuenta "
-        		+ "WHERE cu.activo = true "
-        		+ "LIMIT ? OFFSET ?";
-        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
-            ps.setInt(1, limite);
-            ps.setInt(2, offset);
-            
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    Cuenta cuenta = mapearCuenta(rs);
-                    lista.add(cuenta);
-                }
-            }
-        }
-        return lista;
-        
-    }
-    
-	public List<Cuenta> listarCuentas() throws SQLException {
-        List<Cuenta> lista = new ArrayList<>();
-        String sql = "SELECT c.*, cu.*, tc.* "
-        		+ "FROM cuentas cu "
-        		+ "JOIN clientes c ON c.id_cliente = cu.id_cliente "
-        		+ "JOIN tipos_cuenta tc ON cu.id_tipo_cuenta = tc.id_tipo_cuenta "
-        		+ "WHERE cu.activo = true";
-        try (Statement st = conexion.createStatement();
-        	ResultSet rs = st.executeQuery(sql)) {
-            while (rs.next()) {
-            	Cuenta c = mapearCuenta(rs);
-                lista.add(c);
-            }
-        }
-        return lista;
-    }
-    
     private Cuenta mapearCuenta(ResultSet rs) throws SQLException {
     	ClienteDAO cDAO = new ClienteDAO();
     	TipoCuentaDAO tcDAO = new TipoCuentaDAO();
@@ -76,6 +36,68 @@ public class CuentaDAO {
         String sql = "SELECT COUNT(*) FROM cuentas WHERE activo = true";
         try (Statement st = conexion.createStatement();
         	ResultSet rs = st.executeQuery(sql)) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
+    
+    public List<Cuenta> listarRegistros(String dni, int offset, int limite) throws SQLException {
+    	List<Cuenta> lista = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT c.*, cu.*, tc.* "
+        		+ "FROM cuentas cu "
+        		+ "JOIN clientes c ON c.id_cliente = cu.id_cliente "
+        		+ "JOIN tipos_cuenta tc ON cu.id_tipo_cuenta = tc.id_tipo_cuenta "
+        		+ "WHERE cu.activo = true ");
+        
+        if(dni != null && !dni.isEmpty()) {
+        	sql.append(" AND c.dni LIKE ? ");
+        }
+        
+        sql.append("LIMIT ? OFFSET ?");
+        
+        try (PreparedStatement ps = conexion.prepareStatement(sql.toString())) {
+        	int index = 1;
+        	
+        	if(dni != null && !dni.isEmpty()) {
+        		ps.setString(index, "%" + dni + "%");
+        		index++;
+        	}
+        	
+            ps.setInt(index, limite);
+            index++;
+            ps.setInt(index, offset);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                	Cuenta cuenta = this.mapearCuenta(rs);
+                    lista.add(cuenta);
+                }
+            }
+        }
+        return lista;
+    }
+    
+    public int contarRegistrosActivos(String dni) throws SQLException {
+    	StringBuilder sql = new StringBuilder("SELECT COUNT(*) "
+    			+ "FROM cuentas cu "
+    			+ "JOIN clientes c ON cu.id_cliente = c.id_cliente "
+    			+ "WHERE cu.activo = true ");
+
+        if (dni != null && !dni.isEmpty()) {
+            sql.append("AND c.dni LIKE ?");
+        }
+
+        try (PreparedStatement ps = conexion.prepareStatement(sql.toString())) {
+            int index = 1;
+
+            if (dni != null && !dni.isEmpty()) {
+                ps.setString(index, "%" + dni + "%");
+            }
+
+            ResultSet rs = ps.executeQuery();
+
             if (rs.next()) {
                 return rs.getInt(1);
             }

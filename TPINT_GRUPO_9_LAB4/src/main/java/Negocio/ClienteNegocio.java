@@ -44,4 +44,15 @@ public class ClienteNegocio {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	// Paginacion
+	
+	public List<Cliente> listarRegistros(String dni, int pagina, int tamañoPagina) throws SQLException {
+	    int offset = (pagina - 1) * tamañoPagina;
+	    return clienteDAO.listarRegistros(dni, offset, tamañoPagina);
+	}
+	
+	public int contarRegistrosActivos(String dni) throws SQLException {
+	    return clienteDAO.contarRegistrosActivos(dni);
+	}
 }
