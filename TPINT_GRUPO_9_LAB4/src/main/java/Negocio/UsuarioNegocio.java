@@ -58,8 +58,9 @@ public class UsuarioNegocio {
         return usuarioDAO.borrarUsuarioPorDni(dni);
     }
 
-    public void resetearContrasena(int idUsuario, String nuevaContrasenaPlano) throws SQLException {
+    public boolean resetearContrasena(String dni, String nuevaContrasenaPlano) throws SQLException {
         String hash = BCrypt.hashpw(nuevaContrasenaPlano, BCrypt.gensalt());
-        usuarioDAO.resetearContrasena(idUsuario, hash);
+        return usuarioDAO.resetearContrasena(dni, hash);
     }
+
 }

@@ -120,15 +120,16 @@ public class UsuarioDAO {
         }
     }
 
-    public boolean resetearContrasena(int idUsuario, String contrasenaHash) throws SQLException {
-        String sql = "UPDATE usuarios SET contrasena = ? WHERE id_usuario = ?";
+    public boolean resetearContrasena(String dni, String contrasenaHash) throws SQLException {
+        String sql = "UPDATE usuarios SET contrasena = ? WHERE dni = ?";
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, contrasenaHash);
-            ps.setInt(2, idUsuario);
+            ps.setString(2, dni);
             int filas = ps.executeUpdate();
             return filas > 0;
         }
     }
+
 
     private Usuario mapearUsuario(ResultSet rs) throws SQLException {
         Usuario u = new Usuario();
