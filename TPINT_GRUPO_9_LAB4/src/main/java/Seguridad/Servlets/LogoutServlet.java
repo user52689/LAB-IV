@@ -19,6 +19,6 @@ public class LogoutServlet extends HttpServlet {
         if (session != null) {
             session.invalidate();
         }
-        response.sendRedirect(request.getContextPath() + "/Vistas/Inicio/login.jsp");
+        response.sendRedirect(request.getContextPath() + "/Vistas/Inicio/Login.jsp");
     }
 }
