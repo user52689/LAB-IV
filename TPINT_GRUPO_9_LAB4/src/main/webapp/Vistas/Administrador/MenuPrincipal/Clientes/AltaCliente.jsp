@@ -33,32 +33,37 @@
     </c:if>
    
 	<c:if test="${empty mensajeExito}">
-		   <form action="${pageContext.request.contextPath}/cliente/alta" method="post" class="row g-3 needs-validation" novalidate autocomplete="off">
+		<form action="${pageContext.request.contextPath}/cliente/alta" method="post" class="row g-3 needs-validation" novalidate autocomplete="off">
 		  
+		    <!-- DNI -->
 		    <div class="col-md-4">
 		        <label for="dni" class="form-label">DNI</label>
-		        <input type="text" class="form-control" id="dni" name="dni" pattern="\d{7,8}" required />
-		        <div class="invalid-feedback">Por favor, ingresá el DNI.</div>
+		        <input type="text" class="form-control" id="dni" name="dni" pattern="^[0-9]{7,8}$" required />
+		        <div class="invalid-feedback">Ingresá un DNI válido de 7 u 8 dígitos numéricos.</div>
 		    </div>
 		
+		    <!-- CUIL -->
 		    <div class="col-md-4">
 		        <label for="cuil" class="form-label">CUIL</label>
-		        <input type="text" class="form-control" id="cuil" name="cuil" pattern="\d{2}-\d{8}-\d" placeholder="XX-XXXXXXXX-X" required />
-		        <div class="invalid-feedback">Formato CUIL inválido. Ej: 20-12345678-3</div>
+		        <input type="text" class="form-control" id="cuil" name="cuil" pattern="^\d{2}-\d{8}-\d{1}$" placeholder="20-12345678-3" required />
+		        <div class="invalid-feedback">Formato CUIL inválido. Ejemplo: 20-12345678-3</div>
 		    </div>
 		
+		    <!-- Nombre -->
 		    <div class="col-md-4">
 		        <label for="nombre" class="form-label">Nombre</label>
-		        <input type="text" class="form-control" id="nombre" name="nombre" required />
-		        <div class="invalid-feedback">Por favor, ingresá el nombre.</div>
+		        <input type="text" class="form-control" id="nombre" name="nombre" pattern="[A-Za-zÁÉÍÓÚÑáéíóúñ\s]{2,50}" required />
+		        <div class="invalid-feedback">El nombre debe tener solo letras y al menos 2 caracteres.</div>
 		    </div>
 		
+		    <!-- Apellido -->
 		    <div class="col-md-4">
 		        <label for="apellido" class="form-label">Apellido</label>
-		        <input type="text" class="form-control" id="apellido" name="apellido" required />
-		        <div class="invalid-feedback">Por favor, ingresá el apellido.</div>
+		        <input type="text" class="form-control" id="apellido" name="apellido" pattern="[A-Za-zÁÉÍÓÚÑáéíóúñ\s]{2,50}" required />
+		        <div class="invalid-feedback">El apellido debe tener solo letras y al menos 2 caracteres.</div>
 		    </div>
 		
+		    <!-- Género -->
 		    <div class="col-md-4">
 		        <label for="generos" class="form-label">Género</label>
 		        <select id="generos" name="generos" class="form-select" required>
@@ -67,77 +72,87 @@
 		                <option value="${gen.idGenero}">${gen.descripcion}</option>
 		            </c:forEach>
 		        </select>
-		        <div class="invalid-feedback">Por favor, seleccioná un género.</div>
+		        <div class="invalid-feedback">Seleccioná una opción de género.</div>
 		    </div>
 		
-			<div class="col-md-4">
-			    <label for="nacionalidades" class="form-label">Nacionalidad</label>
-			    <select id="nacionalidades" name="nacionalidades" class="form-select" required>
-			        <option value="">Seleccioná nacionalidad</option>
-			        <c:forEach var="nacionalidades" items="${nacionalidades}">
-			            <option value="${nacionalidades.idPais}">${nacionalidades.nombre}</option>
-			        </c:forEach>
-			    </select>
-			    <div class="invalid-feedback">Por favor, seleccioná una nacionalidad.</div>
-			</div>
+		    <!-- Nacionalidad -->
+		    <div class="col-md-4">
+		        <label for="nacionalidades" class="form-label">Nacionalidad</label>
+		        <select id="nacionalidades" name="nacionalidades" class="form-select" required>
+		            <option value="">Seleccioná nacionalidad</option>
+		            <c:forEach var="nacionalidades" items="${nacionalidades}">
+		                <option value="${nacionalidades.idPais}">${nacionalidades.nombre}</option>
+		            </c:forEach>
+		        </select>
+		        <div class="invalid-feedback">Seleccioná una nacionalidad.</div>
+		    </div>
 		
-		     <div class="col-md-4">
-			    <label for="provincias" class="form-label">Provincia</label>
-			    <select id="provincias" name="provincias" class="form-select" required>
-			        <option value="">Seleccioná provincia</option>
-			        <c:forEach var="prov" items="${provincias}">
-			            <option value="${prov.idProvincia}">${prov.nombreProvincia}</option>
-			        </c:forEach>
-			    </select>
-			    <div class="invalid-feedback">Por favor, seleccioná una provincia.</div>
-			</div>
-			
-			<div class="col-md-4">
-			    <label for="localidades" class="form-label">Localidad</label>
-			    <select id="localidades" name="localidades" class="form-select" required>
-			        <option value="">Seleccioná localidad</option>
-			        <c:forEach var="loc" items="${localidades}">
-			            <option value="${loc.idLocalidad}">${loc.nombreLocalidad}</option>
-			        </c:forEach>
-			    </select>
-			    <div class="invalid-feedback">Por favor, seleccioná una localidad.</div>
-			</div>
+		    <!-- Provincia -->
+		    <div class="col-md-4">
+		        <label for="provincias" class="form-label">Provincia</label>
+		        <select id="provincias" name="provincias" class="form-select" required>
+		            <option value="">Seleccioná provincia</option>
+		            <c:forEach var="prov" items="${provincias}">
+		                <option value="${prov.idProvincia}">${prov.nombreProvincia}</option>
+		            </c:forEach>
+		        </select>
+		        <div class="invalid-feedback">Seleccioná una provincia.</div>
+		    </div>
 		
+		    <!-- Localidad -->
+		    <div class="col-md-4">
+		        <label for="localidades" class="form-label">Localidad</label>
+		        <select id="localidades" name="localidades" class="form-select" required>
+		            <option value="">Seleccioná localidad</option>
+		            <c:forEach var="loc" items="${localidades}">
+		                <option value="${loc.idLocalidad}">${loc.nombreLocalidad}</option>
+		            </c:forEach>
+		        </select>
+		        <div class="invalid-feedback">Seleccioná una localidad.</div>
+		    </div>
+		
+		    <!-- Fecha Nacimiento -->
 		    <div class="col-md-4">
 		        <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento</label>
 		        <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento" required />
-		        <div class="invalid-feedback">Ingresá la fecha de nacimiento.</div>
+		        <div class="invalid-feedback">Seleccioná una fecha de nacimiento válida.</div>
 		    </div>
 		
+		    <!-- Dirección -->
 		    <div class="col-md-4">
 		        <label for="direccion" class="form-label">Dirección</label>
 		        <input type="text" class="form-control" id="direccion" name="direccion" required />
-		        <div class="invalid-feedback">Ingresá la dirección.</div>
+		        <div class="invalid-feedback">Ingresá la dirección completa.</div>
 		    </div>
 		
+		    <!-- Email -->
 		    <div class="col-md-4">
-		        <label for="email" class="form-label">Correo Electrónico</label>
-		        <input type="email" class="form-control" id="email_cliente" name="correoElectronico" autocomplete="off" />
+		        <label for="email_cliente" class="form-label">Correo Electrónico</label>
+		        <input type="email" class="form-control" id="email_cliente" name="correoElectronico" required />
 		        <div class="invalid-feedback">Ingresá un correo válido.</div>
 		    </div>
 		
+		    <!-- Teléfono -->
 		    <div class="col-md-4">
 		        <label for="telefono" class="form-label">Teléfono</label>
-		        <input type="tel" class="form-control" id="telefono" name="telefono" pattern="\d{7,15}" placeholder="Ej: 1123456789" required />
-		        <div class="invalid-feedback">Ingresá un teléfono válido.</div>
+		        <input type="tel" class="form-control" id="telefono" name="telefono" pattern="^[0-9]{7,15}$" required />
+		        <div class="invalid-feedback">Ingresá un teléfono numérico válido (mínimo 7 dígitos).</div>
 		    </div>
 		
+		    <!-- Usuario -->
 		    <div class="col-md-4">
 		        <label for="usuario" class="form-label">Usuario</label>
-		        <input type="text" class="form-control" id="usuario" name="usuario" required />
-		        <div class="invalid-feedback">Ingresá un usuario.</div>
+		        <input type="text" class="form-control" id="usuario" name="usuario" required pattern="^[a-zA-Z0-9]{4,20}$" />
+		        <div class="invalid-feedback">Usuario requerido (entre 4 y 20 caracteres alfanuméricos).</div>
 		    </div>
 		
+		    <!-- Contraseña por defecto -->
 		    <div class="col-md-4">
 		        <label for="contrasena" class="form-label">Contraseña por defecto</label>
-		        <input type="text" class="form-control" id="contrasena" name="contrasena" value="123456" readonly autocomplete="off" />
-		        <div class="form-text">Esta será la contraseña inicial del cliente. Luego podrá cambiarla.</div>
+		        <input type="text" class="form-control" id="contrasena" name="contrasena" value="123456" readonly />
+		        <div class="form-text">Esta será la contraseña inicial del cliente.</div>
 		    </div>
+
 		
 		     <div class="col-12">
 			    <button class="btn btn-primary" type="submit">Guardar Cliente</button>
@@ -159,6 +174,22 @@
 <%@ include file="../../../Componentes/footer.jspf" %>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Bootstrap 5 form validation
+    (() => {
+        'use strict';
+        const forms = document.querySelectorAll('.needs-validation');
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+</script>
 
 </body>
 </html>

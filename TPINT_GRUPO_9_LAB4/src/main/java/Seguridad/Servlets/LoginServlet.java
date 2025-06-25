@@ -44,7 +44,7 @@ public class LoginServlet extends HttpServlet {
             }
         } catch (AutenticacionFallidaException e) {
             request.setAttribute("mensajeError", "Usuario o contraseña incorrectos.");
-            request.getRequestDispatcher("/Vistas/Inicio/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/Vistas/Inicio/Login.jsp").forward(request, response);
         } catch (SQLException e) {
             request.setAttribute("mensajeError", "Error en la base de datos: " + e.getMessage());
             request.getRequestDispatcher("/Vistas/Inicio/Login.jsp").forward(request, response);

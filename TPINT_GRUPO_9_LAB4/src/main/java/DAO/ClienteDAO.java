@@ -124,7 +124,7 @@ public class ClienteDAO {
     	c.setProvincia(rs.getInt("id_provincia"));
     	c.setCorreoElectronico(rs.getString("correo_electronico"));
     	c.setTelefono(rs.getString("telefono"));
-    	c.setUsuario(rs.getString("id_usuario"));
+    	c.setUsuario(rs.getString("usuario"));
     	c.setFechaAlta(rs.getTimestamp("fecha_alta").toLocalDateTime());
     	c.setActivo(rs.getBoolean("activo"));
     	return c;
