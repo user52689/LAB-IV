@@ -1,0 +1,227 @@
+package DAO;
+
+import Modelo.Prestamo;
+import Modelo.EstadoPrestamo;
+import Modelo.Cliente;
+import Modelo.Cuenta;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class PrestamoDAO {
+    private Connection conexion;
+
+    public PrestamoDAO() throws SQLException {
+        this.conexion = Conexion.obtenerConexion();
+    }
+
+    /** Lista préstamos por estado */
+    public List<Prestamo> listarPorEstado(int idEstado) throws SQLException {
+        String sql = """
+            SELECT p.id_prestamo,
+                   p.id_cliente,
+                   p.id_cuenta_deposito,
+                   p.id_estado_prestamo,
+                   p.importe_solicitado,
+                   p.importe_total,
+                   p.plazo_meses,
+                   p.monto_cuota,
+                   p.fecha_solicitud,
+                   p.fecha_resolucion,
+                   p.observaciones,
+                   p.activo      AS prestamo_activo,
+                   e.descripcion AS estado_desc,
+                   e.activo      AS estado_activo,
+                   c.dni,
+                   c.nombre,
+                   c.apellido
+              FROM prestamos p
+              JOIN estados_prestamo e ON p.id_estado_prestamo = e.id_estado_prestamo
+              JOIN clientes c          ON p.id_cliente          = c.id_cliente
+             WHERE p.id_estado_prestamo = ?
+               AND p.activo = TRUE
+        """;
+        List<Prestamo> lista = new ArrayList<>();
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, idEstado);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Prestamo p = new Prestamo();
+                    p.setIdPrestamo(rs.getInt("id_prestamo"));
+                    p.setImporteSolicitado(rs.getDouble("importe_solicitado"));
+                    p.setImporteTotal(rs.getDouble("importe_total"));
+                    p.setPlazoMeses(rs.getInt("plazo_meses"));
+                    p.setMontoCuota(rs.getDouble("monto_cuota"));
+                    p.setFechaSolicitud(rs.getTimestamp("fecha_solicitud").toLocalDateTime());
+                    Timestamp tr = rs.getTimestamp("fecha_resolucion");
+                    if (tr != null) p.setFechaResolucion(tr.toLocalDateTime());
+                    p.setObservaciones(rs.getString("observaciones"));
+                    p.setActivo(rs.getBoolean("prestamo_activo"));
+
+                    Cliente cli = new Cliente();
+                    cli.setIdCliente(rs.getInt("id_cliente"));
+                    cli.setDni(rs.getString("dni"));
+                    cli.setNombre(rs.getString("nombre"));
+                    cli.setApellido(rs.getString("apellido"));
+                    p.setCliente(cli);
+
+                    Cuenta cu = new Cuenta();
+                    cu.setIdCuenta(rs.getInt("id_cuenta_deposito"));
+                    p.setCuentaDeposito(cu);
+
+                    EstadoPrestamo est = new EstadoPrestamo();
+                    est.setIdEstadoPrestamo(rs.getInt("id_estado_prestamo"));
+                    est.setDescripcion(rs.getString("estado_desc"));
+                    est.setActivo(rs.getBoolean("estado_activo"));
+                    p.setEstadoPrestamo(est);
+
+                    lista.add(p);
+                }
+            }
+        }
+        return lista;
+    }
+
+    /** Actualiza el estado de un préstamo */
+    public boolean actualizarEstado(int idPrestamo, int nuevoEstado) throws SQLException {
+        String sql = """
+            UPDATE prestamos
+               SET id_estado_prestamo = ?,
+                   fecha_resolucion   = NOW()
+             WHERE id_prestamo = ?
+        """;
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, nuevoEstado);
+            ps.setInt(2, idPrestamo);
+            return ps.executeUpdate() > 0;
+        }
+    }
+
+    /** Recupera un préstamo completo por su ID */
+    public Prestamo buscarPorId(int idPrestamo) throws SQLException {
+        String sql = """
+            SELECT p.id_prestamo,
+                   p.id_cliente,
+                   p.id_cuenta_deposito,
+                   p.id_estado_prestamo,
+                   p.importe_solicitado,
+                   p.importe_total,
+                   p.plazo_meses,
+                   p.monto_cuota,
+                   p.fecha_solicitud,
+                   p.fecha_resolucion,
+                   p.observaciones,
+                   p.activo,
+                   e.descripcion AS estado_desc,
+                   e.activo      AS estado_activo,
+                   c.dni, c.nombre, c.apellido
+              FROM prestamos p
+              JOIN estados_prestamo e ON p.id_estado_prestamo = e.id_estado_prestamo
+              JOIN clientes c          ON p.id_cliente          = c.id_cliente
+             WHERE p.id_prestamo = ?
+        """;
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, idPrestamo);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) return null;
+                Prestamo p = new Prestamo();
+                p.setIdPrestamo(rs.getInt("id_prestamo"));
+                p.setImporteSolicitado(rs.getDouble("importe_solicitado"));
+                p.setImporteTotal(rs.getDouble("importe_total"));
+                p.setPlazoMeses(rs.getInt("plazo_meses"));
+                p.setMontoCuota(rs.getDouble("monto_cuota"));
+                p.setFechaSolicitud(rs.getTimestamp("fecha_solicitud").toLocalDateTime());
+                Timestamp tr = rs.getTimestamp("fecha_resolucion");
+                if (tr != null) p.setFechaResolucion(tr.toLocalDateTime());
+                p.setObservaciones(rs.getString("observaciones"));
+                p.setActivo(rs.getBoolean("activo"));
+
+                Cliente cli = new Cliente();
+                cli.setIdCliente(rs.getInt("id_cliente"));
+                cli.setDni(rs.getString("dni"));
+                cli.setNombre(rs.getString("nombre"));
+                cli.setApellido(rs.getString("apellido"));
+                p.setCliente(cli);
+
+                Cuenta cu = new Cuenta();
+                cu.setIdCuenta(rs.getInt("id_cuenta_deposito"));
+                p.setCuentaDeposito(cu);
+
+                EstadoPrestamo est = new EstadoPrestamo();
+                est.setIdEstadoPrestamo(rs.getInt("id_estado_prestamo"));
+                est.setDescripcion(rs.getString("estado_desc"));
+                est.setActivo(rs.getBoolean("estado_activo"));
+                p.setEstadoPrestamo(est);
+
+                return p;
+            }
+        }
+    }
+
+    /** Genera las cuotas (una por mes), sólo si no existen aún */
+    public void generarCuotas(Prestamo p) throws SQLException {
+        // ¿Ya hay cuotas para este préstamo?
+        String countSql = "SELECT COUNT(*) FROM cuotas WHERE id_prestamo = ?";
+        try (PreparedStatement psCount = conexion.prepareStatement(countSql)) {
+            psCount.setInt(1, p.getIdPrestamo());
+            try (ResultSet rs = psCount.executeQuery()) {
+                if (rs.next() && rs.getInt(1) > 0) return; // ya creadas
+            }
+        }
+        // Si no, las inserto
+        String insertSql = """
+            INSERT INTO cuotas (
+              id_prestamo,
+              numero_cuota,
+              monto_cuota,
+              fecha_vencimiento,
+              activo
+            ) VALUES (?, ?, ?, ?, TRUE)
+        """;
+        try (PreparedStatement ps = conexion.prepareStatement(insertSql)) {
+            for (int i = 1; i <= p.getPlazoMeses(); i++) {
+                ps.setInt(1, p.getIdPrestamo());
+                ps.setInt(2, i);
+                ps.setDouble(3, p.getMontoCuota());
+                java.sql.Date venc = java.sql.Date.valueOf(
+                    p.getFechaSolicitud().toLocalDate().plusMonths(i)
+                );
+                ps.setDate(4, venc);
+                ps.executeUpdate();
+            }
+        }
+    }
+
+    /** Registra un movimiento con saldo anterior y posterior */
+    public void registrarMovimiento(
+            int idCuenta,
+            int idTipoMovimiento,
+            double importe,
+            String detalle,
+            double saldoAnterior,
+            double saldoPosterior
+        ) throws SQLException {
+        String sql = """
+            INSERT INTO movimientos (
+              id_cuenta,
+              id_tipo_movimiento,
+              importe,
+              detalle,
+              fecha_movimiento,
+              saldo_anterior,
+              saldo_posterior,
+              activo
+            ) VALUES (?, ?, ?, ?, NOW(), ?, ?, TRUE)
+        """;
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, idCuenta);
+            ps.setInt(2, idTipoMovimiento);
+            ps.setDouble(3, importe);
+            ps.setString(4, detalle);
+            ps.setDouble(5, saldoAnterior);
+            ps.setDouble(6, saldoPosterior);
+            ps.executeUpdate();
+        }
+    }
+}
