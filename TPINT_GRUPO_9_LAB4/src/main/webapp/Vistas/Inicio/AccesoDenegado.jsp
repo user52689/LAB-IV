@@ -22,7 +22,7 @@
     </div>
     <p class="lead">No tenés permisos para acceder.</p>
     <div class="d-flex gap-2">
-        <a href="${pageContext.request.contextPath}/Vistas/Inicio/login.jsp" class="btn btn-secondary">
+        <a href="${pageContext.request.contextPath}/Vistas/Inicio/Login.jsp" class="btn btn-secondary">
             <i class="bi bi-box-arrow-left"></i> Volver al Login
         </a>
         <a href="${pageContext.request.contextPath}/LogoutServlet" class="btn btn-danger">
