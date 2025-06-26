@@ -6,7 +6,7 @@ import Modelo.Cliente;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.mindrot.jbcrypt.BCrypt;
+import Seguridad.Seguridad;
 
 public class ClienteNegocio {
 
@@ -43,7 +43,7 @@ public class ClienteNegocio {
     }
 
     public boolean resetearContrasena(String dni, String nuevaContrasenaPlano) throws SQLException {
-        String hash = BCrypt.hashpw(nuevaContrasenaPlano, BCrypt.gensalt());
+        String hash = Seguridad.hashPassword(nuevaContrasenaPlano);
         return clienteDAO.resetearContrasena(dni, hash);
     }
 	

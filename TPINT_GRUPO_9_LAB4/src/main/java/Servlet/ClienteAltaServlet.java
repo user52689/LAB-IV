@@ -88,6 +88,7 @@ public class ClienteAltaServlet extends HttpServlet {
         c.setFechaNacimiento(LocalDate.parse(fechaNacimientoStr));
         c.setDireccion(req.getParameter("direccion"));
         c.setCorreoElectronico(req.getParameter("correoElectronico"));
+        c.setContrasena(req.getParameter("contrasena"));
         c.setTelefono(req.getParameter("telefono"));
         c.setUsuario(req.getParameter("usuario"));
         return c;

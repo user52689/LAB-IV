@@ -2,6 +2,8 @@ package Negocio;
 
 import DAO.UsuarioDAO;
 import Modelo.Usuario;
+import Seguridad.Seguridad;
+
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.SQLException;
@@ -59,7 +61,7 @@ public class UsuarioNegocio {
     }
 
     public boolean resetearContrasena(String dni, String nuevaContrasenaPlano) throws SQLException {
-        String hash = BCrypt.hashpw(nuevaContrasenaPlano, BCrypt.gensalt());
+    	String hash = Seguridad.hashPassword(nuevaContrasenaPlano);
         return usuarioDAO.resetearContrasena(dni, hash);
     }
 

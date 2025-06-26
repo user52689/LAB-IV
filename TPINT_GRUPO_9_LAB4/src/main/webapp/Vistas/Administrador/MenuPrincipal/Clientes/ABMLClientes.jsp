@@ -35,7 +35,7 @@
                 </a>
             </div>
             <div class="col-md-3">
-                <a href="${pageContext.request.contextPath}/cliente/listar" class="btn btn-primary w-100">
+                <a href="${pageContext.request.contextPath}/cliente/listar?mostrarTodos=true" class="btn btn-primary w-100">
                     <i class="bi bi-people-fill me-1"></i> Listado de Clientes
                 </a>
             </div>
