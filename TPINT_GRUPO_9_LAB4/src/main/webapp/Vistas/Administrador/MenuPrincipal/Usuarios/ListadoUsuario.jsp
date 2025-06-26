@@ -54,7 +54,7 @@
 						        <th>DNI</th>
 						        <th>Usuario</th>
 						        <th>Rol</th>
-						        <th>Email<th>
+						        <th>Email</th>
 						        <th>Fecha Creación</th>
 						        <th>Último Acceso</th>
 						        <th>Activo</th>
@@ -99,10 +99,10 @@
                     </table>
                 </div>
             </c:when>
-            <c:when test="${empty listaUsuarios and nombreUsuario != null and nombreUsuario != ''}">
+            <c:when test="${empty listaUsuarios and dni != null and dni != ''}">
                 <div class="alert alert-warning mt-4" role="alert">
                     <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                    No se encontró ningún usuario con nombre '${nombreUsuario}'.
+                    No se encontró ningún usuario con DNI '${dni}'.
                 </div>
             </c:when>
         </c:choose>

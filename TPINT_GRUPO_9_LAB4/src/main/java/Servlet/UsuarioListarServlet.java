@@ -28,26 +28,29 @@ public class UsuarioListarServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String dni = req.getParameter("dni");
+        String mostrarTodos = req.getParameter("mostrarTodos");
         List<Usuario> usuarios = null;
 
-        if (dni != null && !dni.trim().isEmpty()) {
-            Usuario usuario = null;
-            try {
-                usuario = usuarioNegocio.buscarUsuarioPorDniExacto(dni.trim());
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            usuarios = new ArrayList<>();
-            if (usuario != null) usuarios.add(usuario);
-        } else {
-            try {
+        try {
+            if ("true".equals(mostrarTodos)) {
                 usuarios = usuarioNegocio.listarUsuarios();
-            } catch (SQLException e) {
-                e.printStackTrace();
+                dni = null; 
+            } else if (dni != null && !dni.trim().isEmpty()) {
+                Usuario usuario = usuarioNegocio.buscarUsuarioPorDniExacto(dni.trim());
+                usuarios = new ArrayList<>();
+                if (usuario != null) {
+                    usuarios.add(usuario);
+                }
+            } else {
+                usuarios = usuarioNegocio.listarUsuarios();
             }
+        } catch (SQLException e) {
+            e.printStackTrace(); 
         }
 
+        req.setAttribute("dni", dni);
         req.setAttribute("listaUsuarios", usuarios);
         req.getRequestDispatcher("/Vistas/Administrador/MenuPrincipal/Usuarios/ListadoUsuario.jsp").forward(req, resp);
     }
+
 }

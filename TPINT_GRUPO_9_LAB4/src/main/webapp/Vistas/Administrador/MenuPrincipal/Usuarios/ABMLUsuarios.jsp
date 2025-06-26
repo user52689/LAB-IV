@@ -36,9 +36,9 @@
                 </a>
             </div>
             <div class="col-md-3">
-                <a href="ListadoUsuario.jsp" class="btn btn-primary w-100">
-                    <i class="bi bi-people-fill me-1"></i> Listado de Usuarios
-                </a>
+				<a href="${pageContext.request.contextPath}/usuario/listar?mostrarTodos=true" class="btn btn-primary w-100">
+				    <i class="bi bi-people-fill me-1"></i> Listado de Usuarios
+				</a>
             </div>
             <div class="mb-3 row mt-4">
                 <div class="col-sm-12 text-center">

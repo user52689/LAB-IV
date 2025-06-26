@@ -81,18 +81,20 @@ public class FiltroAcceso implements Filter {
                        requestURI.endsWith("/cliente/alta") || 
                        requestURI.endsWith("/cliente/baja") ||
                        requestURI.endsWith("/cliente/modificar") ||
+                       requestURI.endsWith("/cliente/blanquear") ||
                        requestURI.endsWith("/cliente/listar") ||
-                	   requestURI.endsWith("/Vistas/Administrador/Cuentas/ListarCuentas.jsp") ||
-                	   requestURI.endsWith("/Vistas/Administrador/Prestamos/PrestamosSolicitadosClientes.jsp") ||
-                	   requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/reportesMenu.jsp");
+                       requestURI.endsWith("/Vistas/Administrador/Cuentas/ListarCuentas.jsp") ||
+                       requestURI.endsWith("/Vistas/Administrador/Prestamos/PrestamosSolicitadosClientes.jsp") ||
+                       requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/reportesMenu.jsp");
                 
             case "CLIENTE":
-                // Rutas Excluidas
+                // Excluir explícitamente las rutas de administración que contienen "cliente"
                 if (requestURI.endsWith("/cliente/baja") ||
                     requestURI.endsWith("/cliente/alta") ||
                     requestURI.endsWith("/cliente/modificar") ||
+                    requestURI.endsWith("/cliente/blanquear") ||
                     requestURI.endsWith("/cliente/listar")) {
-                    return false;
+                    return false;  // Estas rutas NO son para clientes
                 }
                 return requestURI.startsWith(contextPath + "/Vistas/Clientes/MenuPrincipal/") ||
                        requestURI.endsWith("/TransferirServlet") ||
