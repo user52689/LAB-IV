@@ -60,16 +60,16 @@
                 </a>
             </div>
 
-            <!-- Préstamos -->
-            <div class="col-md-3 menu-card">
-                <a href="../Prestamos/PrestamosSolicitadosClientes.jsp" class="text-decoration-none">
-                    <div class="card shadow h-100 text-center p-3">
-                        <i class="bi bi-cash-stack text-warning" style="font-size: 2.5rem;"></i>
-                        <h5 class="mt-3">Préstamos</h5>
-                        <p class="text-muted">Gestión de préstamos activos y nuevos</p>
-                    </div>
-                </a>
-            </div>
+          <!-- Préstamos -->
+<div class="col-md-3 menu-card">
+    <a href="<%= request.getContextPath() %>/Prestamos/pendientes" class="text-decoration-none">
+        <div class="card shadow h-100 text-center p-3">
+            <i class="bi bi-cash-stack text-warning" style="font-size: 2.5rem;"></i>
+            <h5 class="mt-3">Préstamos</h5>
+            <p class="text-muted">Gestión de préstamos pendientes</p>
+        </div>
+    </a>
+</div>
 
             <!-- Reportes -->
             <div class="col-md-3 menu-card">
