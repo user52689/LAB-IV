@@ -36,7 +36,7 @@ public class UsuarioNegocio {
             throw new Exception("Ya existe un usuario registrado con ese DNI.");
         }
 
-        String hash = BCrypt.hashpw(nuevo.getContrasena(), BCrypt.gensalt());
+    	String hash = Seguridad.hashPassword(nuevo.getContrasena());
         nuevo.setContrasena(hash);
         nuevo.setActivo(true);
         nuevo.setFechaCreacion(LocalDateTime.now());
