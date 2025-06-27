@@ -71,7 +71,9 @@ public class CuentaDAO {
         if (dni != null && !dni.isEmpty()) {
             sql.append(" AND c.dni LIKE ? ");
         }
-        sql.append(" LIMIT ? OFFSET ?");
+        if(limite > 0) {
+        	sql.append(" LIMIT ? OFFSET ?");
+        }
         try (PreparedStatement ps = conexion.prepareStatement(sql.toString())) {
             int idx = 1;
             if (dni != null && !dni.isEmpty()) {
@@ -88,6 +90,38 @@ public class CuentaDAO {
         return lista;
     }
 
+    public List<Cuenta> buscarCuentasPorId(String id) throws SQLException {
+        List<Cuenta> lista = new ArrayList<>();
+        StringBuilder sql = new StringBuilder(
+            "SELECT cu.*, c.*, tc.* " +
+            "FROM cuentas cu " +
+            "JOIN clientes c ON c.id_cliente = cu.id_cliente " +
+            "JOIN tipos_cuenta tc ON cu.id_tipo_cuenta = tc.id_tipo_cuenta " +
+            "WHERE cu.activo = TRUE AND cu.id_cliente LIKE ? "
+        );
+        try (PreparedStatement ps = conexion.prepareStatement(sql.toString())) {
+            int idx = 1;
+            if (id != null && !id.isEmpty()) {
+                ps.setString(idx++,id);
+            }
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(mapearCuenta(rs));
+                }
+            }
+        }
+        return lista;
+    }
+    
+    public boolean borrarCuentaPorNroCuenta(String nroCuenta) throws SQLException {
+    	String sql = "UPDATE cuentas SET activo = false WHERE numero_cuenta = ?";
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, nroCuenta);
+            int filas = ps.executeUpdate();
+            return filas > 0;
+        }
+    }
+    
     /**
      * Cuenta cuántas cuentas activas hay (para paginación).
      */

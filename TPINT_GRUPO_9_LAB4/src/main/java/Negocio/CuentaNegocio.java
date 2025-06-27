@@ -23,6 +23,16 @@ public class CuentaNegocio {
         return cuentaDAO.agregarCuenta(idCliente, idTipoCuenta, saldo, fechaCreacion);
     }
 	
+	public boolean borrarCuentaPorNroCuenta(String nroCuenta) throws SQLException {
+		if(cuentaDAO.borrarCuentaPorNroCuenta(nroCuenta))
+			return true;
+		return false;
+	}
+	
+	public List<Cuenta> buscarCuentasPorId(String id) throws SQLException {
+		return cuentaDAO.buscarCuentasPorId(id);
+	}
+	
 	public List<Cuenta> listarRegistros(String dni, int pagina, int tamañoPagina) throws SQLException {
 	    int offset = (pagina - 1) * tamañoPagina;
 	    return cuentaDAO.listarRegistros(dni, offset, tamañoPagina);
