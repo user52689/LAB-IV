@@ -59,7 +59,7 @@ public class CuentaDAO {
     /**
      * Devuelve un listado paginado de cuentas según DNI de cliente.
      */
-    public List<Cuenta> listarRegistros(String dni, int offset, int limite) throws SQLException {
+    public List<Cuenta> listarRegistros(String nroCuenta, int offset, int limite) throws SQLException {
         List<Cuenta> lista = new ArrayList<>();
         StringBuilder sql = new StringBuilder(
             "SELECT cu.*, c.*, tc.* " +
@@ -68,26 +68,38 @@ public class CuentaDAO {
             "JOIN tipos_cuenta tc ON cu.id_tipo_cuenta = tc.id_tipo_cuenta " +
             "WHERE cu.activo = TRUE "
         );
-        if (dni != null && !dni.isEmpty()) {
-            sql.append(" AND c.dni LIKE ? ");
+        if (nroCuenta != null && !nroCuenta.trim().isEmpty()) {
+            sql.append(" AND cu.numero_cuenta LIKE ? ");
         }
         if(limite > 0) {
         	sql.append(" LIMIT ? OFFSET ?");
         }
         try (PreparedStatement ps = conexion.prepareStatement(sql.toString())) {
             int idx = 1;
-            if (dni != null && !dni.isEmpty()) {
-                ps.setString(idx++, "%" + dni + "%");
+            if (nroCuenta != null && !nroCuenta.isEmpty()) {
+                ps.setString(idx++, "%" + nroCuenta + "%");
             }
-            ps.setInt(idx++, limite);
-            ps.setInt(idx, offset);
+            if (limite > 0) {
+                ps.setInt(idx++, limite);
+                ps.setInt(idx, offset);
+            }
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     lista.add(mapearCuenta(rs));
                 }
             }
-        }
+        } 
         return lista;
+    }
+    
+    public boolean modificarCuenta(Cuenta cu) throws SQLException {
+        String sql = "UPDATE cuentas SET id_tipo_cuenta = ? WHERE numero_cuenta = ?";
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, cu.getTipoCuenta().getIdTipoCuenta());
+            ps.setString(2, cu.getNumeroCuenta());
+            int filas = ps.executeUpdate();
+            return filas > 0;
+        }
     }
 
     public List<Cuenta> buscarCuentasPorId(String id) throws SQLException {
@@ -113,6 +125,19 @@ public class CuentaDAO {
         return lista;
     }
     
+    public Cuenta obtenerCuentaPorNroCuenta(String nroCuenta) throws SQLException {
+    	String sql = "SELECT cu.*, c.*, tc.* FROM cuentas cu JOIN clientes c ON c.id_cliente = cu.id_cliente JOIN tipos_cuenta tc ON cu.id_tipo_cuenta = tc.id_tipo_cuenta WHERE cu.activo = TRUE AND cu.numero_cuenta = ? ";
+    	try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, nroCuenta);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return mapearCuenta(rs);
+                }
+            }
+        }
+        return null;
+    }
+    
     public boolean borrarCuentaPorNroCuenta(String nroCuenta) throws SQLException {
     	String sql = "UPDATE cuentas SET activo = false WHERE numero_cuenta = ?";
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
@@ -125,18 +150,18 @@ public class CuentaDAO {
     /**
      * Cuenta cuántas cuentas activas hay (para paginación).
      */
-    public int contarRegistrosActivos(String dni) throws SQLException {
+    public int contarRegistrosActivos(String nroCuenta) throws SQLException {
         StringBuilder sql = new StringBuilder(
             "SELECT COUNT(*) FROM cuentas cu " +
             "JOIN clientes c ON cu.id_cliente = c.id_cliente " +
             "WHERE cu.activo = TRUE "
         );
-        if (dni != null && !dni.isEmpty()) {
-            sql.append(" AND c.dni LIKE ? ");
+        if (nroCuenta != null && !nroCuenta.trim().isEmpty()) {
+            sql.append(" AND cu.numero_cuenta LIKE ? ");
         }
         try (PreparedStatement ps = conexion.prepareStatement(sql.toString())) {
-            if (dni != null && !dni.isEmpty()) {
-                ps.setString(1, "%" + dni + "%");
+            if (nroCuenta != null && !nroCuenta.isEmpty()) {
+                ps.setString(1, "%" + nroCuenta + "%");
             }
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {

@@ -86,6 +86,7 @@ public class FiltroAcceso implements Filter {
                        requestURI.endsWith("/Cuentas/alta") ||
                        requestURI.endsWith("/Cuentas/listar") ||
                        requestURI.endsWith("/Cuentas/baja") ||
+                       requestURI.endsWith("/Cuentas/modificar") ||
                        requestURI.endsWith("/Vistas/Administrador/Cuentas/ListarCuentas.jsp") ||
                        requestURI.endsWith("/Vistas/Administrador/Prestamos/PrestamosSolicitadosClientes.jsp") ||
                        requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/reportesMenu.jsp");

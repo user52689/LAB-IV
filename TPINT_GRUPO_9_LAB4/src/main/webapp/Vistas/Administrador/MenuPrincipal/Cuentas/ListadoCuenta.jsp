@@ -21,18 +21,18 @@
         </h2>
 
         <!-- Formulario de búsqueda por DNI -->
-        <form method="get" action="${pageContext.request.contextPath}/Cuentas/listar" class="row g-3 mb-4">
+        <form method="post" action="${pageContext.request.contextPath}/Cuentas/listar" class="row g-3 mb-4">
             <div class="col-md-4">
-                <input type="text" id="dniInput" name="dni" class="form-control" placeholder="Buscar por DNI"
-                       value="${dni != null ? dni : ''}" />
+                <input type="text" id="numeroCuenta" name="numeroCuenta" class="form-control" placeholder="Buscar por Número de Cuenta"
+                       value="${nroCuenta != null ? nroCuenta : ''}" />
             </div>
             <div class="col-md-2">
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-primary" name="accion" value="buscar">
                     <i class="bi bi-search"></i> Buscar
                 </button>
             </div>
             <div class="col-md-2">
-                <button type="submit" class="btn btn-secondary" name="mostrarTodos" value="true">
+                <button type="submit" class="btn btn-secondary" name="accion" value="todos">
                     <i class="bi bi-arrow-clockwise"></i> Mostrar Todos
                 </button>
             </div>
@@ -65,11 +65,11 @@
                                     <td>${cuenta.cliente.dni}</td>
                                     <td>${cuenta.cliente.nombre}</td>
                                     <td>
-                                        <a href="" 
-                                           class="btn btn-sm btn-warning" title="Modificar">
+                                        <a href="${pageContext.request.contextPath}/Cuentas/modificar?numeroCuenta=${cuenta.numeroCuenta}" 
+                                           class="btn btn-sm btn-warning text-white" title="Modificar">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
-                                        <a href="" 
+                                        <a href="${pageContext.request.contextPath}/Cuentas/baja?dni=${cuenta.cliente.dni}" 
                                            class="btn btn-sm btn-danger" title="Dar de baja">
                                             <i class="bi bi-person-dash-fill"></i>
                                         </a>
@@ -87,32 +87,56 @@
                 </div>
 			</c:otherwise>
 		</c:choose>
-		<div class="mb-3 row">
-			<div class="d-flex justify-content-between mb-3">
-				<div>
-					<c:if test="${paginaActual > 1}">
-						<a class="btn btn-secondary" href="?pagina=${paginaActual - 1}&dni=${dni}"><i class="bi bi-arrow-left"></i> Anterior</a>
-					</c:if>
-				</div>
-				
-				<div>
-					<c:if test="${paginaActual < totalPaginas}">
-						<a class="btn btn-secondary" href="?pagina=${paginaActual + 1}&dni=${dni}">Siguiente <i class="bi bi-arrow-right"></i></a>
-					</c:if>
-				</div>
-				
-			</div>
+		<div class="d-flex justify-content-between align-items-center">
+	
+		    <div>
+		        <c:choose>
+		            <c:when test="${paginaActual > 1}">
+		                <a class="btn btn-secondary" href="?pagina=${paginaActual - 1}&dni=${dni}">
+		                    <i class="bi bi-arrow-left"></i> Anterior
+		                </a>
+		            </c:when>
+		            <c:otherwise>
+		                <button class="btn btn-secondary invisible">
+		                    <i class="bi bi-arrow-left"></i> Anterior
+		                </button>
+		            </c:otherwise>
+		        </c:choose>
+		    </div>
 		
-	        <div class="mb-3 row">
-			    <div class="col-sm-12 text-center">
-			        <a href="${pageContext.request.contextPath}/Vistas/Administrador/MenuPrincipal/Cuentas/ABMLCuentas.jsp" class="btn btn-secondary">
-			            <i class="bi-box-arrow-left"></i> Volver
-			        </a>
-			    </div>
+		    <div class="d-flex gap-1">
+		        <c:forEach var="pagina" begin="1" end="${totalPaginas}">
+		            <a class="btn btn-sm ${pagina == paginaActual ? 'btn-secondary' : 'btn-outline-secondary'}"
+		               href="?pagina=${pagina}&dni=${dni}">
+		                ${pagina}
+		            </a>
+		        </c:forEach>
+		    </div>
+		
+		    <div>
+		        <c:choose>
+		            <c:when test="${paginaActual < totalPaginas}">
+		                <a class="btn btn-secondary" href="?pagina=${paginaActual + 1}&dni=${dni}">
+		                    Siguiente <i class="bi bi-arrow-right"></i>
+		                </a>
+		            </c:when>
+		            <c:otherwise>
+		                <button class="btn btn-secondary invisible">
+		                    Siguiente <i class="bi bi-arrow-right"></i>
+		                </button>
+		            </c:otherwise>
+		        </c:choose>
+		    </div>
+		
+		</div>
+		<div class="mb-3 row mt-4">
+			<div class="col-sm-12 text-center">
+			    <a href="${pageContext.request.contextPath}/Vistas/Administrador/MenuPrincipal/Cuentas/ABMLCuentas.jsp" class="btn btn-secondary">
+			    	<i class="bi-box-arrow-left"></i> Volver
+				</a>
 			</div>
-    	</div>
-    	
-    </div>
+		</div>
+	</div>
 </main>
 
 <%@ include file="../../../Componentes/footer.jspf" %>

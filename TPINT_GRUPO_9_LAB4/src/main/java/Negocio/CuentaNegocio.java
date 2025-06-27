@@ -33,13 +33,21 @@ public class CuentaNegocio {
 		return cuentaDAO.buscarCuentasPorId(id);
 	}
 	
-	public List<Cuenta> listarRegistros(String dni, int pagina, int tamañoPagina) throws SQLException {
+	public List<Cuenta> listarRegistros(String nroCuenta, int pagina, int tamañoPagina) throws SQLException {
 	    int offset = (pagina - 1) * tamañoPagina;
-	    return cuentaDAO.listarRegistros(dni, offset, tamañoPagina);
+	    return cuentaDAO.listarRegistros(nroCuenta, offset, tamañoPagina);
 	}
 	
-	public int contarRegistrosActivos(String dni) throws SQLException {
-	    return cuentaDAO.contarRegistrosActivos(dni);
+	public int contarRegistrosActivos(String nroCuenta) throws SQLException {
+	    return cuentaDAO.contarRegistrosActivos(nroCuenta);
 	}
+	
+	public Cuenta obtenerCuentaPorNroCuenta(String nroCuenta) throws SQLException {
+        return cuentaDAO.obtenerCuentaPorNroCuenta(nroCuenta);
+    }
+	
+	public boolean modificarCuenta(Cuenta cu) throws SQLException {
+        return cuentaDAO.modificarCuenta(cu);
+    }
 
 }
