@@ -72,6 +72,7 @@ public class UsuarioAltaServlet extends HttpServlet {
         u.setNombreUsuario(request.getParameter("nombre_usuario"));
         u.setContrasena(request.getParameter("contrasena"));
         u.setCorreoElectronico(request.getParameter("correo_electronico"));
+        u.setTelefono(request.getParameter("telefono"));
         u.setRol(request.getParameter("rol"));
         u.setIdGenero(Integer.parseInt(request.getParameter("id_genero")));
         u.setIdPais(Integer.parseInt(request.getParameter("id_pais")));
