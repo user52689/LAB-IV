@@ -36,7 +36,6 @@
             </div> 
         </c:if>
 
-        <!-- Formulario para buscar cliente por DNI -->
         <form action="${pageContext.request.contextPath}/cliente/blanqueo" method="get" class="mt-4">
             <div class="mb-3">
                 <label for="dni" class="form-label">DNI del Cliente</label>

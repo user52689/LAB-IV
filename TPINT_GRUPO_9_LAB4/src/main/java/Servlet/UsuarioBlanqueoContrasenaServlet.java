@@ -57,7 +57,7 @@ public class UsuarioBlanqueoContrasenaServlet extends HttpServlet {
                     } else {
                         request.setAttribute("mensajeError", "No se pudo actualizar la contraseña.");
                     }
-                    //usuario.setContrasena(contrasena); 
+                    usuario.setContrasena(contrasena); 
                     request.setAttribute("usuario", usuario);
                 } else {
                     request.setAttribute("mensajeError", "No se encontró el usuario con DNI: " + dni);
