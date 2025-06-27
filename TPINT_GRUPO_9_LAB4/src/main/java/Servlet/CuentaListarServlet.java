@@ -2,7 +2,6 @@ package Servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -14,9 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import Negocio.CuentaNegocio;
 import Modelo.Cuenta;
 
-/**
- * Servlet implementation class CuentaListarServlet
- */
 @WebServlet("/Cuentas/listar")
 public class CuentaListarServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -32,41 +28,62 @@ public class CuentaListarServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		
-		if (req.getParameter("mostrarTodos") != null) {
-    	    res.sendRedirect(req.getContextPath() + "/Cuentas/listar");
-    	    return;
-    	}
-		
-    	String dni = req.getParameter("dni");
-        if(dni == null) {
-        	dni = "";
-        }
-		
-		List<Cuenta> cuentas = new ArrayList<>();
-		int pagina = 1;
-	    int tamañoPagina = 10;
-	    int totalPaginas = 1;
+		String nroCuenta = req.getParameter("numeroCuenta");
+	    if (nroCuenta == null) nroCuenta = "";
+
+	    int pagina = 0;
+	    int totalPaginas = 0;
+	    final int registrosPorPagina = 0;
 
 	    String paginaParam = req.getParameter("pagina");
 	    if (paginaParam != null) {
-	    	pagina = Integer.parseInt(paginaParam);
+	        try {
+	            pagina = Integer.parseInt(paginaParam);
+	        } catch (NumberFormatException e) {
+	            pagina = 1;
+	        }
 	    }
 
 	    try {
-			cuentas = cuentaNegocio.listarRegistros(dni, pagina, tamañoPagina);
-			int totalCuentas = cuentaNegocio.contarRegistrosActivos(dni);
-	        totalPaginas = (int) Math.ceil((double) totalCuentas / tamañoPagina);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	    
-	    req.setAttribute("listaCuentas", cuentas);
-	    req.setAttribute("paginaActual", pagina);
-	    req.setAttribute("totalPaginas", totalPaginas);
-    	req.setAttribute("dni", dni);
-	    req.getRequestDispatcher("/Vistas/Administrador/MenuPrincipal/Cuentas/ListadoCuenta.jsp").forward(req, res);
+	        List<Cuenta> cuentas = cuentaNegocio.listarRegistros(nroCuenta, pagina, registrosPorPagina);
+	        //int totalCuentas = cuentaNegocio.contarRegistrosActivos(nroCuenta);
+	        //int totalPaginas = (int) Math.ceil((double) totalCuentas / registrosPorPagina);
+
+	        req.setAttribute("listaCuentas", cuentas);
+	        req.setAttribute("paginaActual", pagina);
+	        req.setAttribute("totalPaginas", totalPaginas);
+	        req.setAttribute("numeroCuenta", nroCuenta);
+
+	        req.getRequestDispatcher("/Vistas/Administrador/MenuPrincipal/Cuentas/ListadoCuenta.jsp").forward(req, res);
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        req.setAttribute("error", "No se pudo obtener la lista de cuentas.");
+	        req.getRequestDispatcher("/Vistas/Administrador/MenuPrincipal/Cuentas/ListadoCuenta.jsp").forward(req, res);
+	    }
 		
 	}
+	
+	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		String accion = req.getParameter("accion");
+	    String nroCuenta = "";
+	    
+	    StringBuilder redirectStr = new StringBuilder("/Cuentas/listar");
+	    
+	    //StringBuilder redirectStr = new StringBuilder("/Cuentas/listar?pagina=1");
+
+	    if ("buscar".equals(accion)) {
+	    	nroCuenta = req.getParameter("numeroCuenta");
+	        if (nroCuenta == null) nroCuenta = "";
+	    } else if ("todos".equals(accion)) {
+	    	nroCuenta = "";
+	    }
+	    
+	    if (nroCuenta != null && !nroCuenta.trim().isEmpty()) {
+	    	redirectStr.append("?numeroCuenta="+nroCuenta);
+	    }
+
+	    res.sendRedirect(req.getContextPath() + redirectStr);
+	    return;
+    }
 
 }
