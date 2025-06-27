@@ -16,10 +16,10 @@ public class UsuarioDAO {
 
     public boolean agregarUsuario(Usuario u) throws SQLException {
         String sql = "INSERT INTO usuarios (" +
-                     "dni, nombre_usuario, contrasena, rol, correo_electronico, " +
+                     "dni, nombre_usuario, contrasena, rol, correo_electronico, telefono, " +
                      "id_genero, id_pais, id_provincia, id_localidad, " +
                      "fecha_nacimiento, direccion, activo, fecha_creacion, ultimo_acceso) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, u.getDni());
@@ -27,15 +27,13 @@ public class UsuarioDAO {
             ps.setString(3, u.getContrasena());
             ps.setString(4, u.getRol());
             ps.setString(5, u.getCorreoElectronico());
-
+            ps.setString(5, u.getTelefono());
             ps.setInt(6, u.getIdGenero());
             ps.setInt(7, u.getIdPais());
             ps.setInt(8, u.getIdProvincia());
             ps.setInt(9, u.getIdLocalidad());
-
             ps.setDate(10, java.sql.Date.valueOf(u.getFechaNacimiento()));
             ps.setString(11, u.getDireccion());
-
             ps.setBoolean(12, u.isActivo());
             ps.setTimestamp(13, Timestamp.valueOf(u.getFechaCreacion()));
             
@@ -77,39 +75,17 @@ public class UsuarioDAO {
     }
 
     public boolean modificarUsuario(Usuario u) throws SQLException {
-        String sql = "UPDATE usuarios SET " +
-                     "dni = ?, nombre_usuario = ?, contrasena = ?, rol = ?, correo_electronico = ?, " +
-                     "id_genero = ?, id_pais = ?, id_provincia = ?, id_localidad = ?, " +
-                     "fecha_nacimiento = ?, direccion = ?, activo = ?, fecha_creacion = ?, ultimo_acceso = ? " +
-                     "WHERE id_usuario = ?";
+        String sql = "UPDATE usuarios SET correo_electronico = ?, telefono = ?, direccion = ? WHERE dni = ?";
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
-            ps.setString(1, u.getDni());
-            ps.setString(2, u.getNombreUsuario());
-            ps.setString(3, u.getContrasena());
-            ps.setString(4, u.getRol());
-            ps.setString(5, u.getCorreoElectronico());
-
-            ps.setInt(6, u.getIdGenero());
-            ps.setInt(7, u.getIdPais());
-            ps.setInt(8, u.getIdProvincia());
-            ps.setInt(9, u.getIdLocalidad());
-
-            ps.setDate(10, java.sql.Date.valueOf(u.getFechaNacimiento()));
-            ps.setString(11, u.getDireccion());
-
-            ps.setBoolean(12, u.isActivo());
-            ps.setTimestamp(13, Timestamp.valueOf(u.getFechaCreacion()));
-            if (u.getUltimoAcceso() != null) {
-                ps.setTimestamp(14, Timestamp.valueOf(u.getUltimoAcceso()));
-            } else {
-                ps.setTimestamp(14, null);
-            }
-            ps.setInt(15, u.getIdUsuario());
-
+            ps.setString(1, u.getCorreoElectronico());
+            ps.setString(2, u.getTelefono());
+            ps.setString(3, u.getDireccion());
+            ps.setString(4, u.getDni());
             int filas = ps.executeUpdate();
             return filas > 0;
         }
     }
+
 
     public boolean borrarUsuarioPorDni(String dni) throws SQLException {
         String sql = "UPDATE usuarios SET activo = false WHERE dni = ?";
@@ -139,6 +115,7 @@ public class UsuarioDAO {
         u.setContrasena(rs.getString("contrasena"));
         u.setRol(rs.getString("rol"));
         u.setCorreoElectronico(rs.getString("correo_electronico"));
+        u.setTelefono(rs.getString("telefono"));
         u.setIdGenero(rs.getInt("id_genero"));
         u.setIdPais(rs.getInt("id_pais"));
         u.setIdProvincia(rs.getInt("id_provincia"));

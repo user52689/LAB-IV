@@ -37,7 +37,7 @@
         </c:if>
 
         <!-- Formulario para buscar usuario por DNI -->
-        <form action="${pageContext.request.contextPath}/usuario/modificar" method="get" class="mt-4">
+        <form action="${pageContext.request.contextPath}/usuario/blanqueo" method="post" class="mt-4">
             <div class="mb-3">
                 <label for="dni" class="form-label">DNI del Usuario</label>
                 <input type="text" class="form-control" id="dni" name="dni" value="${param.dni}" required placeholder="Ej: 30123456" pattern="[0-9]{7,8}" />
@@ -65,7 +65,7 @@
 		            
 		            <p><strong>Contraseña que se asignará:</strong> 123456</p>
 		
-		            <form method="post" action="${pageContext.request.contextPath}/usuario/modificar" 
+		            <form method="post" action="${pageContext.request.contextPath}/usuario/blanqueo" 
 		                  onsubmit="return confirm('¿Estás seguro que querés blanquear la contraseña de este usuario?');">
 		                <input type="hidden" name="accion" value="blanquear" />
 		                <input type="hidden" name="dni" value="${usuario.dni}" />

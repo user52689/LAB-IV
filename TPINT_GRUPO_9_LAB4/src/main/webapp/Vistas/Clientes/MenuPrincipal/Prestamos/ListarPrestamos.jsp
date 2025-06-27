@@ -29,7 +29,7 @@
                 Prestamo(int id, double montoTotal, double saldoPendiente, Date fechaInicio, String estado) {
                     this.id = id;
                     this.montoTotal = montoTotal;
-                    this.saldoPendiente = saldoPendiente;
+                    this.saldoPendiente = saldoPendiente; 
                     this.fechaInicio = fechaInicio;
                     this.estado = estado;
                 }

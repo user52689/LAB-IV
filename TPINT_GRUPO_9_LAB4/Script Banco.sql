@@ -41,6 +41,7 @@ CREATE TABLE usuarios (
     contrasena VARCHAR(255) NOT NULL,
     rol VARCHAR(15) NOT NULL, -- 'admin' o 'cliente'
     correo_electronico VARCHAR(100) NULL UNIQUE,
+    telefono VARCHAR(50) NOT NULL,
     id_genero INT NOT NULL,
     id_pais INT NOT NULL,
     fecha_nacimiento DATE,
@@ -74,7 +75,7 @@ CREATE TABLE clientes (
     id_provincia INT NOT NULL,
     correo_electronico VARCHAR(150) NOT NULL UNIQUE,
 	contrasena VARCHAR(255) NOT NULL,
-    telefono VARCHAR(20) NOT NULL, 
+    telefono VARCHAR(50) NOT NULL, 
     usuario VARCHAR(50) NOT NULL UNIQUE,
     fecha_alta DATETIME DEFAULT CURRENT_TIMESTAMP,
     activo BOOLEAN DEFAULT TRUE,
@@ -344,26 +345,27 @@ INSERT INTO localidades (nombre_localidad, id_provincia) VALUES
 ('Santa Rosa', 15);
 
 INSERT INTO usuarios (
-    dni, nombre_usuario, contrasena, rol, correo_electronico,
+    dni, nombre_usuario, contrasena, rol, correo_electronico, telefono, 
     id_genero, id_pais, fecha_nacimiento, direccion,
     id_localidad, id_provincia
 ) VALUES
-('30111111', 'Abraham', '$2a$12$hF1zkgTjHhY4VeRxhtlvj.s347nI7kFIAMo4/muzYYzwMlBxijw8q' , 'admin', 'abraham@banco.com', 1, 1, '1980-01-01', 'Av. Siempre Viva 742', 1, 1),
-('30111112', 'Oscar',   '$2a$12$hF1zkgTjHhY4VeRxhtlvj.s347nI7kFIAMo4/muzYYzwMlBxijw8q' , 'admin', 'oscar@banco.com',   2, 1, '1985-05-05', 'Calle del Software 404', 1, 1),
-('30123456', 'user1', '$2a$12$hF1zkgTjHhY4VeRxhtlvj.s347nI7kFIAMo4/muzYYzwMlBxijw8q' , 'cliente', 'user1@ejemplo.com', 1, 1, '1990-01-01', 'Calle Falsa 123', 1, 1),
-('30123457', 'user2', 'dummyhash', 'admin', 'user2@ejemplo.com', 2, 1, '1991-02-02', 'Calle Falsa 124', 1, 1),
-('30123458', 'user3', 'dummyhash', 'admin', 'user3@ejemplo.com', 3, 1, '1992-03-03', 'Calle Falsa 125', 1, 1),
-('30123459', 'user4', 'dummyhash', 'admin', 'user4@ejemplo.com', 1, 1, '1993-04-04', 'Calle Falsa 126', 1, 1),
-('30123460', 'user5', 'dummyhash', 'admin', 'user5@ejemplo.com', 2, 1, '1994-05-05', 'Calle Falsa 127', 1, 1),
-('30123461', 'user6', 'dummyhash', 'admin', 'user6@ejemplo.com', 3, 1, '1995-06-06', 'Calle Falsa 128', 1, 1),
-('30123462', 'user7', 'dummyhash', 'admin', 'user7@ejemplo.com', 1, 1, '1996-07-07', 'Calle Falsa 129', 1, 1),
-('30123463', 'user8', 'dummyhash', 'admin', 'user8@ejemplo.com', 2, 1, '1997-08-08', 'Calle Falsa 130', 1, 1),
-('30123464', 'user9', 'dummyhash', 'admin', 'user9@ejemplo.com', 3, 1, '1998-09-09', 'Calle Falsa 131', 1, 1),
-('30123465', 'user10', 'dummyhash', 'admin', 'user10@ejemplo.com', 1, 1, '1999-10-10', 'Calle Falsa 132', 1, 1),
-('30123466', 'user11', 'dummyhash', 'admin', 'user11@ejemplo.com', 2, 1, '2000-11-11', 'Calle Falsa 133', 1, 1),
-('30123467', 'user12', 'dummyhash', 'admin', 'user12@ejemplo.com', 3, 1, '2001-12-12', 'Calle Falsa 134', 1, 1),
-('30123468', 'user13', 'dummyhash', 'admin', 'user13@ejemplo.com', 1, 1, '1990-01-01', 'Calle Falsa 135', 1, 1),
-('30123469', 'user14', 'dummyhash', 'admin', 'user14@ejemplo.com', 2, 1, '1991-02-02', 'Calle Falsa 136', 1, 1);
+('30111111', 'Abraham', '$2a$12$hF1zkgTjHhY4VeRxhtlvj.s347nI7kFIAMo4/muzYYzwMlBxijw8q', 'admin', 'abraham@banco.com', '1111111111', 1, 1, '1980-01-01', 'Av. Siempre Viva 742', 1, 1),
+('30111112', 'Oscar',   '$2a$12$hF1zkgTjHhY4VeRxhtlvj.s347nI7kFIAMo4/muzYYzwMlBxijw8q', 'admin', 'oscar@banco.com',   '2222222222', 2, 1, '1985-05-05', 'Calle del Software 404', 1, 1),
+('30123456', 'user1',    '$2a$12$hF1zkgTjHhY4VeRxhtlvj.s347nI7kFIAMo4/muzYYzwMlBxijw8q', 'cliente', 'user1@ejemplo.com', '3333333333', 1, 1, '1990-01-01', 'Calle Falsa 123', 1, 1),
+('30123457', 'user2',    'dummyhash', 'admin', 'user2@ejemplo.com', '3444444444', 2, 1, '1991-02-02', 'Calle Falsa 124', 1, 1),
+('30123458', 'user3',    'dummyhash', 'admin', 'user3@ejemplo.com', '3555555555', 3, 1, '1992-03-03', 'Calle Falsa 125', 1, 1),
+('30123459', 'user4',    'dummyhash', 'admin', 'user4@ejemplo.com', '3666666666', 1, 1, '1993-04-04', 'Calle Falsa 126', 1, 1),
+('30123460', 'user5',    'dummyhash', 'admin', 'user5@ejemplo.com', '3777777777', 2, 1, '1994-05-05', 'Calle Falsa 127', 1, 1),
+('30123461', 'user6',    'dummyhash', 'admin', 'user6@ejemplo.com', '3888888888', 3, 1, '1995-06-06', 'Calle Falsa 128', 1, 1),
+('30123462', 'user7',    'dummyhash', 'admin', 'user7@ejemplo.com', '3999999999', 1, 1, '1996-07-07', 'Calle Falsa 129', 1, 1),
+('30123463', 'user8',    'dummyhash', 'admin', 'user8@ejemplo.com', '4000000000', 2, 1, '1997-08-08', 'Calle Falsa 130', 1, 1),
+('30123464', 'user9',    'dummyhash', 'admin', 'user9@ejemplo.com', '4111111111', 3, 1, '1998-09-09', 'Calle Falsa 131', 1, 1),
+('30123465', 'user10',   'dummyhash', 'admin', 'user10@ejemplo.com', '4222222222', 1, 1, '1999-10-10', 'Calle Falsa 132', 1, 1),
+('30123466', 'user11',   'dummyhash', 'admin', 'user11@ejemplo.com', '4333333333', 2, 1, '2000-11-11', 'Calle Falsa 133', 1, 1),
+('30123467', 'user12',   'dummyhash', 'admin', 'user12@ejemplo.com', '4444444444', 3, 1, '2001-12-12', 'Calle Falsa 134', 1, 1),
+('30123468', 'user13',   'dummyhash', 'admin', 'user13@ejemplo.com', '4555555555', 1, 1, '1990-01-01', 'Calle Falsa 135', 1, 1),
+('30123469', 'user14',   'dummyhash', 'admin', 'user14@ejemplo.com', '4666666666', 2, 1, '1991-02-02', 'Calle Falsa 136', 1, 1);
+
 
 INSERT INTO tipos_cuenta (descripcion) VALUES
 ('Cuenta Sueldo'),
@@ -518,5 +520,3 @@ INSERT INTO cuotas (id_prestamo, numero_cuota, monto_cuota, fecha_vencimiento, a
 (13, 1, 8499.99, DATE_ADD(CURDATE(), INTERVAL 1 MONTH), TRUE),
 (14, 1, 9980.00, DATE_ADD(CURDATE(), INTERVAL 1 MONTH), TRUE),
 (15, 1, 7750.00, DATE_ADD(CURDATE(), INTERVAL 1 MONTH), TRUE);
-
-

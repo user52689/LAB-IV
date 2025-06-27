@@ -28,14 +28,14 @@
 
 <main class="flex-grow-1 bg-light p-4">
     <div class="container w-50 mx-auto">
-        <h2 class="mb-4 text-center">Perfil de Cliente</h2>
+        <h2 class="mb-4 text-center">Perfil de Cliente</h2> 
 
         <%
             // Simulamos datos del cliente
             String nombreCliente = "Oscar Príncipi";
             String dni = "30123456";
             String email = "oscar@ejemplo.com";
-            String telefono = "1167891234";
+            String telefono = "1167891234"; 
             String direccion = "Av. Siempreviva 123, CABA";
             Date fechaNacimiento = new GregorianCalendar(1990, Calendar.MARCH, 15).getTime();
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -45,7 +45,7 @@
             <div class="mb-3 row align-items-center">
                 <label for="nombre" class="col-sm-3 col-form-label">Nombre completo</label>
                 <div class="col-sm-9">
-                    <input type="text" id="nombre" name="nombre" class="form-control" value="<%= nombre %>" readonly />
+                    <input type="text" id="nombre" name="nombre" class="form-control" value="<%= nombreCliente %>" readonly />
                 </div>
             </div>
 

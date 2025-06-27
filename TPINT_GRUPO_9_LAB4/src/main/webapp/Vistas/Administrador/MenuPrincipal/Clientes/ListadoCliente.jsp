@@ -70,7 +70,7 @@
                                     <td>${cliente.telefono}</td>
                                     <td>${cliente.usuario}</td>
                                     <td>
-                                        <a href="${pageContext.request.contextPath}/Vistas/Administrador/Clientes/ModificacionCliente.jsp?dni=${cliente.dni}" 
+                                        <a href="${pageContext.request.contextPath}/cliente/modificar?context=baja&dni=${cliente.dni}" 
                                            class="btn btn-sm btn-warning" title="Modificar">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
@@ -83,7 +83,7 @@
                             </c:forEach>
                         </tbody>
                     </table>
-                </div>
+                </div> 
             </c:when>
             <c:when test="${empty listaClientes and dni != null and dni != ''}">
                 <div class="alert alert-warning mt-4" role="alert">

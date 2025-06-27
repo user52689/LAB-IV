@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/usuario/modificar")
-public class UsuarioModificarServlet extends HttpServlet {
+@WebServlet("/usuario/blanqueo")
+public class UsuarioBlanqueoContrasenaServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private UsuarioNegocio usuarioNegocio;
 
@@ -38,7 +38,7 @@ public class UsuarioModificarServlet extends HttpServlet {
                 request.setAttribute("mensajeError", "Error al buscar usuario: " + e.getMessage());
             }
         }
-        request.getRequestDispatcher("/Vistas/Administrador/MenuPrincipal/Usuarios/ModificacionUsuario.jsp").forward(request, response);
+        request.getRequestDispatcher("/Vistas/Administrador/MenuPrincipal/Usuarios/BlanqueoContrasenaUsuario.jsp").forward(request, response);
     }
     
     @Override
@@ -69,7 +69,7 @@ public class UsuarioModificarServlet extends HttpServlet {
             request.setAttribute("mensajeError", "Parámetros inválidos.");
         }
 
-        request.getRequestDispatcher("/Vistas/Administrador/MenuPrincipal/Usuarios/ModificacionUsuario.jsp").forward(request, response);
+        request.getRequestDispatcher("/Vistas/Administrador/MenuPrincipal/Usuarios/BlanqueoContrasenaUsuario.jsp").forward(request, response);
     }
 }
 

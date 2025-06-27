@@ -26,7 +26,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
             </div>
         <%
-            }
+            } 
         %>
 
         <%

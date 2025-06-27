@@ -29,7 +29,7 @@
             NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance(new Locale("es", "AR"));
         %>
 
-        <h2 class="mb-4 text-center">Detalle del Préstamo</h2>
+        <h2 class="mb-4 text-center">Detalle del Préstamo</h2> 
 
         <table class="table table-bordered">
             <tbody>

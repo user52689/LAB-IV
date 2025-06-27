@@ -33,7 +33,7 @@
                         <h5 class="mt-3">Pedir Préstamo</h5>
                         <p class="text-muted">Solicitá un nuevo préstamo</p>
                     </div>
-                </a>
+                </a> 
             </div>
 
             <!-- Listar Préstamos del Cliente -->

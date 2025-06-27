@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import Modelo.Cliente;
 import Negocio.ClienteNegocio;
 
-@WebServlet("/cliente/modificar")
-public class ClienteModificarServlet extends HttpServlet {
+@WebServlet("/cliente/blanqueo")
+public class ClienteBlanqueoContrasenaServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private ClienteNegocio clienteNegocio;
 
@@ -36,7 +36,7 @@ public class ClienteModificarServlet extends HttpServlet {
                 req.setAttribute("mensajeError", "Error al buscar cliente: " + e.getMessage());
             }
         }
-        req.getRequestDispatcher("/Vistas/Administrador/MenuPrincipal/Clientes/ModificacionCliente.jsp").forward(req, resp);
+        req.getRequestDispatcher("/Vistas/Administrador/MenuPrincipal/Clientes/BlanqueoContrasenaCliente.jsp").forward(req, resp);
     }
 
 
@@ -63,7 +63,7 @@ public class ClienteModificarServlet extends HttpServlet {
             } catch (Exception e) {
                 req.setAttribute("mensajeError", "Error al blanquear la contraseña: " + e.getMessage());
             }
-            req.getRequestDispatcher("/Vistas/Administrador/MenuPrincipal/Clientes/ModificacionCliente.jsp").forward(req, resp);
+            req.getRequestDispatcher("/Vistas/Administrador/MenuPrincipal/Clientes/BlanqueoContrasenaCliente.jsp").forward(req, resp);
         
         } else {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Acción no válida o parámetros incompletos");

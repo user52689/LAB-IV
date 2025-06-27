@@ -28,7 +28,7 @@
 	    }
 	</style>
 </head>
-<body class="d-flex flex-column min-vh-100">
+<body class="d-flex flex-column min-vh-100"> 
 
 <!-- CABECERA -->
 <header class="bg-primary text-white text-center py-4 shadow">

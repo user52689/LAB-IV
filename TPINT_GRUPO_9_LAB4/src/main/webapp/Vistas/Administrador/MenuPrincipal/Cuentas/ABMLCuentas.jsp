@@ -32,7 +32,7 @@
             <div class="col-md-3">
                 <a href="ModificacionCuenta.jsp" class="btn btn-warning text-white w-100">
                     <i class="bi bi-pencil-fill me-1"></i> Modificar Cuenta
-                </a>
+                </a> 
             </div>
             <div class="col-md-3">
                 <a href="${pageContext.request.contextPath}/Cuentas/listar" class="btn btn-primary w-100">

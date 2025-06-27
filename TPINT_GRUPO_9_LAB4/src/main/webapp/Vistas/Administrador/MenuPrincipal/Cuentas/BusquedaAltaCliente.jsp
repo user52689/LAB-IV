@@ -28,7 +28,7 @@
     Cliente cliente = new Cliente("Juan", "Pérez", "12345678");
     List<Cuenta> cuentas = new ArrayList<>();
     cuentas.add(new Cuenta("001-12345-6", "Caja de Ahorro", "ARS", 10000));
-    cuentas.add(new Cuenta("002-54321-9", "Cuenta Corriente", "USD", 5000));
+    cuentas.add(new Cuenta("002-54321-9", "Cuenta Corriente", "USD", 5000)); 
 %>
 
 <!DOCTYPE html>

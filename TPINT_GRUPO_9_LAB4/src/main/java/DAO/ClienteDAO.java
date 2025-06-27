@@ -76,30 +76,21 @@ public class ClienteDAO {
     }
     
     public boolean modificarCliente(Cliente c) throws SQLException {
-        String sql = "UPDATE clientes SET dni=?, cuil=?, nombre=?, apellido=?, genero=?, pais=?, fechaNacimiento=?, direccion=?, localidad=?, provincia=?, correoElectronico=?, telefono=?, usuario=?, fechaAlta=?, activo=? "
-                   + "WHERE idCliente=?";
+        String sql = "UPDATE clientes SET nombre = ?, apellido = ?, correo_electronico = ?, telefono = ?, direccion = ? WHERE dni = ?";
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
-            ps.setString(1, c.getDni());
-            ps.setString(2, c.getCuil());
-            ps.setString(3, c.getNombre());
-            ps.setString(4, c.getApellido());
-            ps.setInt(5, c.getGenero());
-            ps.setInt(6, c.getPais());
-            ps.setDate(7, Date.valueOf(c.getFechaNacimiento()));
-            ps.setString(8, c.getDireccion());
-            ps.setInt(9, c.getLocalidad());
-            ps.setInt(10, c.getProvincia());
-            ps.setString(11, c.getCorreoElectronico());
-            ps.setString(12, c.getTelefono());
-            ps.setString(13, c.getUsuario());
-            ps.setTimestamp(14, Timestamp.valueOf(c.getFechaAlta()));
-            ps.setBoolean(15, c.isActivo());
-            ps.setInt(16, c.getIdCliente());
-
+            ps.setString(1, c.getNombre());
+            ps.setString(2, c.getApellido());
+            ps.setString(3, c.getCorreoElectronico());
+            ps.setString(4, c.getTelefono());
+            ps.setString(5, c.getDireccion());
+            ps.setString(6, c.getDni());
+            
             int filas = ps.executeUpdate();
             return filas > 0;
         }
-    }        
+    }
+
+       
 
     public boolean borrarClientePorDni(String dni) throws SQLException {
         String sql = "UPDATE clientes SET activo = false WHERE dni = ?";

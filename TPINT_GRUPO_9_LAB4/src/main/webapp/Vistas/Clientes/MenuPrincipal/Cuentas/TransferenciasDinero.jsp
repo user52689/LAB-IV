@@ -32,7 +32,7 @@
 
 <main class="flex-grow-1 bg-light p-4">
     <div class="container w-50 mx-auto">
-        <h2 class="mb-4">Transferir Dinero</h2>
+        <h2 class="mb-4">Transferir Dinero</h2> 
 
         <%
             class Cuenta {

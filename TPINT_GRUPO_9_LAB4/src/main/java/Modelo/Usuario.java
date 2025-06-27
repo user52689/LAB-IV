@@ -10,6 +10,7 @@ public class Usuario {
     private String contrasena;
     private String rol;
     private String correoElectronico;
+    private String telefono;
     private int idGenero;
     private int idPais;
     private LocalDate fechaNacimiento;
@@ -158,4 +159,12 @@ public class Usuario {
     public boolean esCliente() {
         return "cliente".equalsIgnoreCase(rol);
     }
+
+	public String getTelefono() {
+		return telefono;
+	}
+
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
 }

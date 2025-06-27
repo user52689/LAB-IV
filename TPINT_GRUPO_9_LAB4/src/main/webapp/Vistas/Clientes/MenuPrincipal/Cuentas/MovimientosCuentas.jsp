@@ -31,7 +31,7 @@
                     this.fecha = fecha;
                     this.descripcion = descripcion;
                     this.tipo = tipo;
-                    this.monto = monto;
+                    this.monto = monto; 
                 }
             }
 

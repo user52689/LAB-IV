@@ -34,7 +34,7 @@
                         <i class="bi bi-wallet2 text-primary" style="font-size: 2.5rem;"></i>
                         <h5 class="mt-3">Cuentas</h5>
                         <p class="text-muted">Ver y administrar tus cuentas bancarias</p>
-                    </div>
+                    </div> 
                 </a>
             </div>
 

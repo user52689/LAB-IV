@@ -33,11 +33,11 @@
         <c:if test="${not empty mensajeError}">
             <div class="alert alert-danger mt-3" role="alert">
                 <i class="bi bi-exclamation-triangle-fill me-2"></i>${mensajeError}
-            </div>
+            </div> 
         </c:if>
 
         <!-- Formulario para buscar cliente por DNI -->
-        <form action="${pageContext.request.contextPath}/cliente/modificar" method="get" class="mt-4">
+        <form action="${pageContext.request.contextPath}/cliente/blanqueo" method="get" class="mt-4">
             <div class="mb-3">
                 <label for="dni" class="form-label">DNI del Cliente</label>
                 <input type="text" class="form-control" id="dni" name="dni" value="${param.dni}" required pattern="[0-9]{7,8}" placeholder="Ej: 30123456" />
@@ -64,7 +64,7 @@
                     
                     <p><strong>Contraseña que se asignará:</strong> 123456</p>
 
-                    <form method="post" action="${pageContext.request.contextPath}/cliente/blanquear" 
+                    <form method="post" action="${pageContext.request.contextPath}/cliente/blanqueo" 
                           onsubmit="return confirm('¿Estás seguro que querés blanquear la contraseña de este cliente?');">
                         <input type="hidden" name="accion" value="blanquear" />
                         <input type="hidden" name="dni" value="${cliente.dni}" />

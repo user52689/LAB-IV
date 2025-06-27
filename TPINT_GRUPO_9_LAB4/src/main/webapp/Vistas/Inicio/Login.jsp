@@ -26,7 +26,7 @@
             </div>
         <% } %>
         <form action="${pageContext.request.contextPath}/LoginServlet" method="post">
-            <div class="mb-3">
+            <div class="mb-3"> 
                 <label for="nombreUsuario" class="form-label">Usuario</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-person-fill"></i></span>

@@ -55,6 +55,7 @@
 						        <th>Usuario</th>
 						        <th>Rol</th>
 						        <th>Email</th>
+						        <th>Teléfono</th>
 						        <th>Fecha Creación</th>
 						        <th>Último Acceso</th>
 						        <th>Activo</th>
@@ -65,10 +66,11 @@
 						    <c:forEach var="usuario" items="${listaUsuarios}">
 						        <tr>
 						            <td>${usuario.idUsuario}</td>
-						            <td>${usuario.dni}</td> 
+						            <td>${usuario.dni}</td>
 						            <td>${usuario.nombreUsuario}</td>
 						            <td>${usuario.rol}</td>
 						            <td>${usuario.correoElectronico}</td>
+						            <td>${usuario.telefono}</td>						            
 						            <td>${usuario.fechaCreacion}</td>
 						            <td><c:out value="${usuario.ultimoAcceso != null ? usuario.ultimoAcceso : 'Nunca'}"/></td>
 						            <td>
@@ -82,7 +84,7 @@
 						                </c:choose>
 						            </td>
 						            <td>
-						                <a href="${pageContext.request.contextPath}/Vistas/Administrador/Usuarios/ModificacionUsuario.jsp?id=${usuario.idUsuario}" 
+						                <a href="${pageContext.request.contextPath}/usuario/modificar?dni=${usuario.dni}" 
 						                   class="btn btn-sm btn-warning" title="Modificar">
 						                    <i class="bi bi-pencil-square"></i>
 						                </a>
