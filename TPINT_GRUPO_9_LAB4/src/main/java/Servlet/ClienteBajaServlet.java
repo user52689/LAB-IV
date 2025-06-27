@@ -44,7 +44,7 @@ public class ClienteBajaServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String dni = req.getParameter("dni");
+    	String dni = req.getParameter("dni");
         boolean exito = false;
 		try {
 			exito = clienteNegocio.borrarClientePorDni(dni);

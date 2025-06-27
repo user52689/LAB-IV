@@ -25,7 +25,7 @@
                 </a>
             </div>
             <div class="col-md-3">
-                <a href="BajaCuenta.jsp" class="btn btn-danger w-100">
+                <a href="${pageContext.request.contextPath}/Cuentas/baja" class="btn btn-danger w-100">
                     <i class="bi bi-dash-square-fill me-1"></i> Baja Cuenta
                 </a>
             </div>
