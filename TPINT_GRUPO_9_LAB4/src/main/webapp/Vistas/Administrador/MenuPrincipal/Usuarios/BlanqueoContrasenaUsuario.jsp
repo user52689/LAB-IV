@@ -36,8 +36,7 @@
             </div>
         </c:if>
 
-        <!-- Formulario para buscar usuario por DNI -->
-        <form action="${pageContext.request.contextPath}/usuario/blanqueo" method="post" class="mt-4">
+        <form action="${pageContext.request.contextPath}/usuario/blanqueo" method="get" class="mt-4">
             <div class="mb-3">
                 <label for="dni" class="form-label">DNI del Usuario</label>
                 <input type="text" class="form-control" id="dni" name="dni" value="${param.dni}" required placeholder="Ej: 30123456" pattern="[0-9]{7,8}" />
