@@ -20,25 +20,31 @@
 
         <div class="row justify-content-center g-3">
             <div class="col-md-3">
-			<a href="${pageContext.request.contextPath}/usuario/alta" class="btn btn-success w-100">
-			    <i class="bi bi-person-plus-fill me-1"></i> Alta Usuario
-			</a>
-
+                <a href="${pageContext.request.contextPath}/usuario/alta" class="btn btn-success w-100">
+                    <i class="bi bi-person-plus-fill me-1"></i> Alta Usuario
+                </a>
             </div>
             <div class="col-md-3">
                 <a href="BajaUsuario.jsp" class="btn btn-danger w-100">
                     <i class="bi bi-person-dash-fill me-1"></i> Baja Usuario
                 </a>
-            </div>
+            </div> 
             <div class="col-md-3">
-                <a href="ModificacionUsuario.jsp" class="btn btn-warning text-white w-100">
+                <a href="${pageContext.request.contextPath}/Vistas/Administrador/MenuPrincipal/Usuarios/ModificacionUsuario.jsp" 
+                   class="btn btn-warning text-white w-100">
                     <i class="bi bi-pencil-square me-1"></i> Modificar Usuario
                 </a>
             </div>
             <div class="col-md-3">
-				<a href="${pageContext.request.contextPath}/usuario/listar?mostrarTodos=true" class="btn btn-primary w-100">
-				    <i class="bi bi-people-fill me-1"></i> Listado de Usuarios
-				</a>
+                <a href="${pageContext.request.contextPath}/Vistas/Administrador/MenuPrincipal/Usuarios/BlanqueoContrasenaUsuario.jsp" 
+                   class="btn btn-info text-white w-100">
+                    <i class="bi bi-key-fill me-1"></i> Blanquear Contraseña Usuario
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a href="${pageContext.request.contextPath}/usuario/listar?mostrarTodos=true" class="btn btn-primary w-100">
+                    <i class="bi bi-people-fill me-1"></i> Listado de Usuarios
+                </a>
             </div>
             <div class="mb-3 row mt-4">
                 <div class="col-sm-12 text-center">
@@ -50,6 +56,7 @@
         </div>
     </div>
 </main>
+
 
 <!-- PIE -->
 <%@ include file="../../../Componentes/footer.jspf" %>

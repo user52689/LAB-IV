@@ -27,8 +27,8 @@
                        value="${nroCuenta != null ? nroCuenta : ''}" />
             </div>
             <div class="col-md-2">
-                <button type="submit" class="btn btn-primary" name="accion" value="buscar">
-                    <i class="bi bi-search"></i> Buscar
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-search"></i> Buscar 
                 </button>
             </div>
             <div class="col-md-2">

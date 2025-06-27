@@ -1,91 +1,104 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Blanqueo de Contraseña de Cliente - MiBanco</title>
+    <meta charset="UTF-8" />
+    <title>Modificar Perfil de Cliente - MiBanco</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
 </head>
 <body class="d-flex flex-column min-vh-100">
 
-<!-- CABECERA -->
 <%@ include file="../../../Componentes/header.jspf" %>
 
-<!-- CUERPO -->
 <main class="flex-grow-1 bg-light p-4">
-    <div class="container">
+    <div class="container w-50 mx-auto">
+        <h2 class="mb-4 text-center">Modificar Perfil de Cliente</h2>
 
-        <h2 class="mb-4 text-warning">
-            <i class="bi bi-pencil-square me-2"></i>Blanqueo de Contraseña de Cliente
-        </h2>
-
-        <p>Desde acá podés blanquear la contraseña de un cliente. Una vez hecho esto, el cliente deberá asignar una nueva contraseña al iniciar sesión.</p>
-
-        <!-- Mensajes de éxito o error -->
-        <c:if test="${not empty mensajeExito}">
-            <div class="alert alert-success mt-3" role="alert">
-                <i class="bi bi-check-circle-fill me-2"></i>${mensajeExito}
-            </div>
+        <c:if test="${mensajeExito != null && !mensajeExito.trim().isEmpty()}">
+          <div class="alert alert-success" role="alert">${mensajeExito}</div>
         </c:if>
-        <c:if test="${not empty mensajeError}">
-            <div class="alert alert-danger mt-3" role="alert">
-                <i class="bi bi-exclamation-triangle-fill me-2"></i>${mensajeError}
-            </div>
+        
+        <c:if test="${mensajeError != null && !mensajeError.trim().isEmpty()}">
+          <div class="alert alert-danger" role="alert">${mensajeError}</div>
         </c:if>
 
-        <!-- Formulario para buscar cliente por DNI -->
-        <form action="${pageContext.request.contextPath}/cliente/modificar" method="get" class="mt-4">
-            <div class="mb-3">
-                <label for="dni" class="form-label">DNI del Cliente</label>
-                <input type="text" class="form-control" id="dni" name="dni" value="${param.dni}" required pattern="[0-9]{7,8}" placeholder="Ej: 30123456" />
+        <form action="${pageContext.request.contextPath}/cliente/modificar" method="get" class="row g-3 needs-validation" novalidate>
+            <div class="col-md-8">
+                <label for="dniBuscar" class="form-label">Buscar cliente por DNI</label>
+                <input type="text" id="dniBuscar" name="dni" class="form-control" pattern="\d{6,20}" placeholder="Ej: 30123456" required />
+                <div class="invalid-feedback">Ingresá un DNI válido (solo números).</div>
             </div>
-
-            <button type="submit" class="btn btn-warning text-white">
-                <i class="bi bi-search me-2"></i>Buscar Cliente
-            </button>
+            <div class="col-md-4 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Buscar</button>
+            </div>
         </form>
 
-        <c:choose>
-            <c:when test="${not empty cliente}">
-                <div class="alert alert-warning mt-4" role="alert">
-                    <h5>Cliente encontrado</h5>
-                    <p>
-                        <strong>DNI:</strong> ${cliente.dni}<br/>
-                        <strong>Nombre:</strong> ${cliente.nombre} ${cliente.apellido}<br/>
-                        <strong>Correo:</strong> 
-                        <c:choose>
-                            <c:when test="${not empty cliente.correoElectronico}">${cliente.correoElectronico}</c:when>
-                            <c:otherwise>No registrado</c:otherwise>
-                        </c:choose>
-                    </p>
-                    
-                    <p><strong>Contraseña que se asignará:</strong> 123456</p>
+        <hr />
 
-                    <form method="post" action="${pageContext.request.contextPath}/cliente/blanquear" 
-                          onsubmit="return confirm('¿Estás seguro que querés blanquear la contraseña de este cliente?');">
-                        <input type="hidden" name="accion" value="blanquear" />
-                        <input type="hidden" name="dni" value="${cliente.dni}" />
-                        <input type="hidden" name="contrasena" value="123456" />
-                        <button type="submit" class="btn btn-warning">
-                            <i class="bi bi-key-fill me-2"></i>Confirmar Blanqueo de Contraseña
+        <c:if test="${not empty cliente}">
+            <form action="${pageContext.request.contextPath}/cliente/modificar" method="post" class="needs-validation" novalidate>
+                <!-- DNI no editable -->
+                <div class="mb-3 row">
+                    <label for="dni" class="col-sm-3 col-form-label">DNI</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="dni" name="dni" class="form-control" value="${cliente.dni}" readonly />
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="nombre" class="col-sm-3 col-form-label">Nombre</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="nombre" name="nombre" class="form-control" value="${cliente.nombre}" required />
+                        <div class="invalid-feedback">Ingrese un nombre válido.</div>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="apellido" class="col-sm-3 col-form-label">Apellido</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="apellido" name="apellido" class="form-control" value="${cliente.apellido}" required />
+                        <div class="invalid-feedback">Ingrese un apellido válido.</div>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="correoElectronico" class="col-sm-3 col-form-label">Correo Electrónico</label>
+                    <div class="col-sm-9">
+                        <input type="email" id="correoElectronico" name="correoElectronico" class="form-control" value="${cliente.correoElectronico}" required />
+                        <div class="invalid-feedback">Ingrese un correo válido.</div>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="telefono" class="col-sm-3 col-form-label">Teléfono</label>
+                    <div class="col-sm-9">
+                        <input type="tel" id="telefono" name="telefono" class="form-control" value="${cliente.telefono}" />
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="direccion" class="col-sm-3 col-form-label">Dirección</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="direccion" name="direccion" class="form-control" value="${cliente.direccion}" />
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <div class="col-sm-12 text-center">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-save me-2"></i>Guardar Cambios
                         </button>
-                    </form>
+                    </div>
                 </div>
-            </c:when>
-
-            <c:when test="${empty cliente and not empty param.dni and empty mensajeExito}">
-                <div class="alert alert-danger mt-4" role="alert">
-                    No se encontró ningún cliente con DNI ${param.dni}.
-                </div>
-            </c:when>
-        </c:choose>
+            </form>
+        </c:if>
 
         <div class="mb-3 row mt-3">
             <div class="col-sm-12 text-center">
-                <a href="${pageContext.request.contextPath}/Vistas/Administrador/MenuPrincipal/Clientes/ABMLClientes.jsp" class="btn btn-secondary">
+                <a href="${pageContext.request.contextPath}/MenuPrincipal/Clientes/ABMLClientes.jsp" class="btn btn-secondary">
                     <i class="bi bi-box-arrow-left"></i> Volver
                 </a>
             </div>
@@ -94,9 +107,25 @@
     </div>
 </main>
 
-<!-- PIE -->
 <%@ include file="../../../Componentes/footer.jspf" %>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+(() => {
+  'use strict'
+  const forms = document.querySelectorAll('.needs-validation')
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+      form.classList.add('was-validated')
+    }, false)
+  })
+})()
+</script>
+
 </body>
 </html>

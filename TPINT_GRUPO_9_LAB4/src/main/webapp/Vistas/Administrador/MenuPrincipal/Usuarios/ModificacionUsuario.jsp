@@ -1,93 +1,95 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Blanqueo de Contraseña de Usuario - MiBanco</title>
+    <meta charset="UTF-8" />
+    <title>Modificar Perfil de Usuario - MiBanco</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
 </head>
 <body class="d-flex flex-column min-vh-100">
 
-<!-- CABECERA -->
 <%@ include file="../../../Componentes/header.jspf" %>
 
-<!-- CUERPO -->
 <main class="flex-grow-1 bg-light p-4">
-    <div class="container">
+    <div class="container w-50 mx-auto">
+        <h2 class="mb-4 text-center">Modificar Perfil de Usuario</h2>
 
-        <h2 class="mb-4 text-warning">
-            <i class="bi bi-pencil-square me-2"></i>Blanqueo de Contraseña de Usuario
-        </h2>
+		<c:if test="${mensajeExito != null && !mensajeExito.trim().isEmpty()}">
+		  <div class="alert alert-success" role="alert">${mensajeExito}</div>
+		</c:if>
+		
+		<c:if test="${mensajeError != null && !mensajeError.trim().isEmpty()}">
+		  <div class="alert alert-danger" role="alert">${mensajeError}</div>
+		</c:if>
 
-        <p>Desde acá podés blanquear la contraseña de un usuario administrador. Una vez hecho esto, el usuario deberá actualizar su contraseña.</p>
-
-        <!-- Mensajes de éxito o error -->
-        <c:if test="${not empty mensajeExito}">
-            <div class="alert alert-success mt-3" role="alert">
-                <i class="bi bi-check-circle-fill me-2"></i>${mensajeExito}
+        <form action="${pageContext.request.contextPath}/usuario/modificar" method="get" class="row g-3 needs-validation" novalidate>
+            <div class="col-md-8">
+                <label for="dniBuscar" class="form-label">Buscar usuario por DNI</label>
+                <input type="text" id="dniBuscar" name="dni" class="form-control" pattern="\d{6,20}" placeholder="Ej: 30123456" required />
+                <div class="invalid-feedback">Ingresá un DNI válido (solo números).</div>
             </div>
-        </c:if>
-        <c:if test="${not empty mensajeError}">
-            <div class="alert alert-danger mt-3" role="alert">
-                <i class="bi bi-exclamation-triangle-fill me-2"></i>${mensajeError}
+            <div class="col-md-4 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Buscar</button>
             </div>
-        </c:if>
-
-        <!-- Formulario para buscar usuario por DNI -->
-        <form action="${pageContext.request.contextPath}/usuario/modificar" method="get" class="mt-4">
-            <div class="mb-3">
-                <label for="dni" class="form-label">DNI del Usuario</label>
-                <input type="text" class="form-control" id="dni" name="dni" value="${param.dni}" required placeholder="Ej: 30123456" pattern="[0-9]{7,8}" />
-            </div>
-
-            <button type="submit" class="btn btn-warning text-white">
-                <i class="bi bi-search me-2"></i>Buscar Usuario
-            </button>
         </form>
 
-		<c:choose>
-		    <c:when test="${not empty usuario}">
-		        <div class="alert alert-warning mt-4" role="alert">
-		            <h5>Usuario encontrado</h5>
-		            <p>
-		                <strong>DNI:</strong> ${usuario.dni}<br/>
-		                <strong>Usuario:</strong> ${usuario.nombreUsuario}<br/>
-		                <strong>Rol:</strong> ${usuario.rol}<br/>
-		                <strong>Correo:</strong> 
-		                <c:choose>
-		                    <c:when test="${not empty usuario.correoElectronico}">${usuario.correoElectronico}</c:when>
-		                    <c:otherwise>No registrado</c:otherwise>
-		                </c:choose>
-		            </p>
-		            
-		            <p><strong>Contraseña que se asignará:</strong> 123456</p>
-		
-		            <form method="post" action="${pageContext.request.contextPath}/usuario/modificar" 
-		                  onsubmit="return confirm('¿Estás seguro que querés blanquear la contraseña de este usuario?');">
-		                <input type="hidden" name="accion" value="blanquear" />
-		                <input type="hidden" name="dni" value="${usuario.dni}" />
-		                <input type="hidden" name="contrasena" value="123456" />
-		                <button type="submit" class="btn btn-warning">
-		                    <i class="bi bi-key-fill me-2"></i>Confirmar Blanqueo de Contraseña
-		                </button>
-		            </form>
-		        </div>
-		    </c:when>
-		
-		    <c:when test="${empty usuario and not empty param.dni and empty mensajeExito}">
-		        <div class="alert alert-danger mt-4" role="alert">
-		            No se encontró ningún usuario con DNI ${param.dni}.
-		        </div>
-		    </c:when>
-		</c:choose>
+        <hr />
 
+        <c:if test="${not empty usuario}">
+            <form action="${pageContext.request.contextPath}/usuario/modificar" method="post" class="needs-validation" novalidate>
+                <!-- DNI no editable -->
+                <div class="mb-3 row">
+                    <label for="dni" class="col-sm-3 col-form-label">DNI</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="dni" name="dni" class="form-control" value="${usuario.dni}" readonly />
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="nombreUsuario" class="col-sm-3 col-form-label">Nombre de Usuario</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="nombreUsuario" name="nombreUsuario" class="form-control" value="${usuario.nombreUsuario}" readonly />
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="correoElectronico" class="col-sm-3 col-form-label">Correo Electrónico</label>
+                    <div class="col-sm-9">
+                        <input type="email" id="correoElectronico" name="correoElectronico" class="form-control" value="${usuario.correoElectronico}" required />
+                        <div class="invalid-feedback">Ingrese un correo electrónico válido.</div>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="telefono" class="col-sm-3 col-form-label">Teléfono</label>
+                    <div class="col-sm-9">
+                        <input type="tel" id="telefono" name="telefono" class="form-control" value="${usuario.telefono}" />
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="direccion" class="col-sm-3 col-form-label">Dirección</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="direccion" name="direccion" class="form-control" value="${usuario.direccion}" />
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <div class="col-sm-12 text-center">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-save me-2"></i>Guardar Cambios
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </c:if>
 
         <div class="mb-3 row mt-3">
             <div class="col-sm-12 text-center">
-                <a href="${pageContext.request.contextPath}/Vistas/Administrador/MenuPrincipal/Usuarios/ABMLUsuarios.jsp" class="btn btn-secondary">
+                <a href="${pageContext.request.contextPath}/MenuPrincipal/Usuarios/ABMLUsuarios.jsp" class="btn btn-secondary">
                     <i class="bi bi-box-arrow-left"></i> Volver
                 </a>
             </div>
@@ -96,9 +98,25 @@
     </div>
 </main>
 
-<!-- PIE -->
 <%@ include file="../../../Componentes/footer.jspf" %>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+(() => {
+  'use strict'
+  const forms = document.querySelectorAll('.needs-validation')
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+      form.classList.add('was-validated')
+    }, false)
+  })
+})()
+</script>
+
 </body>
 </html>

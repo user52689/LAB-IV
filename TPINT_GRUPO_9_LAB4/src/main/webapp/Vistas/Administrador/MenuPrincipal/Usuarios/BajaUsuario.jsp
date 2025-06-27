@@ -20,7 +20,7 @@
         <h2 class="mb-4 text-danger"><i class="bi bi-person-dash-fill me-2"></i>Baja de Usuario</h2>
         <p>Buscá un usuario por nombre para darlo de baja del sistema.</p>
 
-        <form method="get" action="${pageContext.request.contextPath}/usuario/baja" class="row g-3 mb-4">
+        <form method="post" action="${pageContext.request.contextPath}/usuario/baja" class="row g-3 mb-4">
             <input type="hidden" name="context" value="baja" />
             <div class="col-md-4">
                 <input type="text" name="dni" class="form-control" placeholder="Buscar por DNI" value="${dniBuscado != null ? dniBuscado : ''}" />

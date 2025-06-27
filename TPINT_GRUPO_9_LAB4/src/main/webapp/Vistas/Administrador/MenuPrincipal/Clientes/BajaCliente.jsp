@@ -27,7 +27,7 @@
                        value="${dniBuscado != null ? dniBuscado : ''}" />
             </div>
             <div class="col-md-2">
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-primary"> 
                     <i class="bi bi-search"></i> Buscar
                 </button>
             </div>

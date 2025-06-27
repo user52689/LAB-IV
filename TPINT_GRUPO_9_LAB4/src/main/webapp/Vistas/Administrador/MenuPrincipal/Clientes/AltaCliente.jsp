@@ -27,7 +27,7 @@
 
     <c:if test="${not empty mensajeError}">
         <div class="alert alert-danger mt-4" role="alert">
-            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <i class="bi bi-exclamation-triangle-fill me-2"></i> 
             ${mensajeError}
         </div>
     </c:if>

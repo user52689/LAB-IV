@@ -58,6 +58,12 @@
                 <input type="email" class="form-control" id="correo_electronico" name="correo_electronico" required />
                 <div class="invalid-feedback">Ingresá un correo válido.</div>
             </div>
+            
+			<div class="col-md-4">
+			    <label for="telefono" class="form-label">Teléfono</label>
+			    <input type="tel" class="form-control" id="telefono" name="telefono" pattern="[0-9]{6,20}" required placeholder="Ej: 1122334455" />
+			    <div class="invalid-feedback">Ingresá un número de teléfono válido.</div>
+			</div>
 
 			<div class="col-md-4">
 			    <label for="id_genero" class="form-label">Género</label>

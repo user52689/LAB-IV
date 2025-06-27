@@ -30,9 +30,9 @@
             }
 
             class CuentaSimulada {
-                int id;
+                int id; 
                 String numero;
-                double saldo;
+                double saldo; 
 
                 CuentaSimulada(int id, String numero, double saldo) {
                     this.id = id;

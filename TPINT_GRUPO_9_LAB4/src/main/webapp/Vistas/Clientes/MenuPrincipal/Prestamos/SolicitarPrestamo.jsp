@@ -35,7 +35,7 @@
 
             <!-- Cuotas -->
             <div class="mb-3">
-                <label for="cuotas" class="form-label">Cantidad de Cuotas</label>
+                <label for="cuotas" class="form-label">Cantidad de Cuotas</label> 
                 <input type="number" name="cuotas" id="cuotas" class="form-control" required min="1" max="60"
                        placeholder="Ej: 12" />
                 <small class="text-muted">Máximo 60 cuotas. Elegí en cuántos pagos querés devolverlo.</small>

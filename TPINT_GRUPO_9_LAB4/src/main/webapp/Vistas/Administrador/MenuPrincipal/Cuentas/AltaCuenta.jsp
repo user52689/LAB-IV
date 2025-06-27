@@ -27,11 +27,11 @@
                 <label for="dniCliente" class="form-label">DNI del Cliente</label>
                 <input type="text" name="dniCliente" id="dniCliente" class="form-control" placeholder="Ingresá DNI" required />
             
-            	<c:if test="${not empty errorDni}">
+            	<c:if test="${not empty errorDni}"> 
 			        <div class="text-danger mt-1">${errorDni}</div>
 			    </c:if>
 			    
-            	<c:if test="${not empty errorCuenta}">
+            	<c:if test="${not empty errorCuenta}"> 
 			        <div class="text-danger mt-1">${errorCuenta}</div>
 			    </c:if>
             </div>

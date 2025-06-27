@@ -1,73 +1,91 @@
 package Servlet;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import Modelo.Cliente;
 import Negocio.ClienteNegocio;
 
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+import java.io.IOException;
+import java.sql.SQLException;
+
 @WebServlet("/cliente/modificar")
 public class ClienteModificarServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-    private ClienteNegocio clienteNegocio;
+	private static final long serialVersionUID = 1L;
+	private ClienteNegocio clienteNegocio;
 
     @Override
     public void init() throws ServletException {
         try {
             clienteNegocio = new ClienteNegocio();
         } catch (SQLException e) {
-            throw new ServletException(e);
+            throw new ServletException("Error al inicializar ClienteNegocio", e);
         }
     }
-    
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String dni = req.getParameter("dni");
-        if (dni != null && !dni.trim().isEmpty()) {
-            try {
-                Cliente cliente = clienteNegocio.buscarClientePorDniExacto(dni);
-                req.setAttribute("cliente", cliente);
-            } catch (SQLException e) {
-                req.setAttribute("mensajeError", "Error al buscar cliente: " + e.getMessage());
-            }
-        }
-        req.getRequestDispatcher("/Vistas/Administrador/MenuPrincipal/Clientes/ModificacionCliente.jsp").forward(req, resp);
-    }
-
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String accion = req.getParameter("accion");
-        String dni = req.getParameter("dni");
-        String contrasena = req.getParameter("contrasena");
-        
-        if ("blanquear".equals(accion) && dni != null && !dni.trim().isEmpty()) {
-            try {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String dni = request.getParameter("dni");
+        try {
+            if (dni != null && !dni.isEmpty()) {
                 Cliente cliente = clienteNegocio.buscarClientePorDniExacto(dni);
-                if (cliente != null) {
-                    boolean actualizado = clienteNegocio.resetearContrasena(dni, contrasena);
-                    if (actualizado) {
-                        req.setAttribute("mensajeExito", "Contraseña blanqueada con éxito para el cliente DNI: " + dni);
-                    } else {
-                        req.setAttribute("mensajeError", "No se pudo actualizar la contraseña.");
-                    }
-                    req.setAttribute("cliente", cliente);
+                if (cliente == null) {
+                    request.setAttribute("mensajeError", "Cliente no encontrado.");
                 } else {
-                    req.setAttribute("mensajeError", "No se encontró cliente con DNI: " + dni);
+                    request.setAttribute("cliente", cliente);
                 }
-            } catch (Exception e) {
-                req.setAttribute("mensajeError", "Error al blanquear la contraseña: " + e.getMessage());
+            } 
+        } catch (SQLException e) {
+            throw new ServletException("Error al buscar cliente", e);
+        }
+        request.getRequestDispatcher("/Vistas/Administrador/MenuPrincipal/Clientes/ModificacionCliente.jsp").forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String dni = request.getParameter("dni");
+        String nombre = request.getParameter("nombre");
+        String apellido = request.getParameter("apellido");
+        String correoElectronico = request.getParameter("correoElectronico");
+        String telefono = request.getParameter("telefono");
+        String direccion = request.getParameter("direccion");
+
+        if (dni == null || dni.isEmpty() ||
+            nombre == null || nombre.isEmpty() ||
+            apellido == null || apellido.isEmpty() ||
+            correoElectronico == null || correoElectronico.isEmpty()) {
+            request.setAttribute("mensajeError", "Datos incompletos o inválidos.");
+            doGet(request, response);
+            return;
+        }
+
+        try {
+            Cliente cliente = clienteNegocio.buscarClientePorDniExacto(dni);
+            if (cliente == null) {
+                request.setAttribute("mensajeError", "Cliente no encontrado.");
+                request.getRequestDispatcher("/Vistas/Error.jsp").forward(request, response);
+                return;
             }
-            req.getRequestDispatcher("/Vistas/Administrador/MenuPrincipal/Clientes/ModificacionCliente.jsp").forward(req, resp);
-        
-        } else {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Acción no válida o parámetros incompletos");
+
+            cliente.setNombre(nombre);
+            cliente.setApellido(apellido);
+            cliente.setCorreoElectronico(correoElectronico);
+            cliente.setTelefono(telefono);
+            cliente.setDireccion(direccion);
+
+            boolean actualizado = clienteNegocio.modificarCliente(cliente);
+
+            if (actualizado) {
+                request.setAttribute("mensajeExito", "Perfil actualizado correctamente.");
+            } else {
+                request.setAttribute("mensajeError", "No se pudo actualizar el perfil.");
+            }
+
+            request.setAttribute("cliente", cliente);
+            request.getRequestDispatcher("/Vistas/Administrador/MenuPrincipal/Clientes/ModificacionCliente.jsp").forward(request, response);
+
+        } catch (SQLException e) {
+            throw new ServletException("Error al modificar cliente", e);
         }
     }
 }
-

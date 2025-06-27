@@ -29,7 +29,7 @@
 			<!-- Usuarios (Administradores) -->
 			<div class="col-md-3 menu-card">
 			    <a href="Usuarios/ABMLUsuarios.jsp" class="text-decoration-none">
-			        <div class="card shadow h-100 text-center p-3">
+			        <div class="card shadow h-100 text-center p-3"> 
 			            <i class="bi bi-person-badge-fill text-primary" style="font-size: 2.5rem;"></i>
 			            <h5 class="mt-3">Usuarios</h5>
 			            <p class="text-muted">Altas, Bajas, Modificaciones y Listados</p>

@@ -28,7 +28,7 @@
                     this.numeroCuenta = numeroCuenta;
                     this.tipoCuenta = tipoCuenta;
                     this.saldo = saldo;
-                    this.fechaCreacion = fechaCreacion;
+                    this.fechaCreacion = fechaCreacion; 
                 }
             }
 
