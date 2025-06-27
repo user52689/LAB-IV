@@ -22,6 +22,10 @@ public class UsuarioDAO {
                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+        	ps.setString(1, u.getDni());
+        	ps.setString(2, u.getNombreUsuario());
+        	ps.setString(3, u.getContrasena());
+        	ps.setString(4, u.getRol());
         	ps.setString(5, u.getCorreoElectronico());
         	ps.setString(6, u.getTelefono());
         	ps.setInt(7, u.getIdGenero());
