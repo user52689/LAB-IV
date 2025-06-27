@@ -22,26 +22,22 @@ public class UsuarioDAO {
                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
-            ps.setString(1, u.getDni());
-            ps.setString(2, u.getNombreUsuario());
-            ps.setString(3, u.getContrasena());
-            ps.setString(4, u.getRol());
-            ps.setString(5, u.getCorreoElectronico());
-            ps.setString(5, u.getTelefono());
-            ps.setInt(6, u.getIdGenero());
-            ps.setInt(7, u.getIdPais());
-            ps.setInt(8, u.getIdProvincia());
-            ps.setInt(9, u.getIdLocalidad());
-            ps.setDate(10, java.sql.Date.valueOf(u.getFechaNacimiento()));
-            ps.setString(11, u.getDireccion());
-            ps.setBoolean(12, u.isActivo());
-            ps.setTimestamp(13, Timestamp.valueOf(u.getFechaCreacion()));
-            
-            if (u.getUltimoAcceso() != null) {
-                ps.setTimestamp(14, Timestamp.valueOf(u.getUltimoAcceso()));
-            } else {
-                ps.setTimestamp(14, null);
-            }
+        	ps.setString(5, u.getCorreoElectronico());
+        	ps.setString(6, u.getTelefono());
+        	ps.setInt(7, u.getIdGenero());
+        	ps.setInt(8, u.getIdPais());
+        	ps.setInt(9, u.getIdProvincia());
+        	ps.setInt(10, u.getIdLocalidad());
+        	ps.setDate(11, java.sql.Date.valueOf(u.getFechaNacimiento()));
+        	ps.setString(12, u.getDireccion());
+        	ps.setBoolean(13, u.isActivo());
+        	ps.setTimestamp(14, Timestamp.valueOf(u.getFechaCreacion()));
+
+        	if (u.getUltimoAcceso() != null) {
+        	    ps.setTimestamp(15, Timestamp.valueOf(u.getUltimoAcceso()));
+        	} else {
+        	    ps.setTimestamp(15, null);
+        	}
 
             int filas = ps.executeUpdate();
             return filas > 0;
