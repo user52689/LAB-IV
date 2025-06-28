@@ -25,20 +25,20 @@
                 </a>
             </div>
             <div class="col-md-3">
-                <a href="BajaCliente.jsp" class="btn btn-danger w-100">
+                <a href="${pageContext.request.contextPath}/Vistas/Administrador/MenuPrincipal/Clientes/BajaCliente.jsp" class="btn btn-danger w-100">
                     <i class="bi bi-person-dash-fill me-1"></i> Baja Cliente 
                 </a>
             </div>
             <div class="col-md-3">
                 <a href="${pageContext.request.contextPath}/Vistas/Administrador/MenuPrincipal/Clientes/ModificacionCliente.jsp" 
                    class="btn btn-warning text-white w-100">
-                    <i class="bi bi-pencil-square me-1"></i> Modificar Usuario
+                    <i class="bi bi-pencil-square me-1"></i> Modificar Cliente
                 </a>
             </div>
             <div class="col-md-3">
                 <a href="${pageContext.request.contextPath}/Vistas/Administrador/MenuPrincipal/Clientes/BlanqueoContrasenaCliente.jsp" 
                    class="btn btn-info text-white w-100">
-                    <i class="bi bi-key-fill me-1"></i> Blanquear Contraseña Usuario
+                    <i class="bi bi-key-fill me-1"></i> Blanquear Contraseña Cliente 
                 </a>
             </div>            
             
