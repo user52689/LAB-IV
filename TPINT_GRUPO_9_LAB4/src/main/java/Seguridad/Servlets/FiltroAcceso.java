@@ -72,91 +72,101 @@ public class FiltroAcceso implements Filter {
     public void destroy() {
         System.out.println("FiltroAcceso: Destruido");
     }
-    
-private boolean tieneAccesoARuta(String requestURI, String contextPath, String rol) {
-    switch (rol) {
-        case "ADMIN":
-            return 
-                // === MENU PRINCIPAL ADMINISTRADOR ===
-                requestURI.startsWith(contextPath + "/Vistas/Administrador/MenuPrincipal/") ||
-                requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/MenuAdministrador.jsp") ||
+    private boolean tieneAccesoARuta(String requestURI, String contextPath, String rol) {
+        switch (rol) {
+            case "ADMIN":
+                return 
+                    // === MENU PRINCIPAL ADMINISTRADOR ===
+                    requestURI.startsWith(contextPath + "/Vistas/Administrador/MenuPrincipal/") ||
+                    requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/MenuAdministrador.jsp") ||
 
-                // === GESTIÓN DE USUARIOS (SOLO ADMIN) ===
-                requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Usuarios/ABMLUsuarios.jsp") ||
-                requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Usuarios/BajaUsuario.jsp") ||
-                requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Usuarios/ModificacionUsuario.jsp") ||
-                requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Usuarios/BlanqueoContrasenaUsuario.jsp") ||
-                requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Usuarios/ListadoUsuario.jsp") ||
-                requestURI.endsWith("/Vistas/Administrador/Usuarios/ModificacionUsuario.jsp") ||
-                requestURI.contains("/usuario/") ||
-                requestURI.endsWith("/usuario/alta") ||
-                requestURI.endsWith("/usuario/baja") ||
-                requestURI.endsWith("/usuario/modificar") ||
-                requestURI.endsWith("/usuario/blanqueo") ||
-                requestURI.endsWith("/usuario/listar") ||
+                    // === GESTIÓN DE USUARIOS (SOLO ADMIN) ===
+                    requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Usuarios/ABMLUsuarios.jsp") ||
+                    requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Usuarios/BajaUsuario.jsp") ||
+                    requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Usuarios/ModificacionUsuario.jsp") ||
+                    requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Usuarios/BlanqueoContrasenaUsuario.jsp") ||
+                    requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Usuarios/ListadoUsuario.jsp") ||
+                    requestURI.endsWith("/Vistas/Administrador/Usuarios/ModificacionUsuario.jsp") ||
+                    requestURI.contains("/usuario/") ||
+                    requestURI.endsWith("/usuario/alta") ||
+                    requestURI.endsWith("/usuario/baja") ||
+                    requestURI.endsWith("/usuario/modificar") ||
+                    requestURI.endsWith("/usuario/blanqueo") ||
+                    requestURI.endsWith("/usuario/listar") ||
 
-                // === GESTIÓN DE CLIENTES (SOLO ADMIN) ===
-                requestURI.endsWith("/cliente/alta") ||
-                requestURI.endsWith("/cliente/baja") ||
-                requestURI.endsWith("/cliente/modificar") ||
-                requestURI.endsWith("/cliente/blanquear") ||
-                requestURI.endsWith("/cliente/listar") ||
-                requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Clientes/ABMLClientes.jsp") ||
-                requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Clientes/BajaCliente.jsp") ||
-                requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Clientes/ModificacionCliente.jsp") ||
-                requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Clientes/BlanqueoContrasenaCliente.jsp") ||
-                requestURI.endsWith("/Vistas/Administrador/Clientes/ModificacionCliente.jsp") ||
+                    // === GESTIÓN DE CLIENTES (SOLO ADMIN) ===
+                    requestURI.endsWith("/cliente/alta") ||
+                    requestURI.endsWith("/cliente/baja") ||
+                    requestURI.endsWith("/cliente/modificar") ||
+                    requestURI.endsWith("/cliente/blanqueo") ||
+                    requestURI.endsWith("/cliente/listar") ||
+                    requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Clientes/ABMLClientes.jsp") ||
+                    requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Clientes/BajaCliente.jsp") ||
+                    requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Clientes/ModificacionCliente.jsp") ||
+                    requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Clientes/BlanqueoContrasenaCliente.jsp") ||
+                    requestURI.endsWith("/Vistas/Administrador/Clientes/ModificacionCliente.jsp") ||
 
-                // === GESTIÓN DE CUENTAS (SOLO ADMIN) ===
-                requestURI.endsWith("/Cuentas/alta") ||
-                requestURI.endsWith("/Cuentas/listar") ||
-                requestURI.endsWith("/Cuentas/baja") ||
-                requestURI.endsWith("/Cuentas/modificar") ||
-                requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Cuentas/ABMLCuentas.jsp") ||
-                requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Cuentas/BajaCuenta.jsp") ||
-                requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Cuentas/ModificacionCuenta.jsp") ||
-                requestURI.endsWith("/Vistas/Administrador/Cuentas/ListarCuentas.jsp") ||
+                    // === GESTIÓN DE CUENTAS (SOLO ADMIN) ===
+                    requestURI.endsWith("/Cuentas/alta") ||
+                    requestURI.endsWith("/Cuentas/listar") ||
+                    requestURI.endsWith("/Cuentas/baja") ||
+                    requestURI.endsWith("/Cuentas/modificar") ||
+                    requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Cuentas/ABMLCuentas.jsp") ||
+                    requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Cuentas/BajaCuenta.jsp") ||
+                    requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Cuentas/ModificacionCuenta.jsp") ||
+                    requestURI.endsWith("/Vistas/Administrador/Cuentas/ListarCuentas.jsp") ||
 
-                // === PRESTAMOS Y REPORTES (SOLO ADMIN) ===
-                requestURI.endsWith("/Vistas/Administrador/Prestamos/PrestamosSolicitadosClientes.jsp") ||
-                requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/reportesMenu.jsp");
+                    // === PRESTAMOS Y REPORTES (SOLO ADMIN) ===
+                    requestURI.endsWith("/Vistas/Administrador/Prestamos/PrestamosSolicitadosClientes.jsp") ||
+                    requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/reportesMenu.jsp");
 
-        case "CLIENTE":
-            // === BLOQUEAR RUTAS DE ADMINISTRACIÓN ===
-            if (requestURI.contains("/usuario/") ||
-                requestURI.endsWith("/usuario/alta") ||
-                requestURI.endsWith("/usuario/baja") ||
-                requestURI.endsWith("/usuario/modificar") ||
-                requestURI.endsWith("/usuario/blanqueo") ||
-                requestURI.endsWith("/usuario/listar") ||
-                requestURI.startsWith(contextPath + "/Vistas/Administrador/")) {
+            case "CLIENTE":
+                // === BLOQUEAR RUTAS DE ADMINISTRACIÓN ===
+                if (requestURI.contains("/usuario/") ||
+                    requestURI.endsWith("/usuario/alta") ||
+                    requestURI.endsWith("/usuario/baja") ||
+                    requestURI.endsWith("/usuario/modificar") ||
+                    requestURI.endsWith("/usuario/blanqueo") ||
+                    requestURI.endsWith("/usuario/listar") ||
+                    requestURI.startsWith(contextPath + "/Vistas/Administrador/")) {
+                    return false;
+                }
+
+                if (requestURI.endsWith("/cliente/alta") ||
+                    requestURI.endsWith("/cliente/baja") ||
+                    requestURI.endsWith("/cliente/modificar") ||
+                    requestURI.endsWith("/cliente/blanqueo") ||
+                    requestURI.endsWith("/cliente/listar")) {
+                    return false;
+                }
+
+                if (requestURI.endsWith("/Cuentas/alta") ||
+                    requestURI.endsWith("/Cuentas/listar")) {
+                    return false;
+                }
+
+                // === PERMITIR RUTAS DE CLIENTE ===
+                return requestURI.startsWith(contextPath + "/Vistas/Clientes/MenuPrincipal/") ||
+                       requestURI.endsWith("/Vistas/Clientes/MenuPrincipal/MenuCliente.jsp") ||
+                       requestURI.endsWith("/Vistas/Clientes/Cuentas/ListarCuentas.jsp") ||
+                       requestURI.endsWith("/Vistas/Clientes/Perfil/PerfilCliente.jsp") ||
+                       requestURI.endsWith("/Vistas/Clientes/Cuentas/TransferenciasDinero.jsp") ||
+                       requestURI.endsWith("/Vistas/Clientes/Prestamos/MenuPrestamos.jsp") ||
+                       requestURI.endsWith("/TransferirServlet");
+
+            default:
                 return false;
-            }
-
-            if (requestURI.endsWith("/cliente/alta") ||
-                requestURI.endsWith("/cliente/baja") ||
-                requestURI.endsWith("/cliente/modificar") ||
-                requestURI.endsWith("/cliente/blanqueo") ||
-                requestURI.endsWith("/cliente/listar")) {
-                return false;
-            }
-
-            if (requestURI.endsWith("/Cuentas/alta") ||
-                requestURI.endsWith("/Cuentas/listar")) {
-                return false;
-            }
-
-            // === PERMITIR RUTAS DE CLIENTE ===
-            return requestURI.startsWith(contextPath + "/Vistas/Clientes/MenuPrincipal/") ||
-                   requestURI.endsWith("/Vistas/Clientes/MenuPrincipal/MenuCliente.jsp") ||
-                   requestURI.endsWith("/Vistas/Clientes/Cuentas/ListarCuentas.jsp") ||
-                   requestURI.endsWith("/Vistas/Clientes/Perfil/PerfilCliente.jsp") ||
-                   requestURI.endsWith("/Vistas/Clientes/Cuentas/TransferenciasDinero.jsp") ||
-                   requestURI.endsWith("/Vistas/Clientes/Prestamos/MenuPrestamos.jsp") ||
-                   requestURI.endsWith("/TransferirServlet");
-
-        default:
-            return false;
+        }
     }
-}
-}
+    }
+
+//desactivación ACCESO DENEGADO
+//private boolean tieneAccesoARuta(String requestURI, String contextPath, String rol) {
+//    System.out.println("=== DEBUG RBAC ===");
+//    System.out.println("URI solicitada: " + requestURI);
+//    System.out.println("Context Path: " + contextPath);
+//    System.out.println("Rol: " + rol);
+//    System.out.println("================");
+//    
+//    return true;
+//}

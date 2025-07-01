@@ -24,7 +24,6 @@
 
         <p>Desde acá podés blanquear la contraseña de un cliente. Una vez hecho esto, el cliente deberá asignar una nueva contraseña al iniciar sesión.</p>
 
-        <!-- Mensajes de éxito o error -->
         <c:if test="${not empty mensajeExito}">
             <div class="alert alert-success mt-3" role="alert">
                 <i class="bi bi-check-circle-fill me-2"></i>${mensajeExito}

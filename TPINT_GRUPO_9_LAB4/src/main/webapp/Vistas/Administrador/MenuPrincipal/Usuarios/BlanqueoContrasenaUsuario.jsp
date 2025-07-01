@@ -24,7 +24,6 @@
 
         <p>Desde acá podés blanquear la contraseña de un usuario administrador. Una vez hecho esto, el usuario deberá actualizar su contraseña.</p>
 
-        <!-- Mensajes de éxito o error -->
         <c:if test="${not empty mensajeExito}">
             <div class="alert alert-success mt-3" role="alert">
                 <i class="bi bi-check-circle-fill me-2"></i>${mensajeExito}
