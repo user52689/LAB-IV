@@ -224,4 +224,74 @@ public class PrestamoDAO {
             ps.executeUpdate();
         }
     }
+    
+    public int agregar(Prestamo p) throws SQLException {
+        String sql = """
+            INSERT INTO prestamos (
+              id_cliente,
+              id_cuenta_deposito,
+              id_estado_prestamo,
+              importe_solicitado,
+              importe_total,
+              plazo_meses,
+              monto_cuota,
+              fecha_solicitud,
+              observaciones,
+              activo
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), ?, TRUE)
+        """;
+        try (PreparedStatement ps = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setInt(1, p.getCliente().getIdCliente());
+            ps.setInt(2, p.getCuentaDeposito().getIdCuenta());
+            ps.setInt(3, p.getEstadoPrestamo().getIdEstadoPrestamo()); // Por ejemplo: 1 = Pendiente
+            ps.setDouble(4, p.getImporteSolicitado());
+            ps.setDouble(5, p.getImporteTotal());
+            ps.setInt(6, p.getPlazoMeses());
+            ps.setDouble(7, p.getMontoCuota());
+            ps.setString(8, p.getObservaciones());
+
+            ps.executeUpdate();
+
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) return rs.getInt(1);
+            }
+        }
+        return -1;
+    }
+    
+    public List<Prestamo> listarPorCliente(int idCliente) throws SQLException {
+        String sql = """
+            SELECT p.id_prestamo,
+                   p.importe_total,
+                   p.importe_total - COALESCE(SUM(c.monto_pagado), 0) AS saldo_pendiente,
+                   p.fecha_solicitud,
+                   e.descripcion AS estado
+              FROM prestamos p
+              LEFT JOIN cuotas c ON p.id_prestamo = c.id_prestamo AND c.activo = TRUE
+              JOIN estados_prestamo e ON p.id_estado_prestamo = e.id_estado_prestamo
+             WHERE p.id_cliente = ? AND p.activo = TRUE
+             GROUP BY p.id_prestamo, p.importe_total, p.fecha_solicitud, e.descripcion
+        """;
+
+        List<Prestamo> lista = new ArrayList<>();
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, idCliente);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Prestamo p = new Prestamo();
+                    p.setIdPrestamo(rs.getInt("id_prestamo"));
+                    p.setImporteTotal(rs.getDouble("importe_total"));
+                    p.setSaldoPendiente(rs.getDouble("saldo_pendiente"));
+                    p.setFechaSolicitud(rs.getTimestamp("fecha_solicitud").toLocalDateTime());
+
+                    EstadoPrestamo estado = new EstadoPrestamo();
+                    estado.setDescripcion(rs.getString("estado"));
+                    p.setEstadoPrestamo(estado);
+
+                    lista.add(p);
+                }
+            }
+        }
+        return lista;
+    }
 }

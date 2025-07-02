@@ -1,0 +1,89 @@
+package Servlet;
+
+import DAO.PrestamoDAO;
+import Modelo.Cliente;
+import Modelo.Cuenta;
+import Modelo.EstadoPrestamo;
+import Modelo.Prestamo;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+
+@WebServlet("/SolicitarPrestamoServlet")
+public class SolicitarPrestamoServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    public SolicitarPrestamoServlet() {
+        super();
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        try {
+            // 1. Obtener datos del formulario
+            int idCuentaDeposito = Integer.parseInt(request.getParameter("idCuentaDeposito"));
+            double importeSolicitado = Double.parseDouble(request.getParameter("importeSolicitado"));
+            int plazoMeses = Integer.parseInt(request.getParameter("plazoMeses"));
+            String observaciones = request.getParameter("observaciones");
+
+            // 2. Verificar sesión y cliente logueado
+            HttpSession session = request.getSession(false);
+            Cliente cliente = (Cliente) session.getAttribute("clienteLogueado");
+
+            if (cliente == null) {
+                response.sendRedirect("Vistas/Inicio/Login.jsp");
+                return;
+            }
+
+            // 3. Calcular valores derivados con tasa fija
+            double tasaInteresFija = 0.10; // 10% total sobre el préstamo (fija)
+            double importeTotal = importeSolicitado * (1 + tasaInteresFija);
+            double montoCuota = importeTotal / plazoMeses;
+
+            // 4. Crear objeto Préstamo
+            Prestamo p = new Prestamo();
+            p.setCliente(cliente);
+
+            Cuenta cuenta = new Cuenta();
+            cuenta.setIdCuenta(idCuentaDeposito);
+            p.setCuentaDeposito(cuenta);
+
+            EstadoPrestamo estado = new EstadoPrestamo();
+            estado.setIdEstadoPrestamo(1); // 1 = Pendiente (asumido según base de datos)
+            p.setEstadoPrestamo(estado);
+
+            p.setImporteSolicitado(importeSolicitado);
+            p.setImporteTotal(importeTotal);
+            p.setPlazoMeses(plazoMeses);
+            p.setMontoCuota(montoCuota);
+            p.setFechaSolicitud(LocalDateTime.now());
+            p.setObservaciones(observaciones);
+            p.setActivo(true);
+
+            // 5. Guardar en la base de datos
+            PrestamoDAO dao = new PrestamoDAO();
+            int idGenerado = dao.agregar(p);
+
+            if (idGenerado > 0) {
+                p.setIdPrestamo(idGenerado);
+                request.setAttribute("mensajeExito", "Préstamo solicitado exitosamente.");
+                response.sendRedirect("Vistas/Clientes/MenuPrincipal/Prestamos/MenuPrestamos.jsp");
+            } else {
+                request.setAttribute("mensajeError", "Error al solicitar el préstamo.");
+                request.getRequestDispatcher("Vistas/Clientes/MenuPrincipal/Prestamos/SolicitarPrestamo.jsp")
+                        .forward(request, response);
+            }
+
+        } catch (NumberFormatException | SQLException e) {
+            e.printStackTrace();
+            request.setAttribute("mensajeError", "Datos inválidos o error interno.");
+            request.getRequestDispatcher("Vistas/Clientes/MenuPrincipal/Prestamos/SolicitarPrestamo.jsp")
+                    .forward(request, response);
+        }
+    }
+}
