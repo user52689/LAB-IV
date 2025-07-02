@@ -23,28 +23,29 @@ public class SolicitarPrestamoServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // 1. Obtener datos del formulario
+
         try {
+            // 1. Obtener datos del formulario
             int idCuentaDeposito = Integer.parseInt(request.getParameter("idCuentaDeposito"));
             double importeSolicitado = Double.parseDouble(request.getParameter("importeSolicitado"));
             int plazoMeses = Integer.parseInt(request.getParameter("plazoMeses"));
             String observaciones = request.getParameter("observaciones");
 
-            // 2. Obtener cliente desde sesión
+            // 2. Verificar sesión y cliente logueado
             HttpSession session = request.getSession(false);
             Cliente cliente = (Cliente) session.getAttribute("clienteLogueado");
 
             if (cliente == null) {
-                response.sendRedirect("Vistas/Inicio/Login.jsp"); // redirige si no hay sesión
+                response.sendRedirect("Vistas/Inicio/Login.jsp");
                 return;
             }
 
-            // 3. Calcular valores derivados
-            double interesMensual = 0.05; // 5% mensual (ajustalo si tenés otro)
-            double importeTotal = importeSolicitado * Math.pow(1 + interesMensual, plazoMeses);
+            // 3. Calcular valores derivados con tasa fija
+            double tasaInteresFija = 0.10; // 10% total sobre el préstamo (fija)
+            double importeTotal = importeSolicitado * (1 + tasaInteresFija);
             double montoCuota = importeTotal / plazoMeses;
 
-            // 4. Crear objeto préstamo
+            // 4. Crear objeto Préstamo
             Prestamo p = new Prestamo();
             p.setCliente(cliente);
 
@@ -53,7 +54,7 @@ public class SolicitarPrestamoServlet extends HttpServlet {
             p.setCuentaDeposito(cuenta);
 
             EstadoPrestamo estado = new EstadoPrestamo();
-            estado.setIdEstadoPrestamo(1); // 1 = Pendiente
+            estado.setIdEstadoPrestamo(1); // 1 = Pendiente (asumido según base de datos)
             p.setEstadoPrestamo(estado);
 
             p.setImporteSolicitado(importeSolicitado);
