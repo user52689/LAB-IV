@@ -60,10 +60,9 @@
 			    </a>
 			</div>
             
-
             <!-- Préstamos -->
             <div class="col-md-3 menu-card">
-                <a href="../Prestamos/MenuPrestamos.jsp" class="text-decoration-none">
+                <a href="<%=request.getContextPath()%>/Vistas/Clientes/MenuPrincipal/Prestamos/MenuPrestamos.jsp" class="text-decoration-none">
                     <div class="card shadow h-100 text-center p-3">
                         <i class="bi bi-cash-stack text-warning" style="font-size: 2.5rem;"></i>
                         <h5 class="mt-3">Préstamos</h5>
@@ -71,6 +70,7 @@
                     </div>
                 </a>
             </div>
+
         </div>
     </div>
 </main>

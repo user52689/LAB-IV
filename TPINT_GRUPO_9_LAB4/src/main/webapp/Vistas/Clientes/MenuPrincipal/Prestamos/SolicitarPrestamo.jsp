@@ -16,44 +16,41 @@
     <div class="container">
         <h2 class="mb-4">Solicitar Préstamo</h2>
 
-        <form action="SolicitarPrestamoServlet" method="post" class="w-50 mx-auto">
+        <form action="<%=request.getContextPath()%>/SolicitarPrestamoServlet" method="post" class="w-50 mx-auto">
 
-            <!-- Descripción -->
+            <!-- Observaciones -->
             <div class="mb-3">
-                <label for="descripcion" class="form-label">Descripción del Préstamo</label>
-                <input type="text" name="descripcion" id="descripcion" class="form-control" required
+                <label for="observaciones" class="form-label">Descripción del Préstamo</label>
+                <input type="text" name="observaciones" id="observaciones" class="form-control" required
                        placeholder="Ej: Préstamo personal, préstamo para auto" maxlength="100" />
             </div>
 
             <!-- Monto -->
             <div class="mb-3">
-                <label for="monto" class="form-label">Monto Solicitado</label>
-                <input type="number" name="monto" id="monto" class="form-control" required min="1000" step="100"
+                <label for="importeSolicitado" class="form-label">Monto Solicitado</label>
+                <input type="number" name="importeSolicitado" id="importeSolicitado" class="form-control" required min="1000" step="100"
                        placeholder="Ej: 50000" />
                 <small class="text-muted">Mínimo $1.000. Ingresá el monto en pesos.</small>
             </div>
 
             <!-- Cuotas -->
             <div class="mb-3">
-                <label for="cuotas" class="form-label">Cantidad de Cuotas</label> 
-                <input type="number" name="cuotas" id="cuotas" class="form-control" required min="1" max="60"
+                <label for="plazoMeses" class="form-label">Cantidad de Cuotas</label> 
+                <input type="number" name="plazoMeses" id="plazoMeses" class="form-control" required min="1" max="60"
                        placeholder="Ej: 12" />
                 <small class="text-muted">Máximo 60 cuotas. Elegí en cuántos pagos querés devolverlo.</small>
             </div>
 
             <!-- Selección de cuenta para depósito -->
             <div class="mb-3">
-                <label for="cuentaDestino" class="form-label">Cuenta para Depósito</label>
-                <select name="cuentaDestino" id="cuentaDestino" class="form-select" required>
+                <label for="idCuentaDeposito" class="form-label">Cuenta para Depósito</label>
+                <select name="idCuentaDeposito" id="idCuentaDeposito" class="form-select" required>
                     <option value="" disabled selected>Seleccioná una cuenta</option>
-                    <option value="CBU2850590940090418135201">Caja de Ahorro - 0112345678901234567890</option>
-                    <option value="CBU2850590940090418135202">Cuenta Corriente - 0112345678901234567891</option>
-                    <!-- Podés reemplazar estos valores con datos dinámicos -->
+                    <option value="101">Caja de Ahorro - 0112345678901234567890</option>
+                    <option value="102">Cuenta Corriente - 0112345678901234567891</option>
+                    <!-- Reemplazar con IDs reales de cuentas del cliente -->
                 </select>
             </div>
-
-            <!-- Estado (oculto) -->
-            <input type="hidden" name="estado" value="Pendiente" />
 
             <!-- Botón de envío -->
             <button type="submit" class="btn btn-primary w-100">Enviar Solicitud</button>
@@ -75,3 +72,4 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+

@@ -15,26 +15,29 @@ public class Prestamo {
     private EstadoPrestamo estadoPrestamo;
     private String observaciones;
     private boolean activo;
+    private double saldoPendiente;
     
     public Prestamo() {}
     
-	public Prestamo(int idPrestamo, Cliente cliente, Cuenta cuentaDeposito, double importeSolicitado,
-			double importeTotal, int plazoMeses, double montoCuota, LocalDateTime fechaSolicitud,
-			LocalDateTime fechaResolucion, EstadoPrestamo estadoPrestamo, String observaciones, boolean activo) {
-		super();
-		this.idPrestamo = idPrestamo;
-		this.cliente = cliente;
-		this.cuentaDeposito = cuentaDeposito;
-		this.importeSolicitado = importeSolicitado;
-		this.importeTotal = importeTotal;
-		this.plazoMeses = plazoMeses;
-		this.montoCuota = montoCuota;
-		this.fechaSolicitud = fechaSolicitud;
-		this.fechaResolucion = fechaResolucion;
-		this.estadoPrestamo = estadoPrestamo;
-		this.observaciones = observaciones;
-		this.activo = activo;
-	}
+    public Prestamo(int idPrestamo, Cliente cliente, Cuenta cuentaDeposito, double importeSolicitado,
+            double importeTotal, int plazoMeses, double montoCuota, LocalDateTime fechaSolicitud,
+            LocalDateTime fechaResolucion, EstadoPrestamo estadoPrestamo, String observaciones,
+            boolean activo, double saldoPendiente) {
+super();
+this.idPrestamo = idPrestamo;
+this.cliente = cliente;
+this.cuentaDeposito = cuentaDeposito;
+this.importeSolicitado = importeSolicitado;
+this.importeTotal = importeTotal;
+this.plazoMeses = plazoMeses;
+this.montoCuota = montoCuota;
+this.fechaSolicitud = fechaSolicitud;
+this.fechaResolucion = fechaResolucion;
+this.estadoPrestamo = estadoPrestamo;
+this.observaciones = observaciones;
+this.activo = activo;
+this.saldoPendiente = saldoPendiente;
+}
 	
 	public int getIdPrestamo() {
 		return idPrestamo;
@@ -107,6 +110,14 @@ public class Prestamo {
 	}
 	public void setActivo(boolean activo) {
 		this.activo = activo;
+	}
+	
+	public double getSaldoPendiente() {
+	    return saldoPendiente;
+	}
+
+	public void setSaldoPendiente(double saldoPendiente) {
+	    this.saldoPendiente = saldoPendiente;
 	}
 
     

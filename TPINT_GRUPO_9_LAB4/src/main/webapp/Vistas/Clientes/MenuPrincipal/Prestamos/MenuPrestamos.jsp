@@ -38,7 +38,7 @@
 
             <!-- Listar Préstamos del Cliente -->
             <div class="col-md-4 menu-card">
-                <a href="ListarPrestamos.jsp" class="text-decoration-none">
+                <a href="../../../../ListarPrestamosClienteServlet" class="text-decoration-none">
                     <div class="card shadow h-100 text-center p-3">
                         <i class="bi bi-file-text text-success" style="font-size: 2.5rem;"></i>
                         <h5 class="mt-3">Mis Préstamos</h5>
