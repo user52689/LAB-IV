@@ -22,6 +22,10 @@ public class PrestamoNegocio {
     public List<Prestamo> listarPendientes() throws SQLException {
         return prestamoDAO.listarPorEstado(1);
     }
+    
+    public List<Prestamo> listarPorCliente(int idCliente) throws SQLException {
+        return prestamoDAO.listarPorCliente(idCliente);
+    }
 
     public boolean aprobarPrestamo(int idPrestamo) throws SQLException {
         // 1) Cambio de estado
@@ -58,4 +62,10 @@ public class PrestamoNegocio {
     public boolean rechazarPrestamo(int idPrestamo) throws SQLException {
         return prestamoDAO.actualizarEstado(idPrestamo, 3);
     }
+    
+    public Prestamo buscarPorId(int idPrestamo) throws SQLException {
+        PrestamoDAO dao = new PrestamoDAO();
+        return dao.buscarPorId(idPrestamo);
+    }
+
 }
