@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"
+%>
+<%@ page import="java.util.List" %>
+<%@ page import="Modelo.Cuenta" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -46,19 +49,29 @@
                 <label for="idCuentaDeposito" class="form-label">Cuenta para Depósito</label>
                 <select name="idCuentaDeposito" id="idCuentaDeposito" class="form-select" required>
                     <option value="" disabled selected>Seleccioná una cuenta</option>
-                    <option value="101">Caja de Ahorro - 0112345678901234567890</option>
-                    <option value="102">Cuenta Corriente - 0112345678901234567891</option>
-                    <!-- Reemplazar con IDs reales de cuentas del cliente -->
+                    <%
+                        List<Cuenta> cuentas = (List<Cuenta>) request.getAttribute("cuentasCliente");
+                        if (cuentas != null) {
+                            for (Modelo.Cuenta cu : cuentas) {
+                    %>
+                                <option value="<%= cu.getIdCuenta() %>">
+                                    <%= cu.getTipoCuenta().getDescripcion() %> - <%= cu.getCbu() %>
+                                </option>
+                    <%
+                            }
+                        }
+                    %>
                 </select>
             </div>
 
             <!-- Botón de envío -->
             <button type="submit" class="btn btn-primary w-100">Enviar Solicitud</button>
 
+            <!-- Botón Volver -->
             <div class="mb-3 row mt-4">
                 <div class="col-sm-12 text-center">
-                    <a href="MenuPrestamos.jsp" class="btn btn-secondary">
-                        <i class="bi-box-arrow-left"></i> Volver
+                    <a href="<%=request.getContextPath()%>/Vistas/Clientes/MenuPrincipal/Prestamos/MenuPrestamos.jsp" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Volver al menú de préstamos
                     </a>
                 </div>
             </div>
@@ -72,4 +85,3 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-

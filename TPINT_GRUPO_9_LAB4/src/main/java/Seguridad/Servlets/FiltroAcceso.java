@@ -72,7 +72,7 @@ public class FiltroAcceso implements Filter {
     public void destroy() {
         System.out.println("FiltroAcceso: Destruido");
     }
-    private boolean tieneAccesoARuta(String requestURI, String contextPath, String rol) {
+   /* private boolean tieneAccesoARuta(String requestURI, String contextPath, String rol) {
         switch (rol) {
             case "ADMIN":
                 return 
@@ -158,15 +158,16 @@ public class FiltroAcceso implements Filter {
                 return false;
         }
     }
-    }
+    */
 
 //desactivación ACCESO DENEGADO
-//private boolean tieneAccesoARuta(String requestURI, String contextPath, String rol) {
-//    System.out.println("=== DEBUG RBAC ===");
-//    System.out.println("URI solicitada: " + requestURI);
-//    System.out.println("Context Path: " + contextPath);
-//    System.out.println("Rol: " + rol);
-//    System.out.println("================");
-//    
-//    return true;
-//}
+private boolean tieneAccesoARuta(String requestURI, String contextPath, String rol) {
+    System.out.println("=== DEBUG RBAC ===");
+    System.out.println("URI solicitada: " + requestURI);
+    System.out.println("Context Path: " + contextPath);
+    System.out.println("Rol: " + rol);
+    System.out.println("================");
+  
+   return true;
+}
+}

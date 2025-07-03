@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="java.text.NumberFormat, java.util.Locale" %>
+<%@ page import="java.text.NumberFormat, java.util.Locale, java.time.format.DateTimeFormatter" %>
+<%@ page import="Modelo.Prestamo" %>
+<%
+    Prestamo prestamo = (Prestamo) request.getAttribute("prestamo");
+    NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance(new Locale("es", "AR"));
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -15,61 +21,59 @@
 <main class="flex-grow-1 bg-light p-4">
     <div class="container w-50 mx-auto">
 
-        <%
-            // Simulamos datos del préstamo
-            int idPrestamo = 12345;
-            String descripcion = "Préstamo Personal para Auto";
-            double montoOriginal = 150000.00;
-            double montoPendiente = 65000.75;
-            double tasaInteres = 0.025; // 2.5% mensual
-            int plazoMeses = 36;
-            String fechaInicio = "15/03/2023";
-            String estado = "Activo";
-
-            NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance(new Locale("es", "AR"));
-        %>
-
-        <h2 class="mb-4 text-center">Detalle del Préstamo</h2> 
+        <h2 class="mb-4 text-center">Detalle del Préstamo</h2>
 
         <table class="table table-bordered">
             <tbody>
                 <tr>
                     <th>ID Préstamo</th>
-                    <td><%= idPrestamo %></td>
+                    <td><%= prestamo.getIdPrestamo() %></td>
                 </tr>
                 <tr>
                     <th>Descripción</th>
-                    <td><%= descripcion %></td>
+                    <td><%= prestamo.getObservaciones() != null ? prestamo.getObservaciones() : "Sin descripción" %></td>
                 </tr>
                 <tr>
                     <th>Monto Original</th>
-                    <td><%= formatoMoneda.format(montoOriginal) %></td>
+                    <td><%= formatoMoneda.format(prestamo.getImporteSolicitado()) %></td>
+                </tr>
+                <tr>
+                    <th>Monto Total a Devolver</th>
+                    <td><%= formatoMoneda.format(prestamo.getImporteTotal()) %></td>
                 </tr>
                 <tr>
                     <th>Monto Pendiente</th>
-                    <td><%= formatoMoneda.format(montoPendiente) %></td>
+                    <td><%= formatoMoneda.format(prestamo.getSaldoPendiente() != 0 ? prestamo.getSaldoPendiente() : prestamo.getImporteTotal()) %></td>
                 </tr>
                 <tr>
                     <th>Tasa de Interés Mensual</th>
-                    <td><%= (tasaInteres * 100) %> %</td>
+                    <td>
+                        <%
+                            double solicitado = prestamo.getImporteSolicitado();
+                            double total = prestamo.getImporteTotal();
+                            int plazo = prestamo.getPlazoMeses();
+                            double interesMensual = plazo > 0 ? ((total - solicitado) / solicitado / plazo) * 100 : 0;
+                        %>
+                        <%= String.format("%.2f", interesMensual) %> %
+                    </td>
                 </tr>
                 <tr>
                     <th>Plazo</th>
-                    <td><%= plazoMeses %> meses</td>
+                    <td><%= prestamo.getPlazoMeses() %> meses</td>
                 </tr>
                 <tr>
                     <th>Fecha de Inicio</th>
-                    <td><%= fechaInicio %></td>
+                    <td><%= prestamo.getFechaSolicitud().format(formatter) %></td>
                 </tr>
                 <tr>
                     <th>Estado</th>
-                    <td><%= estado %></td>
+                    <td><%= prestamo.getEstadoPrestamo().getDescripcion() %></td>
                 </tr>
             </tbody>
         </table>
 
         <div class="text-center mt-4">
-            <a href="ListarPrestamos.jsp" class="btn btn-secondary">
+            <a href="ListarPrestamosClienteServlet" class="btn btn-secondary">
                 <i class="bi bi-arrow-left"></i> Volver al listado
             </a>
         </div>

@@ -1,8 +1,8 @@
 package Servlet;
 
-import Modelo.Prestamo;
+import Modelo.Cuenta;
 import Modelo.Usuario;
-import Negocio.PrestamoNegocio;
+import Negocio.CuentaNegocio;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,8 +11,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet("/ListarPrestamosClienteServlet")
-public class ListarPrestamosClienteServlet extends HttpServlet {
+@WebServlet("/IrASolicitarPrestamoServlet")
+public class IrASolicitarPrestamoServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -28,16 +28,15 @@ public class ListarPrestamosClienteServlet extends HttpServlet {
 
         try {
             int idCliente = usuario.getIdUsuario(); // Se asume que coincide con id_cliente
-            PrestamoNegocio negocio = new PrestamoNegocio();
-            List<Prestamo> prestamos = negocio.listarPorCliente(idCliente);
+            CuentaNegocio cuentaNegocio = new CuentaNegocio();
+            List<Cuenta> cuentas = cuentaNegocio.buscarCuentasPorId(String.valueOf(idCliente));
 
-            request.setAttribute("prestamosCliente", prestamos);
-            request.getRequestDispatcher("Vistas/Clientes/MenuPrincipal/Prestamos/ListarPrestamos.jsp")
+            request.setAttribute("cuentasCliente", cuentas);
+            request.getRequestDispatcher("Vistas/Clientes/MenuPrincipal/Prestamos/SolicitarPrestamo.jsp")
                    .forward(request, response);
-
         } catch (SQLException e) {
-            e.printStackTrace(); 
-            response.sendError(500, "Error al obtener los préstamos: " + e.getMessage());
+            e.printStackTrace();
+            response.sendError(500, "Error al cargar las cuentas del cliente.");
         }
     }
 }

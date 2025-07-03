@@ -99,7 +99,7 @@ public class PrestamoDAO {
     }
 
     /** Recupera un préstamo completo por su ID */
-    public Prestamo buscarPorId(int idPrestamo) throws SQLException {
+   /* public Prestamo buscarPorId(int idPrestamo) throws SQLException {
         String sql = """
             SELECT p.id_prestamo,
                    p.id_cliente,
@@ -157,7 +157,7 @@ public class PrestamoDAO {
                 return p;
             }
         }
-    }
+    }*/
 
     /** Genera las cuotas (una por mes), sólo si no existen aún */
     public void generarCuotas(Prestamo p) throws SQLException {
@@ -263,14 +263,11 @@ public class PrestamoDAO {
         String sql = """
             SELECT p.id_prestamo,
                    p.importe_total,
-                   p.importe_total - COALESCE(SUM(c.monto_pagado), 0) AS saldo_pendiente,
                    p.fecha_solicitud,
                    e.descripcion AS estado
               FROM prestamos p
-              LEFT JOIN cuotas c ON p.id_prestamo = c.id_prestamo AND c.activo = TRUE
               JOIN estados_prestamo e ON p.id_estado_prestamo = e.id_estado_prestamo
              WHERE p.id_cliente = ? AND p.activo = TRUE
-             GROUP BY p.id_prestamo, p.importe_total, p.fecha_solicitud, e.descripcion
         """;
 
         List<Prestamo> lista = new ArrayList<>();
@@ -281,12 +278,14 @@ public class PrestamoDAO {
                     Prestamo p = new Prestamo();
                     p.setIdPrestamo(rs.getInt("id_prestamo"));
                     p.setImporteTotal(rs.getDouble("importe_total"));
-                    p.setSaldoPendiente(rs.getDouble("saldo_pendiente"));
                     p.setFechaSolicitud(rs.getTimestamp("fecha_solicitud").toLocalDateTime());
 
                     EstadoPrestamo estado = new EstadoPrestamo();
                     estado.setDescripcion(rs.getString("estado"));
                     p.setEstadoPrestamo(estado);
+
+                    // Como no hay cuotas ni saldo pendiente, se usa el total como si fuera el saldo
+                    p.setSaldoPendiente(p.getImporteTotal());
 
                     lista.add(p);
                 }
@@ -294,4 +293,59 @@ public class PrestamoDAO {
         }
         return lista;
     }
+
+    
+    public Prestamo buscarPorId(int idPrestamo) throws SQLException {
+        String sql = """
+            SELECT p.id_prestamo, p.importe_solicitado, p.importe_total, 
+                   p.plazo_meses, p.monto_cuota, p.fecha_solicitud, 
+                   p.fecha_resolucion, p.observaciones, p.activo,
+                   p.id_cliente, p.id_cuenta_deposito, 
+                   ep.id_estado_prestamo, ep.descripcion AS estado_desc
+            FROM prestamos p
+            JOIN estados_prestamo ep ON p.id_estado_prestamo = ep.id_estado_prestamo
+            WHERE p.id_prestamo = ?
+        """;
+
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, idPrestamo);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Prestamo p = new Prestamo();
+
+                    p.setIdPrestamo(rs.getInt("id_prestamo"));
+                    p.setImporteSolicitado(rs.getDouble("importe_solicitado"));
+                    p.setImporteTotal(rs.getDouble("importe_total"));
+                    p.setPlazoMeses(rs.getInt("plazo_meses"));
+                    p.setMontoCuota(rs.getDouble("monto_cuota"));
+                    p.setFechaSolicitud(rs.getTimestamp("fecha_solicitud").toLocalDateTime());
+                    Timestamp res = rs.getTimestamp("fecha_resolucion");
+                    if (res != null) p.setFechaResolucion(res.toLocalDateTime());
+                    p.setObservaciones(rs.getString("observaciones"));
+                    p.setActivo(rs.getBoolean("activo"));
+
+                    // Estado
+                    EstadoPrestamo estado = new EstadoPrestamo();
+                    estado.setIdEstadoPrestamo(rs.getInt("id_estado_prestamo"));
+                    estado.setDescripcion(rs.getString("estado_desc"));
+                    p.setEstadoPrestamo(estado);
+
+                    // Cliente
+                    Cliente cliente = new Cliente();
+                    cliente.setIdCliente(rs.getInt("id_cliente"));
+                    p.setCliente(cliente);
+
+                    // Cuenta
+                    Cuenta cuenta = new Cuenta();
+                    cuenta.setIdCuenta(rs.getInt("id_cuenta_deposito"));
+                    p.setCuentaDeposito(cuenta);
+
+                    return p;
+                }
+            }
+        }
+        return null;
+    }
+
+
 }
