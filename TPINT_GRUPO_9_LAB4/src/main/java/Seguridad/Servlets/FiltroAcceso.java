@@ -158,8 +158,7 @@ public class FiltroAcceso implements Filter {
                 return false;
         }
     }
-    */
-
+}*/
 //desactivación ACCESO DENEGADO
 private boolean tieneAccesoARuta(String requestURI, String contextPath, String rol) {
     System.out.println("=== DEBUG RBAC ===");
