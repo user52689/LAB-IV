@@ -28,16 +28,23 @@ public class PrestamoNegocio {
     }
 
     public boolean aprobarPrestamo(int idPrestamo) throws SQLException {
+        System.out.println("[DEBUG] Aprobando préstamo ID: " + idPrestamo);
+
         // 1) Cambio de estado
-        boolean ok = prestamoDAO.actualizarEstado(idPrestamo, 2);
+        boolean ok = prestamoDAO.actualizarEstado(idPrestamo, 14);
+        System.out.println("[DEBUG] Estado actualizado: " + ok);
         if (!ok) return false;
 
         // 2) Recupero el préstamo completo
         Prestamo p = prestamoDAO.buscarPorId(idPrestamo);
-        if (p == null) return false;
+        if (p == null) {
+            System.out.println("[DEBUG] Préstamo no encontrado");
+            return false;
+        }
 
         // 3) Genero las cuotas
         prestamoDAO.generarCuotas(p);
+        System.out.println("[DEBUG] Cuotas generadas");
 
         // 4) Registro movimiento + actualizo saldo
         int idCuenta = p.getCuentaDeposito().getIdCuenta();
@@ -46,6 +53,8 @@ public class PrestamoNegocio {
         double saldoAnt = cuentaDAO.obtenerSaldo(idCuenta);
         boolean upd = cuentaDAO.actualizarSaldo(idCuenta, importe);
         double saldoPos = saldoAnt + (upd ? importe : 0);
+
+        System.out.println("[DEBUG] Movimiento: " + importe + ", saldo ant: " + saldoAnt + ", pos: " + saldoPos);
 
         prestamoDAO.registrarMovimiento(
             idCuenta,
