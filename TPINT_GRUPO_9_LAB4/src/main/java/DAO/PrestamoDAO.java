@@ -91,6 +91,8 @@ public class PrestamoDAO {
                    fecha_resolucion   = NOW()
              WHERE id_prestamo = ?
         """;
+        System.out.println("[DEBUG] Ejecutando UPDATE estado para préstamo ID: " + idPrestamo);
+
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setInt(1, nuevoEstado);
             ps.setInt(2, idPrestamo);
@@ -264,6 +266,7 @@ public class PrestamoDAO {
             SELECT p.id_prestamo,
                    p.importe_total,
                    p.fecha_solicitud,
+                   p.id_estado_prestamo,
                    e.descripcion AS estado
               FROM prestamos p
               JOIN estados_prestamo e ON p.id_estado_prestamo = e.id_estado_prestamo
@@ -281,10 +284,10 @@ public class PrestamoDAO {
                     p.setFechaSolicitud(rs.getTimestamp("fecha_solicitud").toLocalDateTime());
 
                     EstadoPrestamo estado = new EstadoPrestamo();
-                    estado.setDescripcion(rs.getString("estado"));
+                    estado.setIdEstadoPrestamo(rs.getInt("id_estado_prestamo")); // ✅ esto es importante
+                    estado.setDescripcion(rs.getString("estado"));               // ✅ también esto
                     p.setEstadoPrestamo(estado);
 
-                    // Como no hay cuotas ni saldo pendiente, se usa el total como si fuera el saldo
                     p.setSaldoPendiente(p.getImporteTotal());
 
                     lista.add(p);
@@ -293,6 +296,7 @@ public class PrestamoDAO {
         }
         return lista;
     }
+
 
     
     public Prestamo buscarPorId(int idPrestamo) throws SQLException {

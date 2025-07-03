@@ -38,13 +38,33 @@
                 <%
                     int i = 1;
                     for (Prestamo p : prestamos) {
+                        int estadoId = p.getEstadoPrestamo().getIdEstadoPrestamo();
+                        String estadoDesc = p.getEstadoPrestamo().getDescripcion();
+                        String badgeClass = "secondary"; // Por defecto
+
+                        switch (estadoDesc.toLowerCase()) {
+                            case "en evaluación":
+                                badgeClass = "primary"; // Azul
+                                break;
+                            case "aprobado":
+                                badgeClass = "success"; // Verde
+                                break;
+                            case "cancelado":
+                                badgeClass = "danger"; // Rojo
+                                break;
+                            case "en proceso":
+                                badgeClass = "warning text-dark"; // Amarillo con texto oscuro
+                                break;
+                        }
                 %>
                 <tr>
                     <td><%= i++ %></td>
                     <td><%= p.getFechaSolicitud().format(formatter) %></td>
                     <td>$<%= String.format("%.2f", p.getImporteTotal()) %></td>
                     <td>$<%= String.format("%.2f", p.getSaldoPendiente()) %></td>
-                    <td><%= p.getEstadoPrestamo().getDescripcion() %></td>
+                    <td>
+                        <span class="badge bg-<%= badgeClass %>"><%= estadoDesc %></span>
+                    </td>
                     <td>
                         <a href="DetallePrestamoServlet?id=<%= p.getIdPrestamo() %>" class="btn btn-info btn-sm">
                             <i class="bi bi-eye"></i> Ver Detalle
@@ -66,8 +86,8 @@
 
     <div class="mt-4">
         <a href="<%=request.getContextPath()%>/Vistas/Clientes/MenuPrincipal/Prestamos/MenuPrestamos.jsp" class="btn btn-secondary">
-    ← Volver
-</a>
+            ← Volver
+        </a>
     </div>
 </div>
 
