@@ -6,6 +6,7 @@ import Modelo.Cuenta;
 import Modelo.EstadoPrestamo;
 import Modelo.Prestamo;
 import Modelo.Usuario;
+import Servlet.SessionUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,22 +32,11 @@ public class SolicitarPrestamoServlet extends HttpServlet {
             double importeSolicitado = Double.parseDouble(request.getParameter("importeSolicitado"));
             int plazoMeses = Integer.parseInt(request.getParameter("plazoMeses"));
             String observaciones = request.getParameter("observaciones");
-
-            // 2. Obtener usuario logueado desde la sesión
-            HttpSession session = request.getSession(false);
-            Usuario usuario = (session != null) ? (Usuario) session.getAttribute("usuarioLogueado") : null;
-
-            if (usuario == null) {
-                request.setAttribute("mensajeError", "Debe iniciar sesión para solicitar un préstamo.");
-                request.getRequestDispatcher("Vistas/Inicio/Login.jsp").forward(request, response);
-                return;
-            }
-
-            System.out.println("Usuario logueado: ID = " + usuario.getIdUsuario() + ", Nombre = " + usuario.getNombreUsuario());
-
-            // 3. Crear objeto Cliente
-            Cliente cliente = new Cliente();
-            cliente.setIdCliente(usuario.getIdUsuario()); // ID de Usuario coincide con ID de Cliente
+            
+         // 2. Obtener id_cliente y cliente desde la sesión usando SessionUtil
+            int idCliente = SessionUtil.getIdClienteFromSession(request);
+            HttpSession session = request.getSession(false); // Ya validado por SessionUtil
+            Cliente cliente = (Cliente) session.getAttribute("clienteLogueado");
 
             // 4. Cálculos del préstamo
             double tasaInteresFija = 0.10;

@@ -350,11 +350,11 @@ INSERT INTO usuarios (
     id_localidad, id_provincia
 ) VALUES
 ('30111111', 'Abraham', '$2a$12$hF1zkgTjHhY4VeRxhtlvj.s347nI7kFIAMo4/muzYYzwMlBxijw8q', 'admin', 'abraham@banco.com', '1111111111', 1, 1, '1980-01-01', 'Av. Siempre Viva 742', 1, 1),
-('30111112', 'Oscar',   '$2a$12$hF1zkgTjHhY4VeRxhtlvj.s347nI7kFIAMo4/muzYYzwMlBxijw8q', 'admin', 'oscar@banco.com',   '2222222222', 2, 1, '1985-05-05', 'Calle del Software 404', 1, 1),
-('30123456', 'user1',    '$2a$12$hF1zkgTjHhY4VeRxhtlvj.s347nI7kFIAMo4/muzYYzwMlBxijw8q', 'cliente', 'user1@ejemplo.com', '3333333333', 1, 1, '1990-01-01', 'Calle Falsa 123', 1, 1),
-('30123457', 'user2',    'dummyhash', 'admin', 'user2@ejemplo.com', '3444444444', 2, 1, '1991-02-02', 'Calle Falsa 124', 1, 1),
-('30123458', 'user3',    'dummyhash', 'admin', 'user3@ejemplo.com', '3555555555', 3, 1, '1992-03-03', 'Calle Falsa 125', 1, 1),
-('30123459', 'user4',    'dummyhash', 'admin', 'user4@ejemplo.com', '3666666666', 1, 1, '1993-04-04', 'Calle Falsa 126', 1, 1),
+('30111112', 'Oscar',   '$2a$12$2rz0RveHvfy1AD81xJYxPeC030bg9jdx1QdpVc9OTUskgJdrCYQr6', 'admin', 'oscar@banco.com',   '2222222222', 2, 1, '1985-05-05', 'Calle del Software 404', 1, 1),
+('30123456', 'user1',    '$2a$12$M6dO9bO42co2Rr0JwoR.DujbtZDKxA/Q.HxRFJ6j2jvjXvU/gPuBm', 'cliente', 'user1@ejemplo.com', '3333333333', 1, 1, '1990-01-01', 'Calle Falsa 123', 1, 1),
+('30987654', 'user2',    '$2a$12$3k/Ly9q2VAnI4/oaufrlzOvm.eftJuFEo3KvpxFH8QMMl1fMkWepK', 'cliente', 'user2@ejemplo.com', '3444444444', 2, 1, '1991-02-02', 'Calle Falsa 124', 1, 1),
+('30111222', 'user3',    '$2a$12$M6dO9bO42co2Rr0JwoR.DujbtZDKxA/Q.HxRFJ6j2jvjXvU/gPuBm', 'cliente', 'user3@ejemplo.com', '3555555555', 3, 1, '1992-03-03', 'Calle Falsa 125', 1, 1),
+('30222333', 'user4',    'dummyhash', 'admin', 'user4@ejemplo.com', '3666666666', 1, 1, '1993-04-04', 'Calle Falsa 126', 1, 1),
 ('30123460', 'user5',    'dummyhash', 'admin', 'user5@ejemplo.com', '3777777777', 2, 1, '1994-05-05', 'Calle Falsa 127', 1, 1),
 ('30123461', 'user6',    'dummyhash', 'admin', 'user6@ejemplo.com', '3888888888', 3, 1, '1995-06-06', 'Calle Falsa 128', 1, 1),
 ('30123462', 'user7',    'dummyhash', 'admin', 'user7@ejemplo.com', '3999999999', 1, 1, '1996-07-07', 'Calle Falsa 129', 1, 1),

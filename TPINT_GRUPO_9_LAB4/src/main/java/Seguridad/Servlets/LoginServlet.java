@@ -1,8 +1,10 @@
 package Seguridad.Servlets;
 
 import Modelo.Usuario;
-import Seguridad.Negocio.AutenticacionFallidaException;
+import Modelo.Cliente;
 import Seguridad.Negocio.AutenticacionService;
+import Seguridad.Negocio.AuthResponse;
+import Seguridad.Negocio.AutenticacionFallidaException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,20 +35,38 @@ public class LoginServlet extends HttpServlet {
         String contrasena = request.getParameter("contrasena");
 
         try {
-            Usuario usuario = autenticacionService.login(nombreUsuario, contrasena);
-            HttpSession session = request.getSession();
+            // Autenticar usuario y obtener cliente (si aplica)
+            AuthResponse authResponse = autenticacionService.login(nombreUsuario, contrasena);
+            Usuario usuario = authResponse.getUsuario();
+            Cliente cliente = authResponse.getCliente();
+
+            HttpSession session = request.getSession(true);
             session.setAttribute("usuarioLogueado", usuario);
 
-            if (usuario.esAdministrador()) {
-                response.sendRedirect(request.getContextPath() + "/Vistas/Administrador/MenuPrincipal/MenuAdministrador.jsp");
-            } else if (usuario.esCliente()) {
-                response.sendRedirect(request.getContextPath() + "/Vistas/Clientes/MenuPrincipal/MenuCliente.jsp");
+            // Si es cliente, verificar y almacenar clienteLogueado
+            if ("cliente".equalsIgnoreCase(usuario.getRol())) {
+                if (cliente != null) {
+                    session.setAttribute("clienteLogueado", cliente);
+                    System.out.println("LoginServlet: idCliente = " + cliente.getIdCliente() + " almacenado para usuario " + nombreUsuario);
+                } else {
+                    System.out.println("LoginServlet: No se encontró cliente para dni " + usuario.getDni());
+                    request.setAttribute("mensajeError", "No se encontró información de cliente asociada.");
+                    request.getRequestDispatcher("/Vistas/Inicio/Login.jsp").forward(request, response);
+                    return;
+                }
             }
+
+            // Redirigir según rol
+            String redirectUrl = "cliente".equalsIgnoreCase(usuario.getRol())
+                    ? "/Vistas/Clientes/MenuPrincipal/MenuCliente.jsp"
+                    : "/Vistas/Administrador/MenuPrincipal/MenuAdministrador.jsp";
+            response.sendRedirect(request.getContextPath() + redirectUrl);
+
         } catch (AutenticacionFallidaException e) {
-            request.setAttribute("mensajeError", "Usuario o contraseña incorrectos.");
+            request.setAttribute("mensajeError", e.getMessage());
             request.getRequestDispatcher("/Vistas/Inicio/Login.jsp").forward(request, response);
         } catch (SQLException e) {
-            request.setAttribute("mensajeError", "Error en la base de datos: " + e.getMessage());
+            request.setAttribute("mensajeError", "Error de base de datos: " + e.getMessage());
             request.getRequestDispatcher("/Vistas/Inicio/Login.jsp").forward(request, response);
         }
     }
