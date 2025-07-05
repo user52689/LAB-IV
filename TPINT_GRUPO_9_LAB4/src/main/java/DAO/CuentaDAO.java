@@ -191,6 +191,7 @@ public class CuentaDAO {
     /**
      * Suma (o resta si importe negativo) al saldo de la cuenta.
      */
+
     public boolean actualizarSaldo(int idCuenta, double importe) throws SQLException {
         String sql = "UPDATE cuentas SET saldo = saldo + ? WHERE id_cuenta = ?";
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
@@ -198,5 +199,18 @@ public class CuentaDAO {
             ps.setInt(2, idCuenta);
             return ps.executeUpdate() > 0;
         }
+    }
+    
+    public Cuenta obtenerCuentaPorCbu(String cbu) throws SQLException {
+    	String sql = "select * from cuentas where cbu = ?";
+    	try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, cbu);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                	return mapearCuenta(rs);
+                }
+            }
+        }
+        throw new SQLException("Cuenta no encontrada: " + cbu);
     }
 }
