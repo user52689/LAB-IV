@@ -52,13 +52,13 @@ public class CuentaNegocio {
 	
 	public boolean TransferirDinero(Cuenta cuentaOrigen, String cbuCuentaDestino, double monto) throws SQLException {
 		Cuenta cuentaDestino = cuentaDAO.obtenerCuentaPorCbu(cbuCuentaDestino);
-		if (cuentaDAO.descontarSaldo(cuentaOrigen.getIdCuenta(), monto)) {
+		if (cuentaDAO.actualizarSaldo(cuentaOrigen.getIdCuenta(), -monto)) {
 			if(cuentaDAO.actualizarSaldo(cuentaDestino.getIdCuenta(), monto)) {
 				return true;
 			}
-			cuentaDAO.actualizarSaldo(cuentaOrigen.getIdCuenta(), monto);
+			else
+				cuentaDAO.actualizarSaldo(cuentaOrigen.getIdCuenta(), monto);
 		}
 		return false;
 	}
-
 }

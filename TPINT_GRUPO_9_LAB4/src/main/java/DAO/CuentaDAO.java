@@ -201,15 +201,6 @@ public class CuentaDAO {
         }
     }
     
-    public boolean descontarSaldo(int idCuenta, double monto) throws SQLException {
-        String sql = "UPDATE cuentas SET saldo = saldo - ? WHERE id_cuenta = ?";
-        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
-            ps.setDouble(1, monto);
-            ps.setInt(2, idCuenta);
-            return ps.executeUpdate() > 0;
-        }
-    }
-    
     public Cuenta obtenerCuentaPorCbu(String cbu) throws SQLException {
     	String sql = "select * from cuentas where cbu = ?";
     	try (PreparedStatement ps = conexion.prepareStatement(sql)) {
