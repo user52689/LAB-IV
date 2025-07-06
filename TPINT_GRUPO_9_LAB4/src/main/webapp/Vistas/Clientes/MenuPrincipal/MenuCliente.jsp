@@ -40,7 +40,7 @@
 
             <!-- Perfiles -->
             <div class="col-md-3 menu-card">
-                <a href="../Perfil/PerfilCliente.jsp" class="text-decoration-none">
+                 <a href="<%=request.getContextPath()%>/ActualizarPerfilServlet" class="text-decoration-none">
                     <div class="card shadow h-100 text-center p-3">
                         <i class="bi bi-person-circle text-success" style="font-size: 2.5rem;"></i>
                         <h5 class="mt-3">Perfiles</h5>
