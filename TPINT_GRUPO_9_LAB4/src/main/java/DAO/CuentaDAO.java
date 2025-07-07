@@ -201,6 +201,7 @@ public class CuentaDAO {
         }
     }
     
+    /*/Metodo alejo 
     public Cuenta obtenerCuentaPorCbu(String cbu) throws SQLException {
     	String sql = "select * from cuentas where cbu = ?";
     	try (PreparedStatement ps = conexion.prepareStatement(sql)) {
@@ -212,5 +213,56 @@ public class CuentaDAO {
             }
         }
         throw new SQLException("Cuenta no encontrada: " + cbu);
+    }
+    */
+    
+    public Cuenta obtenerCuentaPorCbu(String cbu) throws SQLException {
+        String sql = "SELECT cu.*, c.*, tc.* FROM cuentas cu " +
+                    "JOIN clientes c ON c.id_cliente = cu.id_cliente " +
+                    "JOIN tipos_cuenta tc ON cu.id_tipo_cuenta = tc.id_tipo_cuenta " +
+                    "WHERE cu.activo = TRUE AND cu.cbu = ?";
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, cbu);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return mapearCuenta(rs);
+                }
+            }
+        }
+        throw new SQLException("Cuenta no encontrada: " + cbu);
+    }
+    
+    public List<Cuenta> listarCuentasPorCliente(int idCliente) throws SQLException {
+        List<Cuenta> lista = new ArrayList<>();
+        String sql = "SELECT cu.*, c.*, tc.* " +
+                    "FROM cuentas cu " +
+                    "JOIN clientes c ON c.id_cliente = cu.id_cliente " +
+                    "JOIN tipos_cuenta tc ON cu.id_tipo_cuenta = tc.id_tipo_cuenta " +
+                    "WHERE cu.activo = TRUE AND cu.id_cliente = ?";
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, idCliente);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(mapearCuenta(rs));
+                }
+            }
+        }
+        return lista;
+    }
+
+    public Cuenta buscarCuentaPorId(int idCuenta) throws SQLException {
+        String sql = "SELECT cu.*, c.*, tc.* FROM cuentas cu " +
+                    "JOIN clientes c ON c.id_cliente = cu.id_cliente " +
+                    "JOIN tipos_cuenta tc ON cu.id_tipo_cuenta = tc.id_tipo_cuenta " +
+                    "WHERE cu.activo = TRUE AND cu.id_cuenta = ?";
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, idCuenta);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return mapearCuenta(rs);
+                }
+            }
+        }
+        return null;
     }
 }

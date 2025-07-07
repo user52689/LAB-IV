@@ -51,14 +51,15 @@
             
             <!-- Transferencias -->
 			<div class="col-md-3 menu-card">
-			    <a href="../Cuentas/TransferenciasDinero.jsp" class="text-decoration-none">
-			        <div class="card shadow h-100 text-center p-3">
-			            <i class="bi bi-arrow-left-right text-info" style="font-size: 2.5rem;"></i>
-			            <h5 class="mt-3">Transferencias</h5>
-			            <p class="text-muted">Gestionar transferencias y movimientos</p>
-			        </div>
-			    </a>
+				<a href="<%=request.getContextPath()%>/TransferenciaServlet" class="text-decoration-none">
+					<div class="card shadow h-100 text-center p-3">
+						<i class="bi bi-arrow-left-right text-info" style="font-size: 2.5rem;"></i>
+						<h5 class="mt-3">Transferencias</h5>
+						<p class="text-muted">Gestionar transferencias y movimientos</p>
+					</div>
+				</a>
 			</div>
+
             
             <!-- Préstamos -->
             <div class="col-md-3 menu-card">

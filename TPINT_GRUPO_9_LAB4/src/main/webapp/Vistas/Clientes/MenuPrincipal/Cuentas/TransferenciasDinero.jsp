@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="java.util.*" %>
+    pageEncoding="UTF-8" import="java.util.*, Modelo.Cuenta" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -10,15 +10,30 @@
     <script>
         function toggleDestino() {
             const esPropia = document.getElementById('tipoDestinoPropia').checked;
-            document.getElementById('destinoPropia').style.display = esPropia ? 'block' : 'none';
-            document.getElementById('destinoExterna').style.display = esPropia ? 'none' : 'block';
+            const destinoPropia = document.getElementById('destinoPropia');
+            const destinoExterna = document.getElementById('destinoExterna');
+            destinoPropia.style.display = esPropia ? 'block' : 'none';
+            destinoExterna.style.display = esPropia ? 'none' : 'block';
             
             // Limpiar valores al cambiar
-            if(esPropia) {
-                document.getElementById('cuentaDestinoExterna').value = '';
+            if (esPropia) {
+                document.getElementById('cbuDestinoExterna').value = '';
             } else {
                 document.getElementById('cuentaDestinoPropia').value = '';
             }
+        }
+
+        function validarFormulario() {
+            const esPropia = document.getElementById('tipoDestinoPropia').checked;
+            if (esPropia) {
+                const cuentaOrigen = document.getElementById('cuentaOrigen').value;
+                const cuentaDestinoPropia = document.getElementById('cuentaDestinoPropia').value;
+                if (cuentaOrigen && cuentaDestinoPropia && cuentaOrigen === cuentaDestinoPropia) {
+                    alert('La cuenta de origen y destino no pueden ser la misma.');
+                    return false;
+                }
+            }
+            return true;
         }
 
         window.onload = function() {
@@ -34,27 +49,26 @@
     <div class="container w-50 mx-auto">
         <h2 class="mb-4">Transferir Dinero</h2> 
 
+        <!-- Mostrar mensajes -->
+        <% if (request.getAttribute("mensajeExito") != null) { %>
+            <div class="alert alert-success" role="alert">
+                <%= request.getAttribute("mensajeExito") %>
+            </div>
+        <% } %>
+        <% if (request.getAttribute("mensajeError") != null) { %>
+            <div class="alert alert-danger" role="alert">
+                <%= request.getAttribute("mensajeError") %>
+            </div>
+        <% } %>
+
         <%
-            class Cuenta {
-                int id;
-                String numero;
-                String tipo;
-                double saldo;
-
-                Cuenta(int id, String numero, String tipo, double saldo) {
-                    this.id = id;
-                    this.numero = numero;
-                    this.tipo = tipo;
-                    this.saldo = saldo;
-                }
+            List<Cuenta> cuentasPropias = (List<Cuenta>) request.getAttribute("cuentasPropias");
+            if (cuentasPropias == null) {
+                cuentasPropias = new ArrayList<>();
             }
-
-            List<Cuenta> cuentasPropias = new ArrayList<>();
-            cuentasPropias.add(new Cuenta(1, "123-456789", "Caja de Ahorro", 50000.00));
-            cuentasPropias.add(new Cuenta(2, "987-654321", "Cuenta Corriente", 20000.00));
         %>
 
-        <form action="TransferenciaServlet" method="post">
+        <form action="<%=request.getContextPath()%>/TransferenciaServlet" method="post" onsubmit="return validarFormulario()">
 
             <div class="mb-3">
                 <label for="cuentaOrigen" class="form-label">Cuenta de Origen</label>
@@ -63,8 +77,8 @@
                     <%
                         for (Cuenta c : cuentasPropias) {
                     %>
-                    <option value="<%= c.id %>">
-                        <%= c.numero %> - <%= c.tipo %> - Saldo: $<%= String.format("%,.2f", c.saldo) %>
+                    <option value="<%= c.getIdCuenta() %>">
+                        <%= c.getNumeroCuenta() %> - <%= c.getTipoCuenta().getDescripcion() %> - Saldo: $<%= String.format("%,.2f", c.getSaldo()) %>
                     </option>
                     <%
                         }
@@ -95,8 +109,8 @@
                     <%
                         for (Cuenta c : cuentasPropias) {
                     %>
-                    <option value="<%= c.id %>">
-                        <%= c.numero %> - <%= c.tipo %>
+                    <option value="<%= c.getIdCuenta() %>">
+                        <%= c.getNumeroCuenta() %> - <%= c.getTipoCuenta().getDescripcion() %>
                     </option>
                     <%
                         }
@@ -105,8 +119,8 @@
             </div>
 
             <div id="destinoExterna" class="mb-3" style="display:none;">
-                <label for="cuentaDestinoExterna" class="form-label">Número de Cuenta Destino (externa)</label>
-                <input type="text" id="cuentaDestinoExterna" name="numeroCuentaDestinoExterna" class="form-control" placeholder="Ej: 456-123456" />
+                <label for="cbuDestinoExterna" class="form-label">CBU de Cuenta Destino (externa)</label>
+                <input type="text" id="cbuDestinoExterna" name="cbuDestinoExterna" class="form-control" placeholder="Ej: 1234567890123456789012" />
             </div>
 
             <div class="mb-3">
@@ -118,13 +132,13 @@
                 <i class="bi bi-arrow-left-right"></i> Transferir
             </button>
 
-                    <div class="mb-3 row mt-4">
-					    <div class="col-sm-12 text-center">
-					        <a href="../MenuPrincipal/MenuCliente.jsp" class="btn btn-secondary">
-					            <i class="bi-box-arrow-left"></i> Volver
-					        </a>
-					    </div>
-					</div>
+            <div class="mb-3 row mt-4">
+                <div class="col-sm-12 text-center">
+                    <a href="<%=request.getContextPath()%>/Vistas/Clientes/MenuPrincipal/MenuCliente.jsp" class="btn btn-secondary">
+                        <i class="bi-box-arrow-left"></i> Volver
+                    </a>
+                </div>
+            </div>
         </form>
     </div>
 </main>
