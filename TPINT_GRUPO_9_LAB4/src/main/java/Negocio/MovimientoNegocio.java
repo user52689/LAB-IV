@@ -1,11 +1,14 @@
 package Negocio;
 
-   import Modelo.Cuenta;
-   import DAO.CuentaDAO;
-   import DAO.MovimientoDAO;
-   import java.sql.Connection;
-   import java.sql.SQLException;
-   import DAO.Conexion;
+import DAO.Conexion;
+import DAO.CuentaDAO;
+import DAO.MovimientoDAO;
+import Modelo.Cuenta;
+import Modelo.Movimiento;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
+
 
    public class MovimientoNegocio {
        private MovimientoDAO movimientoDAO;
@@ -92,5 +95,9 @@ package Negocio;
                    }
                }
            }
+       }
+       
+       public List<Movimiento> listarMovimientosPorCuenta(int idCuenta) throws SQLException {
+           return movimientoDAO.listarMovimientosPorCuenta(idCuenta);
        }
    }

@@ -38,7 +38,7 @@
 
             <!-- Listar Préstamos del Cliente -->
             <div class="col-md-4 menu-card">
-                <a href="<%= request.getContextPath() %>/ListarPrestamosClienteServlet" class="text-decoration-none text-dark">
+                 <a href="<%= request.getContextPath() %>/ListarPrestamosClienteServlet" class="text-decoration-none text-dark">
                     <div class="card shadow h-100 text-center p-3">
                         <i class="bi bi-file-text text-success" style="font-size: 2.5rem;"></i>
                         <h5 class="mt-3">Mis Préstamos</h5>

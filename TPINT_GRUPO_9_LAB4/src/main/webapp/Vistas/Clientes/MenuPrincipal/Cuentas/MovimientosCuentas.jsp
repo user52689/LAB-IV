@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="java.util.*, java.text.SimpleDateFormat" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -20,104 +21,74 @@
     <div class="container w-75 mx-auto">
         <h2 class="mb-4 text-center">Movimientos de todas las cuentas</h2>
 
-        <%
-            // Simulo estructura de cuentas y movimientos
-            class Movimiento {
-                Date fecha;
-                String descripcion;
-                String tipo; // "credito" o "debito"
-                double monto;
-                Movimiento(Date fecha, String descripcion, String tipo, double monto) {
-                    this.fecha = fecha;
-                    this.descripcion = descripcion;
-                    this.tipo = tipo;
-                    this.monto = monto; 
-                }
-            }
-
-            class CuentaConMovimientos {
-                String numeroCuenta;
-                String tipoCuenta;
-                List<Movimiento> movimientos;
-                CuentaConMovimientos(String numeroCuenta, String tipoCuenta, List<Movimiento> movimientos) {
-                    this.numeroCuenta = numeroCuenta;
-                    this.tipoCuenta = tipoCuenta;
-                    this.movimientos = movimientos;
-                }
-            }
-
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
-            List<CuentaConMovimientos> cuentas = new ArrayList<>();
-
-            List<Movimiento> movs1 = Arrays.asList(
-                new Movimiento(new GregorianCalendar(2025, Calendar.JANUARY, 5).getTime(), "Depósito sueldo", "credito", 50000.00),
-                new Movimiento(new GregorianCalendar(2025, Calendar.JANUARY, 10).getTime(), "Pago supermercado", "debito", 15000.00),
-                new Movimiento(new GregorianCalendar(2025, Calendar.JANUARY, 15).getTime(), "Transferencia recibida", "credito", 12000.00)
-            );
-
-            List<Movimiento> movs2 = Arrays.asList(
-                new Movimiento(new GregorianCalendar(2025, Calendar.FEBRUARY, 1).getTime(), "Pago tarjeta", "debito", 20000.00),
-                new Movimiento(new GregorianCalendar(2025, Calendar.FEBRUARY, 10).getTime(), "Intereses ganados", "credito", 3000.00)
-            );
-
-            cuentas.add(new CuentaConMovimientos("123-456789", "Caja de Ahorro", movs1));
-            cuentas.add(new CuentaConMovimientos("987-654321", "Cuenta Corriente", movs2));
-
-            if (cuentas.isEmpty()) {
-        %>
-            <p class="text-center">No hay movimientos para mostrar.</p>
-        <%
-            } else {
-                for (CuentaConMovimientos cuenta : cuentas) {
-        %>
-            <div class="card mb-4 shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">Cuenta: <%= cuenta.numeroCuenta %> (<%= cuenta.tipoCuenta %>)</h5>
-                </div>
-                <div class="card-body p-0">
-                    <table class="table table-striped mb-0">
-                        <thead>
-                            <tr>
-                                <th>Fecha</th>
-                                <th>Descripción</th>
-                                <th>Tipo</th>
-                                <th>Monto</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <%
-                                for (Movimiento mov : cuenta.movimientos) {
-                            %>
-                                <tr>
-                                    <td><%= sdf.format(mov.fecha) %></td>
-                                    <td><%= mov.descripcion %></td>
-                                    <td class="<%= mov.tipo.equals("credito") ? "credito" : "debito" %>">
-                                        <%= mov.tipo.equals("credito") ? "Crédito" : "Débito" %>
-                                    </td>
-                                    <td class="<%= mov.tipo.equals("credito") ? "credito" : "debito" %>">
-                                        $<%= String.format("%,.2f", mov.monto) %>
-                                    </td>
-                                </tr>
-                            <%
-                                }
-                            %>
-                        </tbody>
-                    </table>
-                </div>
+        <!-- Mostrar mensajes de éxito o error -->
+        <c:if test="${not empty mensajeExito}">
+            <div class="alert alert-success" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i>${mensajeExito}
             </div>
-        <%
-                }
-            }
-        %>
+        </c:if>
+        <c:if test="${not empty mensajeError}">
+            <div class="alert alert-danger" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>${mensajeError}
+            </div>
+        </c:if>
 
-                <div class="mb-3 row">
-				    <div class="col-sm-12 text-center">
-				        <a href="../MenuPrincipal/MenuCliente.jsp" class="btn btn-secondary">
-				            <i class="bi-box-arrow-left"></i> Volver
-				        </a>
-				    </div>
-				</div>
+        <!-- Mostrar movimientos por cuenta -->
+        <c:choose>
+            <c:when test="${empty cuentasConMovimientos}">
+                <p class="text-center">No hay movimientos para mostrar.</p>
+            </c:when>
+            <c:otherwise>
+                <c:forEach var="entry" items="${cuentasConMovimientos}">
+                    <c:if test="${not empty entry.value}">
+                        <div class="card mb-4 shadow-sm">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">Cuenta: ${entry.key.numeroCuenta} (${entry.key.tipoCuenta.descripcion})</h5>
+                            </div>
+                            <div class="card-body p-0">
+                                <table class="table table-striped mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Fecha</th>
+                                            <th>Descripción</th>
+                                            <th>Tipo</th>
+                                            <th>Monto</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach var="movimiento" items="${entry.value}">
+                                            <c:set var="esCredito" value="${movimiento.tipoMovimiento.descripcion == 'Crédito' || movimiento.tipoMovimiento.descripcion == 'Transferencia Recibida'}" />
+                                            <tr>
+                                                <td>
+                                                    <fmt:parseDate value="${movimiento.fechaMovimiento}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDate" type="both" />
+                                                    <fmt:formatDate value="${parsedDate}" pattern="dd/MM/yyyy" />
+                                                </td>
+                                                <td>${movimiento.detalle}</td>
+                                                <td class="${esCredito ? 'credito' : 'debito'}">
+                                                    ${movimiento.tipoMovimiento.descripcion}
+                                                </td>
+                                                <td class="${esCredito ? 'credito' : 'debito'}">
+                                                    <fmt:formatNumber value="${movimiento.importe}" type="currency" currencySymbol="$" />
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </c:if>
+                </c:forEach>
+            </c:otherwise>
+        </c:choose>
+
+        <!-- Botón Volver -->
+        <div class="mb-3 row">
+            <div class="col-sm-12 text-center">
+                <a href="../MenuPrincipal/MenuCliente.jsp" class="btn btn-secondary">
+                    <i class="bi-box-arrow-left"></i> Volver
+                </a>
+            </div>
+        </div>
     </div>
 </main>
 

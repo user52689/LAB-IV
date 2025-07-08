@@ -11,6 +11,7 @@ public class Cuota {
     private LocalDate fechaVencimiento;
     private LocalDateTime fechaPago;
     private Cuenta cuentaPago;
+    private Integer idCuentaPago;
     private boolean activo;
     
     public Cuota() {}
@@ -76,6 +77,14 @@ public class Cuota {
 	public void setActivo(boolean activo) {
 		this.activo = activo;
 	}
+	
+	 public Integer getIdCuentaPago() {
+	        return idCuentaPago;
+	}
+
+	 public void setIdCuentaPago(Integer idCuentaPago) {
+	        this.idCuentaPago = idCuentaPago;
+	 }
 
     
 }

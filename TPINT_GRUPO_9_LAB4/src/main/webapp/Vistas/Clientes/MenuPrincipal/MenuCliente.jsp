@@ -29,7 +29,7 @@
 
             <!-- Cuentas -->
             <div class="col-md-3 menu-card">
-                <a href="../Cuentas/ListarCuentas.jsp" class="text-decoration-none">
+            	<a href="<%=request.getContextPath()%>/Vistas/Clientes/MenuPrincipal/Cuentas/MenuMovimientosCuentas.jsp" class="text-decoration-none">
                     <div class="card shadow h-100 text-center p-3">
                         <i class="bi bi-wallet2 text-primary" style="font-size: 2.5rem;"></i>
                         <h5 class="mt-3">Cuentas</h5>
@@ -55,7 +55,7 @@
 					<div class="card shadow h-100 text-center p-3">
 						<i class="bi bi-arrow-left-right text-info" style="font-size: 2.5rem;"></i>
 						<h5 class="mt-3">Transferencias</h5>
-						<p class="text-muted">Gestionar transferencias y movimientos</p>
+						<p class="text-muted">Gestionar transferencias </p>
 					</div>
 				</a>
 			</div>

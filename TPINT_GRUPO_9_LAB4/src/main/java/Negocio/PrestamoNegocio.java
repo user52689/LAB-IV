@@ -26,6 +26,10 @@ public class PrestamoNegocio {
     public List<Prestamo> listarPorCliente(int idCliente) throws SQLException {
         return prestamoDAO.listarPorCliente(idCliente);
     }
+    
+    public List<Prestamo> listarPorClienteConSaldo(int idCliente) throws SQLException {
+        return prestamoDAO.listarPorClienteConSaldo(idCliente);
+    }
 
     public boolean aprobarPrestamo(int idPrestamo) throws SQLException {
         System.out.println("[DEBUG] Aprobando préstamo ID: " + idPrestamo);

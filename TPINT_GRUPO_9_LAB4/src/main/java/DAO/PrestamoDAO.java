@@ -284,8 +284,8 @@ public class PrestamoDAO {
                     p.setFechaSolicitud(rs.getTimestamp("fecha_solicitud").toLocalDateTime());
 
                     EstadoPrestamo estado = new EstadoPrestamo();
-                    estado.setIdEstadoPrestamo(rs.getInt("id_estado_prestamo")); // ✅ esto es importante
-                    estado.setDescripcion(rs.getString("estado"));               // ✅ también esto
+                    estado.setIdEstadoPrestamo(rs.getInt("id_estado_prestamo"));
+                    estado.setDescripcion(rs.getString("estado"));
                     p.setEstadoPrestamo(estado);
 
                     p.setSaldoPendiente(p.getImporteTotal());
@@ -293,6 +293,10 @@ public class PrestamoDAO {
                     lista.add(p);
                 }
             }
+        }
+        System.out.println("[DEBUG] listarPorCliente idCliente=" + idCliente + ", préstamos encontrados: " + lista.size());
+        for (Prestamo p : lista) {
+            System.out.println("[DEBUG] Préstamo ID: " + p.getIdPrestamo() + ", Importe: " + p.getImporteTotal() + ", Saldo: " + p.getSaldoPendiente() + ", Estado: " + p.getEstadoPrestamo().getDescripcion());
         }
         return lista;
     }
@@ -349,6 +353,53 @@ public class PrestamoDAO {
             }
         }
         return null;
+    }
+    
+    /** Lista préstamos por cliente con saldo pendiente calculado desde cuotas */
+    public List<Prestamo> listarPorClienteConSaldo(int idCliente) throws SQLException {
+        String sql = """
+            SELECT p.id_prestamo,
+                   p.importe_total,
+                   p.fecha_solicitud,
+                   p.id_estado_prestamo,
+                   e.descripcion AS estado,
+                   COALESCE((
+                       SELECT SUM(c.monto_cuota)
+                       FROM cuotas c
+                       WHERE c.id_prestamo = p.id_prestamo
+                       AND c.fecha_pago IS NULL
+                       AND c.activo = TRUE
+                   ), p.importe_total) AS saldo_pendiente
+              FROM prestamos p
+              JOIN estados_prestamo e ON p.id_estado_prestamo = e.id_estado_prestamo
+             WHERE p.id_cliente = ? AND p.activo = TRUE
+        """;
+
+        List<Prestamo> lista = new ArrayList<>();
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, idCliente);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Prestamo p = new Prestamo();
+                    p.setIdPrestamo(rs.getInt("id_prestamo"));
+                    p.setImporteTotal(rs.getDouble("importe_total"));
+                    p.setSaldoPendiente(rs.getDouble("saldo_pendiente"));
+                    p.setFechaSolicitud(rs.getTimestamp("fecha_solicitud").toLocalDateTime());
+
+                    EstadoPrestamo estado = new EstadoPrestamo();
+                    estado.setIdEstadoPrestamo(rs.getInt("id_estado_prestamo"));
+                    estado.setDescripcion(rs.getString("estado"));
+                    p.setEstadoPrestamo(estado);
+
+                    lista.add(p);
+                }
+            }
+        }
+        System.out.println("[DEBUG] listarPorClienteConSaldo idCliente=" + idCliente + ", préstamos encontrados: " + lista.size());
+        for (Prestamo p : lista) {
+            System.out.println("[DEBUG] Préstamo ID: " + p.getIdPrestamo() + ", Importe: " + p.getImporteTotal() + ", Saldo: " + p.getSaldoPendiente() + ", Estado: " + p.getEstadoPrestamo().getDescripcion());
+        }
+        return lista;
     }
 
 
