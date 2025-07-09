@@ -44,6 +44,7 @@ public class ClienteNegocio {
 
     public boolean resetearContrasena(String dni, String nuevaContrasenaPlano) throws SQLException {
         String hash = Seguridad.hashPassword(nuevaContrasenaPlano);
+        System.out.println("Nueva contraseña recibida ->(hash): " + hash);
         return clienteDAO.resetearContrasena(dni, hash);
     }
 	

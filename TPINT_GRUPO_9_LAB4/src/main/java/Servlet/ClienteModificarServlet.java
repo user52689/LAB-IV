@@ -64,7 +64,7 @@ public class ClienteModificarServlet extends HttpServlet {
             if ("updatePassword".equals(action) && "contrasena".equals(campo)) {
                 String nuevaContrasena = request.getParameter("nuevaContrasena");
                 String confirmarContrasena = request.getParameter("confirmarContrasena");
-
+                
                 if (nuevaContrasena == null || confirmarContrasena == null ||
                     nuevaContrasena.isEmpty() || confirmarContrasena.isEmpty()) {
                     request.setAttribute("mensajeError", "Debe ingresar y confirmar la nueva contraseña.");
