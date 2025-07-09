@@ -32,8 +32,8 @@ public class ReporteClienteServlet extends HttpServlet {
             request.setAttribute("error", "No se pudo cargar la lista de clientes: " + e.getMessage());
         }
 
-        request.getRequestDispatcher("MenuPrincipal/Reportes/ReporteCliente.jsp")
-               .forward(request, response);
+        request.getRequestDispatcher("/Vistas/Administrador/MenuPrincipal/Reportes/ReporteCliente.jsp")
+        .forward(request, response);
     }
 
     // POST: genera el reporte
@@ -70,7 +70,7 @@ public class ReporteClienteServlet extends HttpServlet {
             request.setAttribute("error", "No se pudo cargar la lista de clientes");
         }
 
-        request.getRequestDispatcher("MenuPrincipal/Reportes/ReporteCliente.jsp")
-               .forward(request, response);
+        request.getRequestDispatcher("/Vistas/Administrador/MenuPrincipal/Reportes/ReporteCliente.jsp")
+        .forward(request, response);
     }
 }

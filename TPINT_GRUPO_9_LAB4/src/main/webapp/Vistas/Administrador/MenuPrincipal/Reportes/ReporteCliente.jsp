@@ -13,7 +13,24 @@
 
 <div class="container">
     <h2 class="mb-4"><i class="bi bi-person-lines-fill text-purple"></i> Reporte de Ingresos y Egresos por Cliente</h2>
-
+<%
+    Object prueba = request.getAttribute("listaClientes");
+    if (prueba == null) {
+%>
+        <div class="alert alert-danger">⚠️ listaClientes es NULL</div>
+<%
+    } else {
+        List<Cliente> testList = (List<Cliente>) prueba;
+%>
+        <div class="alert alert-info">🔍 listaClientes contiene <%= testList.size() %> cliente(s)</div>
+<%
+        for (Cliente c : testList) {
+%>
+            <div><%= c.getIdCliente() %> - <%= c.getNombre() %> <%= c.getApellido() %></div>
+<%
+        }
+    }
+%>
     <form action="${pageContext.request.contextPath}/ReporteClienteServlet" method="post" class="row g-3">
         <div class="col-md-4">
             <label for="idCliente" class="form-label">Cliente:</label>
