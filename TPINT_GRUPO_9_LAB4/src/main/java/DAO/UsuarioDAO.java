@@ -15,32 +15,35 @@ public class UsuarioDAO {
     }
 
     public boolean agregarUsuario(Usuario u) throws SQLException {
-        String sql = "INSERT INTO usuarios (" +
-                     "dni, nombre_usuario, contrasena, rol, correo_electronico, telefono, " +
-                     "id_genero, id_pais, id_provincia, id_localidad, " +
-                     "fecha_nacimiento, direccion, activo, fecha_creacion, ultimo_acceso) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    	String sql = "INSERT INTO usuarios (" +
+    		    "dni, nombre_usuario, nombre, apellido, contrasena, rol, correo_electronico, telefono, " +
+    		    "id_genero, id_pais, id_provincia, id_localidad, " +
+    		    "fecha_nacimiento, direccion, activo, fecha_creacion, ultimo_acceso) " +
+    		    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
 
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
         	ps.setString(1, u.getDni());
         	ps.setString(2, u.getNombreUsuario());
-        	ps.setString(3, u.getContrasena());
-        	ps.setString(4, u.getRol());
-        	ps.setString(5, u.getCorreoElectronico());
-        	ps.setString(6, u.getTelefono());
-        	ps.setInt(7, u.getIdGenero());
-        	ps.setInt(8, u.getIdPais());
-        	ps.setInt(9, u.getIdProvincia());
-        	ps.setInt(10, u.getIdLocalidad());
-        	ps.setDate(11, java.sql.Date.valueOf(u.getFechaNacimiento()));
-        	ps.setString(12, u.getDireccion());
-        	ps.setBoolean(13, u.isActivo());
-        	ps.setTimestamp(14, Timestamp.valueOf(u.getFechaCreacion()));
+        	ps.setString(3, u.getNombre());
+        	ps.setString(4, u.getApellido());
+        	ps.setString(5, u.getContrasena());
+        	ps.setString(6, u.getRol());
+        	ps.setString(7, u.getCorreoElectronico());
+        	ps.setString(8, u.getTelefono());
+        	ps.setInt(9, u.getIdGenero());
+        	ps.setInt(10, u.getIdPais());
+        	ps.setInt(11, u.getIdProvincia());
+        	ps.setInt(12, u.getIdLocalidad());
+        	ps.setDate(13, java.sql.Date.valueOf(u.getFechaNacimiento()));
+        	ps.setString(14, u.getDireccion());
+        	ps.setBoolean(15, u.isActivo());
+        	ps.setTimestamp(16, Timestamp.valueOf(u.getFechaCreacion()));
 
         	if (u.getUltimoAcceso() != null) {
-        	    ps.setTimestamp(15, Timestamp.valueOf(u.getUltimoAcceso()));
+        	    ps.setTimestamp(17, Timestamp.valueOf(u.getUltimoAcceso()));
         	} else {
-        	    ps.setTimestamp(15, null);
+        	    ps.setTimestamp(17, null);
         	}
 
             int filas = ps.executeUpdate();
@@ -194,6 +197,8 @@ public class UsuarioDAO {
         u.setIdUsuario(rs.getInt("id_usuario"));
         u.setDni(rs.getString("dni"));
         u.setNombreUsuario(rs.getString("nombre_usuario"));
+        u.setNombre(rs.getString("nombre"));
+        u.setApellido(rs.getString("apellido")); 
         u.setContrasena(rs.getString("contrasena"));
         u.setRol(rs.getString("rol"));
         u.setCorreoElectronico(rs.getString("correo_electronico"));

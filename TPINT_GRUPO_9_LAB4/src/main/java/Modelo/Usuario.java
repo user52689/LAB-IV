@@ -7,6 +7,8 @@ public class Usuario {
     private int idUsuario;
     private String dni;
     private String nombreUsuario;
+    private String nombre;
+    private String apellido;
     private String contrasena;
     private String rol;
     private String correoElectronico;
@@ -23,16 +25,19 @@ public class Usuario {
 
     public Usuario() {}
 
-    public Usuario(int idUsuario, String dni, String nombreUsuario, String contrasena, String rol,
-                   String correoElectronico, int idGenero, int idPais, LocalDate fechaNacimiento,
+    public Usuario(int idUsuario, String dni, String nombreUsuario, String nombre, String apellido, String contrasena, String rol,
+                   String correoElectronico, String telefono, int idGenero, int idPais, LocalDate fechaNacimiento,
                    String direccion, int idLocalidad, int idProvincia,
                    LocalDateTime fechaCreacion, LocalDateTime ultimoAcceso, boolean activo) {
         this.idUsuario = idUsuario;
         this.dni = dni;
         this.nombreUsuario = nombreUsuario;
+        this.nombre = nombre;
+        this.apellido = apellido;
         this.contrasena = contrasena;
         this.rol = rol;
         this.correoElectronico = correoElectronico;
+        this.telefono = telefono;
         this.idGenero = idGenero;
         this.idPais = idPais;
         this.fechaNacimiento = fechaNacimiento;
@@ -67,6 +72,20 @@ public class Usuario {
         this.nombreUsuario = nombreUsuario;
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
     public String getContrasena() {
         return contrasena;
     }
@@ -86,6 +105,13 @@ public class Usuario {
     }
     public void setCorreoElectronico(String correoElectronico) {
         this.correoElectronico = correoElectronico;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
     public int getIdGenero() {
@@ -151,7 +177,8 @@ public class Usuario {
         this.activo = activo;
     }
 
-    // Métodos para RBAC
+    // Métodos para RBAC (Roles)
+
     public boolean esAdministrador() {
         return "admin".equalsIgnoreCase(rol);
     }
@@ -159,12 +186,4 @@ public class Usuario {
     public boolean esCliente() {
         return "cliente".equalsIgnoreCase(rol);
     }
-
-	public String getTelefono() {
-		return telefono;
-	}
-
-	public void setTelefono(String telefono) {
-		this.telefono = telefono;
-	}
 }
