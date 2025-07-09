@@ -7,7 +7,6 @@
     <title>Perfil de Cliente - MiBanco</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
-    
 </head>
 <body class="d-flex flex-column min-vh-100">
 
@@ -52,7 +51,8 @@
             </div>
         </div>
 
-        <form action="<%=request.getContextPath()%>/ActualizarPerfilServlet" method="post">
+        <form action="<%=request.getContextPath()%>/cliente/modificar" method="post">
+            <input type="hidden" name="dni" value="<%= dni %>" />
             <div class="mb-3 row align-items-center">
                 <label for="correoElectronico" class="col-sm-3 col-form-label">Email</label>
                 <div class="col-sm-7">
@@ -75,7 +75,8 @@
             </div>
         </form>
 
-        <form action="<%=request.getContextPath()%>/ActualizarPerfilServlet" method="post">
+        <form action="<%=request.getContextPath()%>/cliente/modificar" method="post">
+            <input type="hidden" name="dni" value="<%= dni %>" />
             <div class="mb-3 row align-items-center">
                 <label for="telefono" class="col-sm-3 col-form-label">Teléfono</label>
                 <div class="col-sm-7">
@@ -98,7 +99,8 @@
             </div>
         </form>
 
-        <form action="<%=request.getContextPath()%>/ActualizarPerfilServlet" method="post">
+        <form action="<%=request.getContextPath()%>/cliente/modificar" method="post">
+            <input type="hidden" name="dni" value="<%= dni %>" />
             <div class="mb-3 row align-items-center">
                 <label for="direccion" class="col-sm-3 col-form-label">Dirección</label>
                 <div class="col-sm-7">
@@ -121,6 +123,32 @@
             </div>
         </form>
 
+        <!-- Form para actualizar contraseña -->
+        <form action="<%=request.getContextPath()%>/cliente/modificar" method="post" onsubmit="return validarContrasena()">
+            <input type="hidden" name="dni" value="<%= dni %>" />
+            <h4 class="mb-3 text-center">Actualizar Contraseña</h4>
+            <div class="mb-3 row align-items-center">
+                <label for="nuevaContrasena" class="col-sm-4 col-form-label">Nueva contraseña</label>
+                <div class="col-sm-8">
+                    <input type="password" id="nuevaContrasena" name="nuevaContrasena" class="form-control" required minlength="6" />
+                </div>
+            </div>
+            <div class="mb-3 row align-items-center">
+                <label for="confirmarContrasena" class="col-sm-4 col-form-label">Confirmar contraseña</label>
+                <div class="col-sm-8">
+                    <input type="password" id="confirmarContrasena" name="confirmarContrasena" class="form-control" required minlength="6" />
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-sm-12 text-center">
+                    <input type="hidden" name="field" value="contrasena" />
+                    <button type="submit" name="action" value="updatePassword" class="btn btn-primary">
+                        <i class="bi bi-key-fill"></i> Cambiar contraseña
+                    </button>
+                </div>
+            </div>
+        </form>
+
         <div class="mb-3 row">
             <div class="col-sm-12 text-center">
                 <a href="<%=request.getContextPath()%>/Vistas/Clientes/MenuPrincipal/MenuCliente.jsp" class="btn btn-secondary">
@@ -136,32 +164,42 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-        function toggleEdit(idInput, btnEdit, btnSave, btnCancel) {
-            const input = document.getElementById(idInput);
-            input.disabled = !input.disabled;
-            if (!input.disabled) {
-                // Guardar el valor original para poder restaurarlo
-                input.setAttribute('data-original-value', input.value);
-                input.focus();
-                btnEdit.style.display = 'none';
-                btnSave.style.display = 'inline-block';
-                btnCancel.style.display = 'inline-block';
-            } else {
-                btnEdit.style.display = 'inline-block';
-                btnSave.style.display = 'none';
-                btnCancel.style.display = 'none';
-            }
-        }
-
-        function cancelEdit(idInput, btnEdit, btnSave, btnCancel) {
-            const input = document.getElementById(idInput);
-            // Restaurar el valor original
-            input.value = input.getAttribute('data-original-value');
-            input.disabled = true;
+    function toggleEdit(idInput, btnEdit, btnSave, btnCancel) {
+        const input = document.getElementById(idInput);
+        input.disabled = !input.disabled;
+        if (!input.disabled) {
+            // Guardar el valor original para poder restaurarlo
+            input.setAttribute('data-original-value', input.value);
+            input.focus();
+            btnEdit.style.display = 'none';
+            btnSave.style.display = 'inline-block';
+            btnCancel.style.display = 'inline-block';
+        } else {
             btnEdit.style.display = 'inline-block';
             btnSave.style.display = 'none';
             btnCancel.style.display = 'none';
         }
-    </script>
+    }
+
+    function cancelEdit(idInput, btnEdit, btnSave, btnCancel) {
+        const input = document.getElementById(idInput);
+        // Restaurar el valor original
+        input.value = input.getAttribute('data-original-value');
+        input.disabled = true;
+        btnEdit.style.display = 'inline-block';
+        btnSave.style.display = 'none';
+        btnCancel.style.display = 'none';
+    }
+
+    function validarContrasena() {
+        const pass1 = document.getElementById('nuevaContrasena').value;
+        const pass2 = document.getElementById('confirmarContrasena').value;
+        if (pass1 !== pass2) {
+            alert('Las contraseñas no coinciden. Por favor, verifica.');
+            return false;
+        }
+        return true;
+    }
+</script>
 </body>
 </html>
