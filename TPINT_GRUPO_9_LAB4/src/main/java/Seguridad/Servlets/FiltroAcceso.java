@@ -72,7 +72,7 @@ public class FiltroAcceso implements Filter {
     public void destroy() {
         System.out.println("FiltroAcceso: Destruido");
     }
-   /* private boolean tieneAccesoARuta(String requestURI, String contextPath, String rol) {
+    private boolean tieneAccesoARuta(String requestURI, String contextPath, String rol) {
         switch (rol) {
             case "ADMIN":
                 return 
@@ -93,6 +93,9 @@ public class FiltroAcceso implements Filter {
                     requestURI.endsWith("/usuario/modificar") ||
                     requestURI.endsWith("/usuario/blanqueo") ||
                     requestURI.endsWith("/usuario/listar") ||
+                    
+                    // === GESTIÓN DE PERFIL (SOLO ADMIN) ===
+                    requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Perfil/PerfilUsuario.jsp") ||
 
                     // === GESTIÓN DE CLIENTES (SOLO ADMIN) ===
                     requestURI.endsWith("/cliente/alta") ||
@@ -147,18 +150,41 @@ public class FiltroAcceso implements Filter {
 
                 // === PERMITIR RUTAS DE CLIENTE ===
                 return requestURI.startsWith(contextPath + "/Vistas/Clientes/MenuPrincipal/") ||
+                       
+                       // === MENÚS PRINCIPALES ===
                        requestURI.endsWith("/Vistas/Clientes/MenuPrincipal/MenuCliente.jsp") ||
+                       requestURI.endsWith("/Vistas/Clientes/MenuPrincipal/Cuentas/MenuMovimientosCuentas.jsp") ||
+                       
+                       // === GESTIÓN DE CUENTAS ===
                        requestURI.endsWith("/Vistas/Clientes/Cuentas/ListarCuentas.jsp") ||
-                       requestURI.endsWith("/Vistas/Clientes/Perfil/PerfilCliente.jsp") ||
+                       requestURI.endsWith("/ClienteCuentas/listar") ||
+                       
+                       // === MOVIMIENTOS Y TRANSFERENCIAS ===
+                       requestURI.endsWith("/Movimientos/listar") ||
                        requestURI.endsWith("/Vistas/Clientes/Cuentas/TransferenciasDinero.jsp") ||
+                       requestURI.endsWith("/TransferirServlet") ||
+                       requestURI.endsWith("/TransferenciaServlet") ||
+                       
+                       // === PERFIL DEL CLIENTE ===
+                       requestURI.endsWith("/Vistas/Clientes/Perfil/PerfilCliente.jsp") ||
+                       requestURI.endsWith("/ActualizarPerfilServlet") ||
+                       
+                       // === PRÉSTAMOS ===
+                       requestURI.endsWith("/Vistas/Clientes/MenuPrincipal/Prestamos/MenuPrestamos.jsp") ||
                        requestURI.endsWith("/Vistas/Clientes/Prestamos/MenuPrestamos.jsp") ||
-                       requestURI.endsWith("/TransferirServlet");
+                       requestURI.endsWith("/IrASolicitarPrestamoServlet") ||                      
+                       requestURI.endsWith("/ListarPrestamosClienteServlet") ||
+                       requestURI.endsWith("/DetallePrestamoServlet") ||
+                       requestURI.contains("/DetallePrestamoServlet?") ||
+                       requestURI.endsWith("/Prestamos/pagar") ||
+                       requestURI.contains("/Prestamos/pagar?");
 
             default:
                 return false;
         }
     }
-}*/
+}
+/*
 //desactivación ACCESO DENEGADO
 private boolean tieneAccesoARuta(String requestURI, String contextPath, String rol) {
     System.out.println("=== DEBUG RBAC ===");
@@ -169,4 +195,4 @@ private boolean tieneAccesoARuta(String requestURI, String contextPath, String r
   
    return true;
 }
-}
+}*/
