@@ -64,5 +64,16 @@ public class UsuarioNegocio {
     	String hash = Seguridad.hashPassword(nuevaContrasenaPlano);
         return usuarioDAO.resetearContrasena(dni, hash);
     }
+    
+    //Paginación
+    
+    public List<Usuario> listarRegistros(String nombreUsuario, String dni, String rol, String orden, int pagina, int tamañoPagina) throws SQLException {
+	    int offset = (pagina - 1) * tamañoPagina;
+	    return usuarioDAO.listarRegistros(nombreUsuario, dni, rol, orden, offset, tamañoPagina);
+	}
+	
+	public int contarRegistrosActivos(String nombreUsuario, String dni, String rol) throws SQLException {
+	    return usuarioDAO.contarRegistrosActivos(nombreUsuario, dni, rol);
+	}
 
 }

@@ -60,6 +60,88 @@ public class UsuarioDAO {
         }
         return lista;
     }
+    
+    public List<Usuario> listarRegistros(String nombreUsuario, String dni, String rol, String orden, int offset, int limite) throws SQLException {
+        List<Usuario> lista = new ArrayList<>();
+        StringBuilder sql = new StringBuilder(
+            "SELECT * " +
+            "FROM usuarios " +
+            "WHERE activo = TRUE "
+        );
+        if (nombreUsuario != null && !nombreUsuario.trim().isEmpty()) {
+            sql.append(" AND nombre_usuario LIKE ? ");
+        }
+        if (dni != null && !dni.trim().isEmpty()) {
+            sql.append(" AND dni LIKE ? ");
+        }
+        if (rol != null && !rol.trim().isEmpty()) {
+            sql.append(" AND rol = ? ");
+        }
+        if (orden != null && (orden.equalsIgnoreCase("asc") || orden.equalsIgnoreCase("desc"))) {
+            sql.append(" ORDER BY nombre_usuario ").append(orden);
+        }
+        if (limite > 0) {
+        	sql.append(" LIMIT ? OFFSET ?");
+        }
+        
+        try (PreparedStatement ps = conexion.prepareStatement(sql.toString())) {
+            int idx = 1;
+            if (nombreUsuario != null && !nombreUsuario.isEmpty()) {
+                ps.setString(idx++, "%" + nombreUsuario + "%");
+            }
+            if (dni != null && !dni.isEmpty()) {
+                ps.setString(idx++, "%" + dni + "%");
+            }
+            if (rol != null && !rol.isEmpty()) {
+                ps.setString(idx++, rol);
+            }
+            if (limite > 0) {
+                ps.setInt(idx++, limite);
+                ps.setInt(idx, offset);
+            }
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(mapearUsuario(rs));
+                }
+            }
+        } 
+        return lista;
+    }
+    
+    public int contarRegistrosActivos(String nombreUsuario, String dni, String rol) throws SQLException {
+        StringBuilder sql = new StringBuilder(
+        	"SELECT COUNT(*) " +
+        	"FROM usuarios " +
+        	"WHERE activo = TRUE "
+        );
+        if (nombreUsuario != null && !nombreUsuario.trim().isEmpty()) {
+            sql.append(" AND nombre_usuario LIKE ? ");
+        }
+        if (dni != null && !dni.trim().isEmpty()) {
+            sql.append(" AND dni LIKE ? ");
+        }
+        if (rol != null && !rol.trim().isEmpty()) {
+            sql.append(" AND rol = ? ");
+        }
+        try (PreparedStatement ps = conexion.prepareStatement(sql.toString())) {
+        	int idx = 1;
+            if (nombreUsuario != null && !nombreUsuario.isEmpty()) {
+                ps.setString(idx++, "%" + nombreUsuario + "%");
+            }
+            if (dni != null && !dni.isEmpty()) {
+                ps.setString(idx++, "%" + dni + "%");
+            }
+            if (rol != null && !rol.isEmpty()) {
+                ps.setString(idx, rol);
+            }
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        }
+        return 0;
+    }
 
     public Usuario obtenerUsuarioPorDni(String dni) throws SQLException {
         String sql = "SELECT * FROM usuarios WHERE dni = ? AND activo = TRUE";

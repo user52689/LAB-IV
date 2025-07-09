@@ -125,26 +125,45 @@ public class ClienteDAO {
     
     // Paginacion
     
-    public List<Cliente> listarRegistros(String dni, int offset, int limite) throws SQLException {
+    public List<Cliente> listarRegistros(String nombreApellido, String dni, String provincia, String ordenApellido, int offset, int limite) throws SQLException {
     	List<Cliente> lista = new ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT * FROM clientes WHERE activo = true ");
+
+        if(nombreApellido != null && !nombreApellido.isEmpty()) {
+        	sql.append(" AND (nombre LIKE ? OR apellido LIKE ?) ");
+        }
         
         if(dni != null && !dni.isEmpty()) {
         	sql.append(" AND dni LIKE ? ");
         }
         
-        sql.append("LIMIT ? OFFSET ?");
+        if(provincia != null && !provincia.isEmpty()) {
+        	sql.append(" AND id_provincia = ? ");
+        }
+        
+        if(ordenApellido.equalsIgnoreCase("asc") || ordenApellido.equalsIgnoreCase("desc")) {
+        	sql.append(" ORDER BY apellido ").append(ordenApellido);
+        }
+        
+        sql.append(" LIMIT ? OFFSET ?");
         
         try (PreparedStatement ps = conexion.prepareStatement(sql.toString())) {
         	int index = 1;
         	
-        	if(dni != null && !dni.isEmpty()) {
-        		ps.setString(index, "%" + dni + "%");
-        		index++;
+        	if(nombreApellido != null && !nombreApellido.isEmpty()) {
+        		ps.setString(index++, "%" + nombreApellido + "%");
+        		ps.setString(index++, "%" + nombreApellido + "%");
         	}
         	
-            ps.setInt(index, limite);
-            index++;
+        	if(dni != null && !dni.isEmpty()) {
+        		ps.setString(index++, "%" + dni + "%");
+        	}
+        	
+        	if(provincia != null && !provincia.isEmpty()) {
+        		ps.setString(index++, provincia);
+        	}
+        	
+            ps.setInt(index++, limite);
             ps.setInt(index, offset);
             
             try (ResultSet rs = ps.executeQuery()) {
@@ -157,19 +176,36 @@ public class ClienteDAO {
         return lista;
     }
     
-    public int contarRegistrosActivos(String dni) throws SQLException {
+    public int contarRegistrosActivos(String nombreApellido, String dni, String provincia) throws SQLException {
     	StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM clientes WHERE activo = true");
 
+    	if(nombreApellido != null && !nombreApellido.isEmpty()) {
+        	sql.append(" AND (nombre LIKE ? OR apellido LIKE ?) ");
+        }
+    	
         if (dni != null && !dni.isEmpty()) {
             sql.append(" AND dni LIKE ?");
+        }
+        
+        if (provincia != null && !provincia.isEmpty()) {
+        	sql.append(" AND id_provincia = ? ");
         }
 
         try (PreparedStatement ps = conexion.prepareStatement(sql.toString())) {
             int index = 1;
 
+            if(nombreApellido != null && !nombreApellido.isEmpty()) {
+        		ps.setString(index++, "%" + nombreApellido + "%");
+        		ps.setString(index++, "%" + nombreApellido + "%");
+        	}
+            
             if (dni != null && !dni.isEmpty()) {
-                ps.setString(index, "%" + dni + "%");
+                ps.setString(index++, "%" + dni + "%");
             }
+            
+            if(provincia != null && !provincia.isEmpty()) {
+        		ps.setString(index, provincia);
+        	}
 
             ResultSet rs = ps.executeQuery();
 
@@ -179,6 +215,7 @@ public class ClienteDAO {
         }
         return 0;
     }
+
 
     public boolean resetearContrasena(String dni, String contrasenaHash) throws SQLException {
         String sql = "UPDATE clientes SET contrasena = ? WHERE dni = ?";

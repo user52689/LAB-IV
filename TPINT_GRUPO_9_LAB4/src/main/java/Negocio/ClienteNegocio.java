@@ -49,12 +49,12 @@ public class ClienteNegocio {
 	
 	// Paginacion
 	
-	public List<Cliente> listarRegistros(String dni, int pagina, int tamañoPagina) throws SQLException {
+	public List<Cliente> listarRegistros(String nombreApellido, String dni, String provincia, String ordenApellido, int pagina, int tamañoPagina) throws SQLException {
 	    int offset = (pagina - 1) * tamañoPagina;
-	    return clienteDAO.listarRegistros(dni, offset, tamañoPagina);
+	    return clienteDAO.listarRegistros(nombreApellido, dni, provincia, ordenApellido, offset, tamañoPagina);
 	}
 	
-	public int contarRegistrosActivos(String dni) throws SQLException {
-	    return clienteDAO.contarRegistrosActivos(dni);
+	public int contarRegistrosActivos(String nombreApellido, String dni, String provincia) throws SQLException {
+	    return clienteDAO.contarRegistrosActivos(nombreApellido, dni, provincia);
 	}
 }
