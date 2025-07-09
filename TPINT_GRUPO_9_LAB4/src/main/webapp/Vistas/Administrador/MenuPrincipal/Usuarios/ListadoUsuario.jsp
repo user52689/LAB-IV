@@ -161,7 +161,10 @@
 										   class="btn btn-sm btn-danger" title="Dar de baja">
 										    <i class="bi bi-person-dash-fill"></i>
 										</a>
-
+										<a href="${pageContext.request.contextPath}/usuario/blanqueo?dni=${cliente.dni}" 
+										   class="btn btn-sm btn-info text-white" title="Blanquear contraseña">
+										    <i class="bi bi-key-fill"></i>
+										</a>
 						            </td>
 						        </tr>
 						    </c:forEach>
