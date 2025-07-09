@@ -16,7 +16,8 @@
             📊 Ingresos y Egresos por Fecha
         </a>
 
-        <a href="ReporteCliente.jsp" class="list-group-item list-group-item-action">
+        <a href="${pageContext.request.contextPath}/ReporteClienteServlet" class="list-group-item list-group-item-action">
+
             👤 Ingresos y Egresos por Cliente
         </a>
 
