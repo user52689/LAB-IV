@@ -16,20 +16,49 @@ public class CuentaDAO {
     }
 
     private Cuenta mapearCuenta(ResultSet rs) throws SQLException {
-        ClienteDAO cDAO = new ClienteDAO();
-        TipoCuentaDAO tcDAO = new TipoCuentaDAO();
-        Cuenta cu = new Cuenta();
-        Cliente c = cDAO.mapearCliente(rs);
-        TipoCuenta tc = tcDAO.mapearTipoCuenta(rs);
-        cu.setIdCuenta(rs.getInt("id_cuenta"));
-        cu.setNumeroCuenta(rs.getString("numero_cuenta"));
-        cu.setCliente(c);
-        cu.setCbu(rs.getString("cbu"));
-        cu.setTipoCuenta(tc);
-        cu.setSaldo(rs.getDouble("saldo"));
-        cu.setFechaCreacion(rs.getTimestamp("fecha_creacion").toLocalDateTime());
-        cu.setActivo(rs.getBoolean("activo"));
-        return cu;
+    	Cliente c = this.mapearCliente(rs);
+	    TipoCuenta tc = this.mapearTipoCuenta(rs);
+		Cuenta cu = new Cuenta();
+		
+		cu.setIdCuenta(rs.getInt("id_cuenta"));
+		cu.setNumeroCuenta(rs.getString("numero_cuenta"));
+		cu.setCliente(c);
+		cu.setCbu(rs.getString("cbu"));
+		cu.setTipoCuenta(tc);
+		cu.setSaldo(rs.getDouble("saldo"));
+		cu.setFechaCreacion(rs.getTimestamp("fecha_creacion").toLocalDateTime());
+		cu.setActivo(rs.getBoolean("activo"));
+		return cu;
+    }
+    
+    private TipoCuenta mapearTipoCuenta(ResultSet rs) throws SQLException {
+    	TipoCuenta t = new TipoCuenta();
+        t.setIdTipoCuenta(rs.getInt("id_tipo_cuenta"));
+        t.setDescripcion(rs.getString("descripcion"));
+        t.setActivo(rs.getBoolean("activo"));
+        return t;
+    }
+    
+    private Cliente mapearCliente(ResultSet rs) throws SQLException {
+    	Cliente c = new Cliente();
+    	c.setIdCliente(rs.getInt("id_cliente"));   
+    	c.setDni(rs.getString("dni"));
+    	c.setCuil(rs.getString("cuil"));
+    	c.setNombre(rs.getString("nombre"));
+    	c.setApellido(rs.getString("apellido"));
+    	c.setGenero(rs.getInt("id_genero"));
+    	c.setPais(rs.getInt("id_pais"));
+    	c.setFechaNacimiento(rs.getDate("fecha_nacimiento").toLocalDate());
+    	c.setDireccion(rs.getString("direccion"));
+    	c.setLocalidad(rs.getInt("id_localidad"));
+    	c.setProvincia(rs.getInt("id_provincia"));
+    	c.setCorreoElectronico(rs.getString("correo_electronico"));
+    	c.setTelefono(rs.getString("telefono"));
+    	c.setUsuario(rs.getString("usuario"));
+    	c.setContrasena(rs.getString("contrasena"));
+    	c.setFechaAlta(rs.getTimestamp("fecha_alta").toLocalDateTime());
+    	c.setActivo(rs.getBoolean("activo"));
+    	return c;
     }
 
     /**
@@ -59,7 +88,7 @@ public class CuentaDAO {
     /**
      * Devuelve un listado paginado de cuentas según DNI de cliente.
      */
-    public List<Cuenta> listarRegistros(String nroCuenta, int offset, int limite) throws SQLException {
+    public List<Cuenta> listarRegistros(String nroCuenta, String nombreCliente, String dni, String idTipoCuenta, String orden, int offset, int limite) throws SQLException {
         List<Cuenta> lista = new ArrayList<>();
         StringBuilder sql = new StringBuilder(
             "SELECT cu.*, c.*, tc.* " +
@@ -71,13 +100,36 @@ public class CuentaDAO {
         if (nroCuenta != null && !nroCuenta.trim().isEmpty()) {
             sql.append(" AND cu.numero_cuenta LIKE ? ");
         }
-        if(limite > 0) {
+        if (nombreCliente != null && !nombreCliente.trim().isEmpty()) {
+            sql.append(" AND (c.nombre LIKE ? OR c.apellido LIKE ?) ");
+        }
+        if (dni != null && !dni.trim().isEmpty()) {
+            sql.append(" AND c.dni LIKE ? ");
+        }
+        if (idTipoCuenta != null && !idTipoCuenta.trim().isEmpty()) {
+            sql.append(" AND cu.id_tipo_cuenta = ? ");
+        }
+        if (orden != null && (orden.equalsIgnoreCase("asc") || orden.equalsIgnoreCase("desc"))) {
+            sql.append(" ORDER BY cu.saldo ").append(orden);
+        }
+        if (limite > 0) {
         	sql.append(" LIMIT ? OFFSET ?");
         }
+        
         try (PreparedStatement ps = conexion.prepareStatement(sql.toString())) {
             int idx = 1;
             if (nroCuenta != null && !nroCuenta.isEmpty()) {
                 ps.setString(idx++, "%" + nroCuenta + "%");
+            }
+            if (nombreCliente != null && !nombreCliente.isEmpty()) {
+                ps.setString(idx++, "%" + nombreCliente + "%");
+                ps.setString(idx++, "%" + nombreCliente + "%");
+            }
+            if (dni != null && !dni.isEmpty()) {
+                ps.setString(idx++, "%" + dni + "%");
+            }
+            if (idTipoCuenta != null && !idTipoCuenta.isEmpty()) {
+                ps.setString(idx++, idTipoCuenta);
             }
             if (limite > 0) {
                 ps.setInt(idx++, limite);
@@ -90,6 +142,51 @@ public class CuentaDAO {
             }
         } 
         return lista;
+    }
+    
+    /**
+     * Cuenta cuántas cuentas activas hay (para paginación).
+     */
+    public int contarRegistrosActivos(String nroCuenta, String nombreCliente, String dni, String idTipoCuenta) throws SQLException {
+        StringBuilder sql = new StringBuilder(
+            "SELECT COUNT(*) FROM cuentas cu " +
+            "JOIN clientes c ON cu.id_cliente = c.id_cliente " +
+            "WHERE cu.activo = TRUE "
+        );
+        if (nroCuenta != null && !nroCuenta.trim().isEmpty()) {
+            sql.append(" AND cu.numero_cuenta LIKE ? ");
+        }
+        if (nombreCliente != null && !nombreCliente.trim().isEmpty()) {
+            sql.append(" AND (c.nombre LIKE ? OR c.apellido LIKE ?) ");
+        }
+        if (dni != null && !dni.trim().isEmpty()) {
+            sql.append(" AND c.dni LIKE ? ");
+        }
+        if (idTipoCuenta != null && !idTipoCuenta.trim().isEmpty()) {
+            sql.append(" AND cu.id_tipo_cuenta = ? ");
+        }
+        try (PreparedStatement ps = conexion.prepareStatement(sql.toString())) {
+        	int idx = 1;
+            if (nroCuenta != null && !nroCuenta.isEmpty()) {
+                ps.setString(idx++, "%" + nroCuenta + "%");
+            }
+            if (nombreCliente != null && !nombreCliente.isEmpty()) {
+                ps.setString(idx++, "%" + nombreCliente + "%");
+                ps.setString(idx++, "%" + nombreCliente + "%");
+            }
+            if (dni != null && !dni.isEmpty()) {
+                ps.setString(idx++, "%" + dni + "%");
+            }
+            if (idTipoCuenta != null && !idTipoCuenta.isEmpty()) {
+                ps.setString(idx, idTipoCuenta);
+            }
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        }
+        return 0;
     }
     
     public boolean modificarCuenta(Cuenta cu) throws SQLException {
@@ -145,31 +242,6 @@ public class CuentaDAO {
             int filas = ps.executeUpdate();
             return filas > 0;
         }
-    }
-    
-    /**
-     * Cuenta cuántas cuentas activas hay (para paginación).
-     */
-    public int contarRegistrosActivos(String nroCuenta) throws SQLException {
-        StringBuilder sql = new StringBuilder(
-            "SELECT COUNT(*) FROM cuentas cu " +
-            "JOIN clientes c ON cu.id_cliente = c.id_cliente " +
-            "WHERE cu.activo = TRUE "
-        );
-        if (nroCuenta != null && !nroCuenta.trim().isEmpty()) {
-            sql.append(" AND cu.numero_cuenta LIKE ? ");
-        }
-        try (PreparedStatement ps = conexion.prepareStatement(sql.toString())) {
-            if (nroCuenta != null && !nroCuenta.isEmpty()) {
-                ps.setString(1, "%" + nroCuenta + "%");
-            }
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1);
-                }
-            }
-        }
-        return 0;
     }
 
     /**

@@ -45,9 +45,9 @@ public class CuentaNegocio {
     // ========== MÉTODOS DE LISTADO - AMBAS VERSIONES ==========
     
     // Versión original (para paginación)
-    public List<Cuenta> listarRegistros(String nroCuenta, int pagina, int tamañoPagina) throws SQLException {
+    public List<Cuenta> listarRegistros(String nroCuenta, String nombreCliente, String dni, String idTipoCuenta, String orden, int pagina, int tamañoPagina) throws SQLException {
         int offset = (pagina - 1) * tamañoPagina;
-        return cuentaDAO.listarRegistros(nroCuenta, offset, tamañoPagina);
+        return cuentaDAO.listarRegistros(nroCuenta, nombreCliente, dni, idTipoCuenta, orden, offset, tamañoPagina);
     }
     
     // Versión nueva (por cliente)
@@ -57,8 +57,8 @@ public class CuentaNegocio {
 
     // ========== MÉTODOS DE CONTEO ==========
     
-    public int contarRegistrosActivos(String nroCuenta) throws SQLException {
-        return cuentaDAO.contarRegistrosActivos(nroCuenta);
+    public int contarRegistrosActivos(String nroCuenta, String nombreCliente, String dni, String idTipoCuenta) throws SQLException {
+        return cuentaDAO.contarRegistrosActivos(nroCuenta, nombreCliente, dni, idTipoCuenta);
     }
 
     // ========== MÉTODOS DE OBTENCIÓN ==========

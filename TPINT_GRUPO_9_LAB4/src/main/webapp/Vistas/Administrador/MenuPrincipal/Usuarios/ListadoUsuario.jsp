@@ -19,29 +19,98 @@
             <i class="bi bi-people-fill me-2"></i>Listado de Usuarios
         </h2>
 
-        <!-- Formulario de búsqueda -->
-        <form method="get" action="${pageContext.request.contextPath}/usuario/listar" class="row g-3 mb-4">
-			<div class="col-md-4">
-			    <input type="text" id="dniInput" name="dni" class="form-control" placeholder="Buscar por DNI"
-			           value="${dni != null ? dni : ''}" />
+        <!-- FORMULARIO DE BUSQUEDA Y FILTROS -->
+        <form method="post" action="${pageContext.request.contextPath}/usuario/listar" class="row g-3 mb-4">
+        	<div class="row mb-3">
+				<div class="col-md-3">
+					<label class="form-label" for="nombreUsuario">Nombre Usuario:</label>
+				    <input type="text" id="nombreUsuario" name="nombreUsuario" class="form-control" placeholder="Buscar por Nombre de Usuario"
+				           value="${nombreUsuario != null ? nombreUsuario : ''}" />
+				</div>
+				
+				<div class="col-md-3">
+					<label class="form-label" for="dni">DNI Usuario:</label>
+				    <input type="text" id="dni" name="dni" class="form-control" placeholder="Buscar por DNI"
+				           value="${dni != null ? dni : ''}" />
+				</div>
+				
+				<div class="col-md-3">
+					<label class="form-label" for="rol">Rol:</label>
+				    <select name="rol" class="form-select">
+				        <option value="">Rol...</option>
+				        <option value="admin" ${rol == 'admin' ? 'selected' : ''}>Administrador</option>
+				        <option value="cliente" ${rol == 'cliente' ? 'selected' : ''}>Cliente</option>
+				    </select>
+				</div>
+				
+				<div class="col-md-3">
+	            	<label class="form-label" for="orden">Orden:</label>
+				    <select id="orden" name="orden" class="form-select">
+				        <option value="">Ordenar por...</option>
+				        <option value="asc" ${orden == 'asc' ? 'selected' : ''}>Nombre usuario: A-Z</option>
+				        <option value="desc" ${orden == 'desc' ? 'selected' : ''}>Nombre usuario: Z-A</option>
+				    </select>
+				</div>
 			</div>
 
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-primary">
-                    <i class="bi bi-search"></i> Buscar
-                </button>
-            </div>
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-secondary" name="mostrarTodos" value="true">
-                    <i class="bi bi-arrow-clockwise"></i> Mostrar Todos
-                </button>
-            </div>
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-outline-danger" name="limpiar" value="true">
-                    <i class="bi bi-eraser-fill"></i> Limpiar
-                </button>
+        	<div class="row">
+	            <div class="col-md-2">
+	                <button type="submit" class="btn btn-primary" name="accion" value="buscar">
+					    <i class="bi bi-search"></i> Buscar 
+					</button>
+	            </div>
+	            
+	            <div class="col-md-2">
+	                <button type="submit" class="btn btn-secondary" name="accion" value="todos">
+	                    <i class="bi bi-arrow-clockwise"></i> Mostrar Todos
+	                </button>
+	            </div>
             </div>
         </form>
+        <!-- fin FORMULARIO DE BUSQUEDA Y FILTROS -->
+        
+        <!-- BOTONES DE PAGINACIÓN SUPERIOR -->
+		<div class="d-flex justify-content-between align-items-center mb-2">
+		    <div>
+		        <c:choose>
+		            <c:when test="${paginaActual > 1}">
+		                <a class="btn btn-secondary" href="?pagina=${paginaActual - 1}${queryParams}">
+		                    <i class="bi bi-arrow-left"></i> Anterior
+		                </a>
+		            </c:when>
+		            <c:otherwise>
+		                <button class="btn btn-secondary invisible">
+		                    <i class="bi bi-arrow-left"></i> Anterior
+		                </button>
+		            </c:otherwise>
+		        </c:choose>
+		    </div>
+		
+		    <div class="d-flex gap-1">
+		        <c:forEach var="pagina" begin="1" end="${totalPaginas}">
+		            <a class="btn btn-sm ${pagina == paginaActual ? 'btn-secondary' : 'btn-outline-secondary'}"
+					   href="?pagina=${pagina}${queryParams}">
+					   ${pagina}
+					</a>
+		        </c:forEach>
+		    </div>
+		
+		    <div>
+		        <c:choose>
+		            <c:when test="${paginaActual < totalPaginas}">
+		                <a class="btn btn-secondary" href="?pagina=${paginaActual + 1}${queryParams}">
+		                    Siguiente <i class="bi bi-arrow-right"></i>
+		                </a>
+		            </c:when>
+		            <c:otherwise>
+		                <button class="btn btn-secondary invisible">
+		                    Siguiente <i class="bi bi-arrow-right"></i>
+		                </button>
+		            </c:otherwise>
+		        </c:choose>
+		    </div>
+		</div>
+        <!-- fin DE BOTONES DE PAGINACIÓN SUPERIOR -->
 
         <!-- Mostrar tabla o mensaje -->
         <c:choose>
@@ -108,8 +177,50 @@
                 </div>
             </c:when>
         </c:choose>
+        
+        <!-- BOTONES DE PAGINACIÓN INFERIOR -->
+		<div class="d-flex justify-content-between align-items-center">
+		    <div>
+		        <c:choose>
+		            <c:when test="${paginaActual > 1}">
+		                <a class="btn btn-secondary" href="?pagina=${paginaActual - 1}${queryParams}">
+		                    <i class="bi bi-arrow-left"></i> Anterior
+		                </a>
+		            </c:when>
+		            <c:otherwise>
+		                <button class="btn btn-secondary invisible">
+		                    <i class="bi bi-arrow-left"></i> Anterior
+		                </button>
+		            </c:otherwise>
+		        </c:choose>
+		    </div>
+		
+		    <div class="d-flex gap-1">
+		        <c:forEach var="pagina" begin="1" end="${totalPaginas}">
+		            <a class="btn btn-sm ${pagina == paginaActual ? 'btn-secondary' : 'btn-outline-secondary'}"
+					   href="?pagina=${pagina}${queryParams}">
+					   ${pagina}
+					</a>
+		        </c:forEach>
+		    </div>
+		
+		    <div>
+		        <c:choose>
+		            <c:when test="${paginaActual < totalPaginas}">
+		                <a class="btn btn-secondary" href="?pagina=${paginaActual + 1}${queryParams}">
+		                    Siguiente <i class="bi bi-arrow-right"></i>
+		                </a>
+		            </c:when>
+		            <c:otherwise>
+		                <button class="btn btn-secondary invisible">
+		                    Siguiente <i class="bi bi-arrow-right"></i>
+		                </button>
+		            </c:otherwise>
+		        </c:choose>
+		    </div>
+		</div>
 
-        <div class="mb-3 row">
+        <div class="mb-3 row mt-4">
             <div class="col-sm-12 text-center">
                 <a href="${pageContext.request.contextPath}/Vistas/Administrador/MenuPrincipal/Usuarios/ABMLUsuarios.jsp" class="btn btn-secondary">
                     <i class="bi bi-box-arrow-left"></i> Volver
