@@ -73,7 +73,7 @@
 
             <!-- Reportes -->
             <div class="col-md-3 menu-card">
-                <a href="reportesMenu.jsp" class="text-decoration-none">
+                <a href="Reportes/MenuReportes.jsp" class="text-decoration-none">
                     <div class="card shadow h-100 text-center p-3">
                         <i class="bi bi-graph-up text-danger" style="font-size: 2.5rem;"></i>
                         <h5 class="mt-3">Reportes</h5>
