@@ -34,8 +34,10 @@ public class CuentaBajaServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    	if(req.getParameter("btnBuscar") != null) {
-    		String dni = req.getParameter("dni");
+
+		String dni = req.getParameter("dni");
+    	
+    	if(dni != null && !dni.trim().isEmpty()) {
     		if (dni != null && !dni.trim().isEmpty()) {
     			Cliente cliente = null;
     			List<Cuenta> lista = new ArrayList<>();
