@@ -24,33 +24,39 @@ public class ClienteBlanqueoContrasenaServlet extends HttpServlet {
             throw new ServletException(e);
         }
     }
-    
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String dni = req.getParameter("dni");
+
         if (dni != null && !dni.trim().isEmpty()) {
             try {
-                Cliente cliente = clienteNegocio.buscarClientePorDniExacto(dni);
-                req.setAttribute("cliente", cliente);
+                Cliente cliente = clienteNegocio.buscarClientePorDniExacto(dni.trim());
+                if (cliente != null) {
+                    req.setAttribute("cliente", cliente);
+                } else {
+                    req.setAttribute("mensajeError", "No se encontró cliente con DNI: " + dni);
+                }
             } catch (SQLException e) {
                 req.setAttribute("mensajeError", "Error al buscar cliente: " + e.getMessage());
             }
         }
+
+        req.setAttribute("dni", dni); // <- Importante para que la JSP lo muestre en el input
         req.getRequestDispatcher("/Vistas/Administrador/MenuPrincipal/Clientes/BlanqueoContrasenaCliente.jsp").forward(req, resp);
     }
-
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String accion = req.getParameter("accion");
         String dni = req.getParameter("dni");
         String contrasena = req.getParameter("contrasena");
-        
+
         if ("blanquear".equals(accion) && dni != null && !dni.trim().isEmpty()) {
             try {
-                Cliente cliente = clienteNegocio.buscarClientePorDniExacto(dni);
+                Cliente cliente = clienteNegocio.buscarClientePorDniExacto(dni.trim());
                 if (cliente != null) {
-                    boolean actualizado = clienteNegocio.resetearContrasena(dni, contrasena);
+                    boolean actualizado = clienteNegocio.resetearContrasena(dni.trim(), contrasena);
                     if (actualizado) {
                         req.setAttribute("mensajeExito", "Contraseña blanqueada con éxito para el cliente DNI: " + dni);
                     } else {
@@ -63,11 +69,12 @@ public class ClienteBlanqueoContrasenaServlet extends HttpServlet {
             } catch (Exception e) {
                 req.setAttribute("mensajeError", "Error al blanquear la contraseña: " + e.getMessage());
             }
+
+            req.setAttribute("dni", dni); // <- También aquí
             req.getRequestDispatcher("/Vistas/Administrador/MenuPrincipal/Clientes/BlanqueoContrasenaCliente.jsp").forward(req, resp);
-        
+
         } else {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Acción no válida o parámetros incompletos");
         }
     }
 }
-

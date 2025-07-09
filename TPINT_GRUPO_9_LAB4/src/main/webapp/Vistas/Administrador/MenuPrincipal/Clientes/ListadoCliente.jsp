@@ -143,16 +143,24 @@
                                     <td>${cliente.correoElectronico}</td>
                                     <td>${cliente.telefono}</td>
                                     <td>${cliente.usuario}</td>
-                                    <td>
-                                        <a href="${pageContext.request.contextPath}/cliente/modificar?context=baja&dni=${cliente.dni}" 
-                                           class="btn btn-sm btn-warning" title="Modificar">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </a>
-                                        <a href="${pageContext.request.contextPath}/cliente/baja?context=baja&dni=${cliente.dni}" 
-                                           class="btn btn-sm btn-danger" title="Dar de baja">
-                                            <i class="bi bi-person-dash-fill"></i>
-                                        </a>
-                                    </td>
+									<td>
+									    <a href="${pageContext.request.contextPath}/cliente/modificar?context=baja&dni=${cliente.dni}" 
+									       class="btn btn-sm btn-warning" title="Modificar">
+									        <i class="bi bi-pencil-square"></i>
+									    </a>
+									    
+									    <a href="${pageContext.request.contextPath}/cliente/baja?context=baja&dni=${cliente.dni}" 
+									       class="btn btn-sm btn-danger" title="Dar de baja">
+									        <i class="bi bi-person-dash-fill"></i>
+									    </a>									    
+										<a href="${pageContext.request.contextPath}/cliente/blanqueo?dni=${cliente.dni}" 
+										   class="btn btn-sm btn-info text-white" title="Blanquear contraseña">
+										    <i class="bi bi-key-fill"></i>
+										</a>
+
+									</td>
+
+
                                 </tr>
                             </c:forEach>
                         </tbody>

@@ -38,7 +38,10 @@
         <form action="${pageContext.request.contextPath}/cliente/blanqueo" method="get" class="mt-4">
             <div class="mb-3">
                 <label for="dni" class="form-label">DNI del Cliente</label>
-                <input type="text" class="form-control" id="dni" name="dni" value="${param.dni}" required pattern="[0-9]{7,8}" placeholder="Ej: 30123456" />
+                <input type="text" class="form-control" id="dni" name="dni" 
+       value="${not empty dni ? dni : param.dni}" 
+       required pattern="[0-9]{7,8}" placeholder="Ej: 30123456" />
+
             </div>
 
             <button type="submit" class="btn btn-warning text-white">
