@@ -104,7 +104,7 @@ public class CuentaListarServlet extends HttpServlet {
 		String accion = req.getParameter("accion");
 	    String nroCuenta = req.getParameter("numeroCuenta");
 	    String dni = req.getParameter("dni");
-	    String nombreCliente = req.getParameter("nombreCliente");
+	    //String nombreCliente = req.getParameter("nombreCliente");
 	    String orden = req.getParameter("orden");
         String tipoCuenta = req.getParameter("tipoCuenta");
 	    
@@ -112,7 +112,7 @@ public class CuentaListarServlet extends HttpServlet {
 
 	    if ("buscar".equals(accion)) {
 	    	if (!nroCuenta.isEmpty()) redirectStr.append("&nroCuenta=").append(nroCuenta);
-	    	if (!nombreCliente.isEmpty()) redirectStr.append("&nombreCliente=").append(nombreCliente);
+	    	//if (!nombreCliente.isEmpty()) redirectStr.append("&nombreCliente=").append(nombreCliente);
 	    	if (!dni.isEmpty()) redirectStr.append("&dni=").append(dni);
 	        if (!orden.isEmpty()) redirectStr.append("&orden=").append(orden);
 	        if (!tipoCuenta.isEmpty()) redirectStr.append("&tipoCuenta=").append(tipoCuenta);

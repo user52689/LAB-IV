@@ -21,60 +21,57 @@
         </h2>
 
         <!-- FORMULARIO DE BUSQUEDA Y FILTROS -->
-        <form method="post" action="${pageContext.request.contextPath}/Cuentas/listar" class="row g-3 mb-3">
-        
-            <div class="col-md-3">
-            	<label class="form-label" for="numeroCuenta">Número de Cuenta:</label>
-                <input type="text" id="numeroCuenta" name="numeroCuenta" class="form-control" placeholder="Buscar por Número de Cuenta"
-                       value="${numeroCuenta != null ? numeroCuenta  : ''}" />
-            </div>
+        <form method="post" action="${pageContext.request.contextPath}/Cuentas/listar" class="g-3 mb-3">
+        	<div class="row mb-4">
+	            <div class="col-md-3">
+	            	<label class="form-label" for="numeroCuenta">Número de Cuenta:</label>
+	                <input type="text" id="numeroCuenta" name="numeroCuenta" class="form-control" placeholder="Buscar por Número de Cuenta"
+	                       value="${numeroCuenta != null ? numeroCuenta  : ''}" />
+	            </div>
+	            
+				<div class="col-md-3">
+				    <label class="form-label" for="dni">DNI Cliente:</label>
+				    <input type="text" id="dni" name="dni" class="form-control" placeholder="Buscar por DNI"
+				           value="${dni != null ? dni : ''}" />
+				</div>
+	            
+	            <div class="col-md-3">
+	            	<label class="form-label" for="orden">Orden:</label>
+				    <select name="orden" class="form-select">
+				        <option value="">Ordenar por...</option>
+				        <option value="asc" ${orden == 'asc' ? 'selected' : ''}>Saldo: menor a mayor</option>
+				        <option value="desc" ${orden == 'desc' ? 'selected' : ''}>Saldo: mayor a menor</option>
+				    </select>
+				</div>
+				
+				<div class="col-md-3">
+	            	<label class="form-label" for="tipoCuenta">Tipo de Cuenta:</label>
+				    <select name="tipoCuenta" class="form-select">
+				        <option value="">Todos los tipos</option>
+				        <c:forEach var="tc" items="${listaTiposCuentas}">
+				        	<option value="${tc.idTipoCuenta}" ${tipoCuenta == tc.idTipoCuenta ? 'selected' : ''} >${tc.descripcion}</option>
+				        </c:forEach>
+				    </select>
+				</div>
+        	</div>
             
-            <div class="col-md-3">
-            	<label class="form-label" for="nombreCliente">Nombre Cliente:</label>
-			    <input type="text" id="nombreCliente" name="nombreCliente" class="form-control" placeholder="Buscar por Nombre del Cliente"
-			           value="${nombreCliente != null ? nombreCliente : ''}" />
+			<div class="row">
+	            <div class="col-md-2">
+	                <button type="submit" class="btn btn-primary" name="accion" value="buscar">
+					    <i class="bi bi-search"></i> Buscar 
+					</button>
+	            </div>
+	            
+	            <div class="col-md-2">
+	                <button type="submit" class="btn btn-secondary" name="accion" value="todos">
+	                    <i class="bi bi-arrow-clockwise"></i> Mostrar Todos
+	                </button>
+	            </div>
 			</div>
-			
-			<!-- div class="col-md-3">
-			    <label class="form-label" for="dni">DNI Cliente:</label>
-			    <input type="text" id="dni" name="dni" class="form-control" placeholder="Buscar por DNI"
-			           value="${dni != null ? dni : ''}" />
-			</div> -->
-            
-            <div class="col-md-3">
-            	<label class="form-label" for="orden">Orden:</label>
-			    <select name="orden" class="form-select">
-			        <option value="">Ordenar por...</option>
-			        <option value="asc" ${orden == 'asc' ? 'selected' : ''}>Saldo: menor a mayor</option>
-			        <option value="desc" ${orden == 'desc' ? 'selected' : ''}>Saldo: mayor a menor</option>
-			    </select>
-			</div>
-			
-			<div class="col-md-3">
-            	<label class="form-label" for="tipoCuenta">Tipo de Cuenta:</label>
-			    <select name="tipoCuenta" class="form-select">
-			        <option value="">Todos los tipos</option>
-			        <c:forEach var="tc" items="${listaTiposCuentas}">
-			        	<option value="${tc.idTipoCuenta}" ${tipoCuenta == tc.idTipoCuenta ? 'selected' : ''} >${tc.descripcion}</option>
-			        </c:forEach>
-			    </select>
-			</div>
-			
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-primary" name="accion" value="buscar">
-				    <i class="bi bi-search"></i> Buscar 
-				</button>
-            </div>
-            
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-secondary" name="accion" value="todos">
-                    <i class="bi bi-arrow-clockwise"></i> Mostrar Todos
-                </button>
-            </div>
             
         </form>
         <!-- fin DE FORMULARIO DE BUSQUEDA Y FILTROS -->
-        
+        <hr>
         <!-- BOTONES DE PAGINACIÓN SUPERIOR -->
 		<div class="d-flex justify-content-between align-items-center mb-2">
 		    <div>
