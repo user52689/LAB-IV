@@ -47,6 +47,12 @@
                 <div class="invalid-feedback">Ingresá un nombre de usuario válido (mínimo 3 caracteres).</div>
             </div>
 
+			<div class="col-md-4">
+                <label for="apellido" class="form-label">Apellido</label>
+                <input type="text" class="form-control" id="apellido" name="apellido" required autocomplete="off" />
+                <div class="invalid-feedback">Ingresá el apellido del usuario</div>
+            </div>
+
             <div class="col-md-4">
                 <label for="contrasena" class="form-label">Contraseña por defecto</label>
                 <input type="text" class="form-control" id="contrasena" name="contrasena" value="123456" readonly autocomplete="off" />
