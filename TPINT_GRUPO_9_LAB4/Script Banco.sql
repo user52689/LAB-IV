@@ -323,7 +323,7 @@ INSERT INTO usuarios (
     id_genero, id_pais, fecha_nacimiento, direccion,
     id_localidad, id_provincia
 ) VALUES
-('30111111', 'Abraham', 'Abraham', 'Lincoln', '$2a$12$hF1zkgTjHhY4VeRxhtlvj.s347nI7kFIAMo4/muzYYzwMlBxijw8q', 'admin', 'abraham@banco.com', '1111111111', 1, 1, '1980-01-01', 'Av. Siempre Viva 742', 1, 1),
+('30111111', 'Abraham', 'Abraham', 'Meza', '$2a$12$hF1zkgTjHhY4VeRxhtlvj.s347nI7kFIAMo4/muzYYzwMlBxijw8q', 'admin', 'abraham@banco.com', '1111111111', 1, 1, '1980-01-01', 'Av. Siempre Viva 742', 1, 1),
 ('30111112', 'Oscar', 'Oscar', 'Principi', '$2a$12$2rz0RveHvfy1AD81xJYxPeC030bg9jdx1QdpVc9OTUskgJdrCYQr6', 'admin', 'oscar@banco.com', '2222222222', 2, 1, '1985-05-05', 'Calle del Software 404', 1, 1),
 ('30123456', 'user1', 'Juan', 'Perez', '$2a$12$M6dO9bO42co2Rr0JwoR.DujbtZDKxA/Q.HxRFJ6j2jvjXvU/gPuBm', 'cliente', 'user1@ejemplo.com', '3333333333', 1, 1, '1990-01-01', 'Calle Falsa 123', 1, 1),
 ('30987654', 'user2', 'Maria', 'Gomez', '$2a$12$3k/Ly9q2VAnI4/oaufrlzOvm.eftJuFEo3KvpxFH8QMMl1fMkWepK', 'cliente', 'user2@ejemplo.com', '3444444444', 2, 1, '1991-02-02', 'Calle Falsa 124', 1, 1),
