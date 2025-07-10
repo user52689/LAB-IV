@@ -124,6 +124,17 @@ public class FiltroAcceso implements Filter {
 				    requestURI.endsWith("/Vistas/Administrador/Prestamos/PrestamosSolicitadosClientes.jsp") ||
 				    requestURI.endsWith("/Prestamos/pendientes") ||                 
 				    requestURI.contains("/Prestamos/pendientes?") ||
+				    requestURI.endsWith("/Prestamos/pendientes") ||
+                    requestURI.contains("/Prestamos/pendientes") ||
+                    
+                    
+                    requestURI.endsWith("/Prestamos/asignar") ||
+                    requestURI.contains("/Prestamos/asignar") ||
+                    
+                    
+                    requestURI.endsWith("/Prestamos/rechazar") ||
+                    requestURI.contains("/Prestamos/rechazar") ||
+                    
 					requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Reportes/MenuReportes.jsp") ||
 					requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Reportes/ReporteCliente.jsp") ||
 					requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Reportes/ReporteFinanciero.jsp") ||
@@ -179,10 +190,14 @@ public class FiltroAcceso implements Filter {
                        // === PRÉSTAMOS ===
                        requestURI.endsWith("/Vistas/Clientes/MenuPrincipal/Prestamos/MenuPrestamos.jsp") ||
                        requestURI.endsWith("/Vistas/Clientes/Prestamos/MenuPrestamos.jsp") ||
+                       requestURI.endsWith("/SolicitarPrestamoServlet") ||
                        requestURI.endsWith("/IrASolicitarPrestamoServlet") ||                      
                        requestURI.endsWith("/ListarPrestamosClienteServlet") ||
                        requestURI.endsWith("/DetallePrestamoServlet") ||
                        requestURI.contains("/DetallePrestamoServlet?") ||
+                       
+                       requestURI.endsWith("/Prestamos/pendientes") ||
+                       requestURI.contains("/Prestamos/pendientes") ||
                        requestURI.endsWith("/Prestamos/pagar") ||
                        requestURI.contains("/Prestamos/pagar?");
 
@@ -192,14 +207,15 @@ public class FiltroAcceso implements Filter {
     }
 }
 
-/*desactivación ACCESO DENEGADO
-private boolean tieneAccesoARuta(String requestURI, String contextPath, String rol) {
-    System.out.println("=== DEBUG RBAC ===");
-    System.out.println("URI solicitada: " + requestURI);
-    System.out.println("Context Path: " + contextPath);
-    System.out.println("Rol: " + rol);
-    System.out.println("================");
-  
-   return true;
-}
+
+ /*desactivación ACCESO DENEGADO
+  private boolean tieneAccesoARuta(String requestURI, String contextPath, String rol) {
+	    System.out.println("=== DEBUG RBAC ===");
+	    System.out.println("URI solicitada: " + requestURI);
+	    System.out.println("Context Path: " + contextPath);
+	    System.out.println("Rol: " + rol);
+	    System.out.println("================");
+	  
+     return true;
+  }
 }*/
