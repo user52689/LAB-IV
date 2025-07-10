@@ -72,7 +72,7 @@ public class FiltroAcceso implements Filter {
     public void destroy() {
         System.out.println("FiltroAcceso: Destruido");
     }
-    private boolean tieneAccesoARuta(String requestURI, String contextPath, String rol) {
+      private boolean tieneAccesoARuta(String requestURI, String contextPath, String rol) {
         switch (rol) {
             case "ADMIN":
                 return 
@@ -120,8 +120,15 @@ public class FiltroAcceso implements Filter {
                     requestURI.endsWith("/Vistas/Administrador/Cuentas/ListarCuentas.jsp") ||
 
                     // === PRESTAMOS Y REPORTES (SOLO ADMIN) ===
-                    requestURI.endsWith("/Vistas/Administrador/Prestamos/PrestamosSolicitadosClientes.jsp") ||
-                    requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/reportesMenu.jsp");
+					requestURI.endsWith("/Vistas/Administrador/Prestamos/PrestamosSolicitadosClientes.jsp") ||
+				    requestURI.endsWith("/Vistas/Administrador/Prestamos/PrestamosSolicitadosClientes.jsp") ||
+				    requestURI.endsWith("/Prestamos/pendientes") ||                 
+				    requestURI.contains("/Prestamos/pendientes?") ||
+					requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Reportes/MenuReportes.jsp") ||
+					requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Reportes/ReporteCliente.jsp") ||
+					requestURI.endsWith("/Vistas/Administrador/MenuPrincipal/Reportes/ReporteFinanciero.jsp") ||
+					requestURI.endsWith("/ReporteClienteServlet") ||
+					requestURI.endsWith("/ReporteFinancieroServlet");
 
             case "CLIENTE":
                 // === BLOQUEAR RUTAS DE ADMINISTRACIÓN ===
@@ -137,7 +144,6 @@ public class FiltroAcceso implements Filter {
 
                 if (requestURI.endsWith("/cliente/alta") ||
                     requestURI.endsWith("/cliente/baja") ||
-                    requestURI.endsWith("/cliente/modificar") ||
                     requestURI.endsWith("/cliente/blanqueo") ||
                     requestURI.endsWith("/cliente/listar")) {
                     return false;
@@ -168,6 +174,7 @@ public class FiltroAcceso implements Filter {
                        // === PERFIL DEL CLIENTE ===
                        requestURI.endsWith("/Vistas/Clientes/Perfil/PerfilCliente.jsp") ||
                        requestURI.endsWith("/ActualizarPerfilServlet") ||
+                       requestURI.endsWith("/cliente/modificar") ||
                        
                        // === PRÉSTAMOS ===
                        requestURI.endsWith("/Vistas/Clientes/MenuPrincipal/Prestamos/MenuPrestamos.jsp") ||
@@ -184,8 +191,8 @@ public class FiltroAcceso implements Filter {
         }
     }
 }
-/*
-//desactivación ACCESO DENEGADO
+
+/*desactivación ACCESO DENEGADO
 private boolean tieneAccesoARuta(String requestURI, String contextPath, String rol) {
     System.out.println("=== DEBUG RBAC ===");
     System.out.println("URI solicitada: " + requestURI);
@@ -193,6 +200,6 @@ private boolean tieneAccesoARuta(String requestURI, String contextPath, String r
     System.out.println("Rol: " + rol);
     System.out.println("================");
   
-   return true;
+   return true;
 }
 }*/

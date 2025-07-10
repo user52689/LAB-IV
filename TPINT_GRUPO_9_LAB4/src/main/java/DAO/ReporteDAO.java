@@ -17,16 +17,9 @@ public class ReporteDAO {
         try (Connection conn = Conexion.obtenerConexion()) {
             String sql = """
                 SELECT 
-                    SUM(CASE 
-                        WHEN tm.descripcion IN ('Alta de cuenta', 'Alta de préstamo', 'Transferencia') THEN m.importe 
-                        ELSE 0 
-                    END) AS total_ingresos,
-                    SUM(CASE 
-                        WHEN tm.descripcion IN ('Pago de préstamo', 'Transferencia') THEN -m.importe 
-                        ELSE 0 
-                    END) AS total_egresos
+                    SUM(CASE WHEN m.importe > 0 THEN m.importe ELSE 0 END) AS total_ingresos,
+                    SUM(CASE WHEN m.importe < 0 THEN -m.importe ELSE 0 END) AS total_egresos
                 FROM movimientos m
-                INNER JOIN tipos_movimiento tm ON m.id_tipo_movimiento = tm.id_tipo_movimiento
                 WHERE m.fecha_movimiento BETWEEN ? AND ? AND m.activo = TRUE
             """;
 
@@ -47,7 +40,7 @@ public class ReporteDAO {
 
         return reporte;
     }
-    
+
     public ReporteCliente getTotalesPorClienteYFechas(int idCliente, Date desde, Date hasta) {
         ReporteCliente reporte = new ReporteCliente();
 
@@ -55,18 +48,11 @@ public class ReporteDAO {
             String sql = """
                 SELECT 
                     CONCAT(c.nombre, ' ', c.apellido) AS nombreCliente,
-                    SUM(CASE 
-                        WHEN tm.descripcion IN ('Alta de cuenta', 'Alta de préstamo', 'Transferencia') THEN m.importe 
-                        ELSE 0 
-                    END) AS ingresos,
-                    SUM(CASE 
-                        WHEN tm.descripcion IN ('Pago de préstamo', 'Transferencia') THEN m.importe 
-                        ELSE 0 
-                    END) AS egresos
+                    SUM(CASE WHEN m.importe > 0 THEN m.importe ELSE 0 END) AS ingresos,
+                    SUM(CASE WHEN m.importe < 0 THEN -m.importe ELSE 0 END) AS egresos
                 FROM movimientos m
                 INNER JOIN cuentas cu ON m.id_cuenta = cu.id_cuenta
                 INNER JOIN clientes c ON cu.id_cliente = c.id_cliente
-                INNER JOIN tipos_movimiento tm ON m.id_tipo_movimiento = tm.id_tipo_movimiento
                 WHERE c.id_cliente = ? AND m.fecha_movimiento BETWEEN ? AND ? AND m.activo = TRUE
             """;
 
@@ -89,5 +75,4 @@ public class ReporteDAO {
 
         return reporte;
     }
-
 }
