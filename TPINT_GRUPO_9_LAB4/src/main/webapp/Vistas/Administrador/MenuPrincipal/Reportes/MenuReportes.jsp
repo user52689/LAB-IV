@@ -33,6 +33,14 @@
             </div>
         </div>
     </div>
+    
+    <div class="d-flex justify-content-center mt-5">
+    <a href="${pageContext.request.contextPath}/Vistas/Administrador/MenuPrincipal/MenuAdministrador.jsp" class="btn btn-secondary">
+        <i class="bi bi-box-arrow-left"></i> Volver al Menú Principal
+    </a>
+</div>
+    
+    
 </main>
 
 <%@ include file="../../../Componentes/footer.jspf" %>
