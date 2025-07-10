@@ -28,7 +28,7 @@
         <form action="${pageContext.request.contextPath}/cliente/modificar" method="get" class="row g-3 needs-validation" novalidate>
             <div class="col-md-8">
                 <label for="dniBuscar" class="form-label">Buscar cliente por DNI</label>
-                <input type="text" id="dniBuscar" name="dni" class="form-control" pattern="\d{6,20}" placeholder="Ej: 30123456" required />
+                <input type="text" id="dniBuscar" name="dni" class="form-control" value="${cliente.dni}" placeholder="Ej: 30123456" required />
                 <div class="invalid-feedback">Ingresá un DNI válido (solo números).</div>
             </div>
             <div class="col-md-4 d-flex align-items-end">
