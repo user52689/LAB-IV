@@ -89,7 +89,7 @@
 
         <div class="mb-3 row mt-3">
             <div class="col-sm-12 text-center">
-                <a href="${pageContext.request.contextPath}/Vistas/Administrador/MenuPrincipal/Clientes/ABMLClientes.jsp" class="btn btn-secondary">
+                <a href="${pageContext.request.contextPath}/Vistas/Administrador/MenuPrincipal/Usuarios/ABMLUsuarios.jsp" class="btn btn-secondary">
                     <i class="bi bi-box-arrow-left"></i> Volver
                 </a>
             </div>
