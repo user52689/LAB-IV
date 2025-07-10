@@ -48,16 +48,17 @@
 			    </a>
 			</div>
 			
-            <!-- Perfiles -->
-            <div class="col-md-3 menu-card">
-                 <a href="Perfil/PerfilUsuario.jsp" class="text-decoration-none">
-                    <div class="card shadow h-100 text-center p-3">
-                        <i class="bi bi-person-circle text-success" style="font-size: 2.5rem;"></i>
-                        <h5 class="mt-3">Perfil</h5>
-                        <p class="text-muted">Administrar tu perfil y datos personales</p>
-                    </div>
-                </a>
-            </div>
+			 <!-- Perfiles
+			<div class="col-md-3 menu-card">
+			<a href="Perfil/PerfilUsuario.jsp" class="text-decoration-none">
+			<div class="card shadow h-100 text-center p-3">
+			<i class="bi bi-person-circle text-success" style="font-size: 2.5rem;"></i>
+			<h5 class="mt-3">Perfil</h5>
+			<p class="text-muted">Administrar tu perfil y datos personales</p>
+			</div>
+			</a>
+			</div>
+			-->
 
             <!-- Cuentas -->
             <div class="col-md-3 menu-card">
