@@ -70,6 +70,8 @@ public class UsuarioAltaServlet extends HttpServlet {
 
         u.setDni(request.getParameter("dni"));
         u.setNombreUsuario(request.getParameter("nombre_usuario"));
+        u.setNombre(request.getParameter("nombre_usuario"));
+        u.setApellido(request.getParameter("apellido"));
         u.setContrasena(request.getParameter("contrasena"));
         u.setCorreoElectronico(request.getParameter("correo_electronico"));
         u.setTelefono(request.getParameter("telefono"));
